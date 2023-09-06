@@ -1,0 +1,38 @@
+INFO:dcm2bids.dcm2bids:--- dcm2bids start ---
+INFO:dcm2bids.dcm2bids:OS:version: Linux-3.10.0-1160.95.1.el7.x86_64-x86_64-with-glibc2.17
+INFO:dcm2bids.dcm2bids:python:version: 3.9.6 | packaged by conda-forge | (default, Jul 11 2021, 03:39:48) [GCC 9.3.0]
+INFO:dcm2bids.dcm2bids:dcm2bids:version: 2.1.6
+INFO:dcm2bids.dcm2bids:dcm2niix:version: v1.0.20210317
+INFO:dcm2bids.dcm2bids:participant: sub-001
+INFO:dcm2bids.dcm2bids:session: ses-1
+INFO:dcm2bids.dcm2bids:config: /gpfs/group/klk37/default/R01_Marketing/bids/code/dcm2bids/config_files/sub-001_dcm2bids_config.json
+INFO:dcm2bids.dcm2bids:BIDS directory: /gpfs/group/klk37/default/R01_Marketing/bids/raw_data/sub-001
+INFO:dcm2bids.utils:Running dcm2niix -b y -ba y -z y -f '%3s_%f_%p_%t' -o /gpfs/group/klk37/default/R01_Marketing/bids/raw_data/sub-001/tmp_dcm2bids/sub-001_ses-1 /gpfs/group/klk37/default/R01_Marketing/bids/sourcedata/sub-001/ses-1/001_temp
+INFO:dcm2bids.dcm2niix:Check log file for dcm2niix output
+INFO:dcm2bids.sidecar:Sidecars pairing:
+INFO:dcm2bids.sidecar:No Pairing  <-  001_001_temp_localizer_20220818154126_i01007
+INFO:dcm2bids.sidecar:No Pairing  <-  001_001_temp_localizer_20220818154126_i01004
+INFO:dcm2bids.sidecar:No Pairing  <-  001_001_temp_localizer_20220818154126_i01001
+INFO:dcm2bids.sidecar:No Pairing  <-  002_001_temp_trigger-test_20220818154126
+INFO:dcm2bids.sidecar:_T1w  <-  004_001_temp_T1_MPRage_Sagittal_20220818154126
+INFO:dcm2bids.sidecar:_task-foodview_bold  <-  005_001_temp_foodview-1_20220818154126
+INFO:dcm2bids.sidecar:_task-foodview_bold  <-  007_001_temp_foodview-2_20220818154126
+INFO:dcm2bids.sidecar:_task-foodview_bold  <-  009_001_temp_foodview-3_20220818154126
+INFO:dcm2bids.sidecar:_task-foodview_bold  <-  011_001_temp_foodview-4_20220818154126
+INFO:dcm2bids.sidecar:_task-foodview_magnitude2  <-  013_001_temp_gre_field_mapping_20220818154126_e1a
+INFO:dcm2bids.sidecar:_task-foodview_magnitude1  <-  013_001_temp_gre_field_mapping_20220818154126_e1
+INFO:dcm2bids.sidecar:_task-foodview_phasediff  <-  014_001_temp_gre_field_mapping_20220818154126_ph
+INFO:dcm2bids.sidecar:_task-sst_bold  <-  015_001_temp_sst-1_20220818154126
+INFO:dcm2bids.sidecar:_task-sst_bold  <-  017_001_temp_sst-2_20220818154126
+INFO:dcm2bids.sidecar:_task-sst_bold  <-  019_001_temp_sst-3_20220818154126
+INFO:dcm2bids.sidecar:_task-sst_bold  <-  021_001_temp_sst-4_20220818154126
+INFO:dcm2bids.sidecar:_task-sst_bold  <-  023_001_temp_sst-5_20220818154126
+INFO:dcm2bids.sidecar:_task-sst_bold  <-  025_001_temp_sst-6_20220818154126
+INFO:dcm2bids.sidecar:_task-sst_magnitude2  <-  027_001_temp_gre_field_mapping_sst_20220818154126_e1a
+INFO:dcm2bids.sidecar:_task-sst_magnitude1  <-  027_001_temp_gre_field_mapping_sst_20220818154126_e1
+INFO:dcm2bids.sidecar:_task-sst_phasediff  <-  028_001_temp_gre_field_mapping_sst_20220818154126_ph
+INFO:dcm2bids.sidecar:sub-001/ses-1/func/sub-001_ses-1_task-foodview_bold has 4 runs
+INFO:dcm2bids.sidecar:Adding 'run' information to the acquisition
+INFO:dcm2bids.sidecar:sub-001/ses-1/func/sub-001_ses-1_task-sst_bold has 6 runs
+INFO:dcm2bids.sidecar:Adding 'run' information to the acquisition
+INFO:dcm2bids.dcm2bids:moving acquisitions into BIDS folder
