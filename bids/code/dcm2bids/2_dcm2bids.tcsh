@@ -142,7 +142,6 @@ if ($run_dcm2bids == 1) then
 	##### run pydeface ####
 	echo "Calling pydeface"
         
-	exit	
 	cd $parRawDir/ses-1/anat	
 	
         pydeface *T1w.nii.gz # call pydeface
