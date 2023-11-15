@@ -60,22 +60,6 @@ else
 endif
 
 
-###################### Generate subject config file  ###########################
-
-if (-f $configDir/sub-${parID}_dcm2bids_config.json) then
-	echo "Config file exists for $parID"
-else	
-	# check for config directory
-	if ( ! -d $configDir) then
-		mkdir $configDir
-	endif
-
-	# make file 
-	cp $configDir/template_dcm2bids_config.json $configDir/sub-${parID}_dcm2bids_config.json
-
-endif
-
-
 ###################### Set permission  ###########################
 # Set permissions
 echo "setting permissions"
