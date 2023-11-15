@@ -43,6 +43,48 @@ set parRawDir = "$rawDir/sub-${parID}"
 #set path to temporary source data
 set parDir_source_temp = "$sourceDir/sub-$parID/ses-1/${parID}_temp"
 
+#set dcm2bids config files directory
+set dcm2bidsDir = "$bidsDir/code/dcm2bids"
+
+#set dcm2bids config files directory
+set configDir = "$dcm2bidsDir/config_files"
+
+#set path to file with fieldmap seriesdescription names
+set fmap_descriptions_file = "$dcm2bidsDir/fmap_descriptions.csv"
+
+###################### Generate subject config file  ###########################
+
+if ( -f $configDir/sub-${parID}_dcm2bids_config.json ) then
+	echo "Config file exists for $parID"
+else
+
+	# Use awk to check if the subject exists in fmap_descriptions_file (subject column 1) -- if yes, set sub_exists == 1
+	set sub_exists = `awk -F',' -v value="$parID" '$1 == value {print "1"; exit} END {if (!found) print "0"}' $fmap_descriptions_file` ## this is not working -- figure this out
+
+	# Check if sub exists in fmap_descriptions_file
+	if ( $sub_exists -eq 1 ) then # if subject exists
+
+		# make copy of template config file for parID
+		cp $configDir/template_dcm2bids_config.json $configDir/sub-${parID}_dcm2bids_config.json
+		set sub_config_file = $configDir/sub-${parID}_dcm2bids_config.json
+
+		# set fmap SeriesDescriptions for parID from $fmap_descriptions_file
+		set fv_fmap_desc = `awk -F',' '$1 == "'$parID'" {print $2}' $fmap_descriptions_file`
+		set sst_fmap_desc = `awk -F',' '$1 == "'$parID'" {print $3}' $fmap_descriptions_file`
+
+		echo $fv_fmap_desc
+
+		# update SeriesDescription for fieldmaps in configuration file 
+		# this code uses jq to modify the json. map() iterates over each element of "descriptions" and FIELDMAP_NAME_FV will be replaced with $fv_fmap_desc
+		/storage/group/klk37/default/sw/jq/jq-linux64 ".descriptions |= map(if .criteria.SeriesDescription == \"FIELDMAP_NAME_FV\" then .criteria.SeriesDescription = \"$fv_fmap_desc\" else . end)" $sub_config_file > temp.json && mv temp.json $sub_config_file
+
+	else
+		echo "Subject $parID is not in fmap_descriptions.csv. add fieldmap SeriesDescriptiobs for subject and re-run"
+		exit
+	endif
+endif
+
+exit
 ###################### Check for directories ######################
 
 
@@ -196,21 +238,21 @@ set func_jsons=`ls $parRawDir/ses-1/func/*json`
 # Loop through fieldmap jsons
 foreach json ($func_jsons)
 
-        # check if json already has "TaskName" key
-	/gpfs/group/klk37/default/sw/jq/jq-linux64 -e 'has("TaskName")' $json > /dev/null
+    # check if json already has "TaskName" key
+	/storage/group/klk37/default/sw/jq/jq-linux64 -e 'has("TaskName")' $json > /dev/null
 
-        # if does not have "TaskName" key (exit status = 1)
-        if($?) then
-                echo "adding TaskName key to $json"
-                if ( "$json" =~ *foodview* ) then
-                        cat $json | /gpfs/group/klk37/default/sw/jq/jq-linux64 --arg v "foodview" '.TaskName += $v' > temp.json
-                        mv temp.json $json
-                else if ( "$json" =~ *sst* ) then
-                        cat $json | /gpfs/group/klk37/default/sw/jq/jq-linux64 --arg v "sst" '.TaskName += $v' > temp.json
-                        mv temp.json $json
-                endif
+    # if does not have "TaskName" key (exit status = 1)
+    if($?) then
+			echo "adding TaskName key to $json"
+			if ( "$json" =~ *foodview* ) then
+					cat $json | /storage/group/klk37/default/sw/jq/jq-linux64 --arg v "foodview" '.TaskName += $v' > temp.json
+					mv temp.json $json
+			else if ( "$json" =~ *sst* ) then
+					cat $json | /storage/group/klk37/default/sw/jq/jq-linux64 --arg v "sst" '.TaskName += $v' > temp.json
+					mv temp.json $json
+			endif
 	else
-                echo "$json already has TaskName key"
+            echo "$json already has TaskName key"
 	endif
 end
 
