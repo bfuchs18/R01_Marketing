@@ -1,2 +1,4 @@
-﻿sub,fv_fmap_serdescript,fv_fmap_serdescript
-001,gre_field_mapping_fv,gre_field_mapping_sst
+﻿sub,fv_fmap_serdescript,sst_fmap_serdescript
+001,gre_field_mapping,gre_field_mapping_sst
+002,gre_field_mapping_FV,gre_field_mapping_sst
+003,gre_field_mapping_FV,gre_field_mapping_sst
