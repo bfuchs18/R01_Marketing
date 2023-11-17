@@ -213,7 +213,7 @@ foreach task ("foodview" "sst")
 	foreach json ($fieldmap_jsons)
 
 			# check if json already has "IndendedFor" key (-e gets exit status: 1 if false, 0 if true)
-			/gpfs/group/klk37/default/sw/jq/jq-linux64 -e 'has("IntendedFor")' $json > /dev/null
+			/storage/group/klk37/default/sw/jq/jq-linux64 -e 'has("IntendedFor")' $json > /dev/null
 
 			# if does not have "Indended for key (exit status = 1)
 			if($?) then
@@ -221,7 +221,7 @@ foreach task ("foodview" "sst")
 					# Loop through functional scans
 					foreach func ($func_array)
 							# add functional scan to "IntendedFor"
-							cat $json | /gpfs/group/klk37/default/sw/jq/jq-linux64 --arg v "$func" '.IntendedFor += [$v]' > temp.json
+							cat $json | /storage/group/klk37/default/sw/jq/jq-linux64 --arg v "$func" '.IntendedFor += [$v]' > temp.json
 							mv temp.json $json
 					end
 			# if does have "Indended for key (exit status != 1)
