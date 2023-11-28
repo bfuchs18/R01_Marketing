@@ -2,3 +2,6 @@
 001,gre_field_mapping,gre_field_mapping_sst
 002,gre_field_mapping_FV,gre_field_mapping_sst
 003,gre_field_mapping_FV,gre_field_mapping_sst
+005,gre_field_mapping_FV,gre_field_mapping_sst
+006,,gre_field_mapping
+999,gre_field_mapping,gre_field_mapping
