@@ -5,7 +5,6 @@
 #
 #
 # The purpose of this script is to copy DICOMS from untouchedRaw to bids/sourcedata
-# and generate subjects config file (sub_dcm2bids_config.json)
 #
 
 ###################### set up initial variables  ###########################   
@@ -28,19 +27,6 @@ set sourceDir = "$bidsDir/sourcedata"
 
 #set path to participant dicom sourcedata directory
 set parDicom_source = "$sourceDir/sub-${parID}/ses-1/dicom"
-
-#set path to raw_data directory -- this is where files in BIDS format are stored
-set rawDir = "$bidsDir/raw_data"
-
-#set path to parID/ses-1 raw_data directory
-set parRawDir = "$rawDir/sub-${parID}/ses-1"
-
-#set dcm2bids config files directory
-set dcm2bidsDir = "$bidsDir/code/dcm2bids"
-
-#set dcm2bids config files directory
-set configDir = "$dcm2bidsDir/config_files"
-
 
 ###################### Organize into sourcedata ######################
 
