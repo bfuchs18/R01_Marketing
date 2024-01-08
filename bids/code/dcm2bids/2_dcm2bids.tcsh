@@ -52,39 +52,41 @@ set configDir = "$dcm2bidsDir/config_files"
 #set path to file with fieldmap seriesdescription names
 set fmap_descriptions_file = "$dcm2bidsDir/fmap_descriptions.csv"
 
+###################### Determine fieldmap descriptions ###########################
+
+# script will exit if subject does not have fieldmap description in fmap_descriptions_file
+
+# Use awk to check if the subject exists in fmap_descriptions_file (subject column 1) -- if yes, set sub_exists == "1"
+set sub_exists = `awk -F ',' -v value="$parID" '$1 == value {print "1"; exit}' $fmap_descriptions_file`
+
+if ( $sub_exists == "1" ) then # if subject exists in fmap_descriptions_file
+
+	# set fmap SeriesDescriptions for parID from $fmap_descriptions_file
+	set fv_fmap_desc = `awk -F',' '$1 == "'$parID'" {print $2}' $fmap_descriptions_file`
+	set sst_fmap_desc = `awk -F',' '$1 == "'$parID'" {print $3}' $fmap_descriptions_file`
+
+else
+	echo "Subject $parID is not in fmap_descriptions.csv. add fieldmap SeriesDescriptions for subject and re-run"
+	exit
+endif 
+
+
 ###################### Generate subject config file  ###########################
 
-if ( -f $configDir/sub-${parID}_dcm2bids_config.json ) then
+# check for subject config file
+if ( -f $configDir/sub-${parID}_dcm2bids_config.json ) then # if exists
 	echo "Config file exists for $parID"
-else
-
-	# Use awk to check if the subject exists in fmap_descriptions_file (subject column 1) -- if yes, set sub_exists == "1"
-	set sub_exists = `awk -F ',' -v value="$parID" '$1 == value {print "1"; exit}' $fmap_descriptions_file`
-
-	# Check if sub exists in fmap_descriptions_file
-	if ( $sub_exists == "1" ) then # if subject exists
-
-		# make copy of template config file for parID
-		cp $configDir/template_dcm2bids_config.json $configDir/sub-${parID}_dcm2bids_config.json
-		set sub_config_file = $configDir/sub-${parID}_dcm2bids_config.json
-
-		# set fmap SeriesDescriptions for parID from $fmap_descriptions_file
-		set fv_fmap_desc = `awk -F',' '$1 == "'$parID'" {print $2}' $fmap_descriptions_file`
-		set sst_fmap_desc = `awk -F',' '$1 == "'$parID'" {print $3}' $fmap_descriptions_file`
-
-		echo $fv_fmap_desc
-		echo $sst_fmap_desc
-
-		# update SeriesDescription for fieldmaps in configuration file 
-		# this code uses jq to modify the json. map() iterates over each element of "descriptions" and FIELDMAP_NAME_FV or FIELDMAP_NAME_SST will be replaced with variable set to fmap_desc
-		/storage/group/klk37/default/sw/jq/jq-linux64 --arg fmap_desc "$fv_fmap_desc" '.descriptions |= map(if .criteria.SeriesDescription == "FIELDMAP_NAME_FV" then .criteria.SeriesDescription |= $fmap_desc else . end)' "$sub_config_file" > temp.json && mv temp.json "$sub_config_file"
-		/storage/group/klk37/default/sw/jq/jq-linux64 --arg fmap_desc "$sst_fmap_desc" '.descriptions |= map(if .criteria.SeriesDescription == "FIELDMAP_NAME_SST" then .criteria.SeriesDescription |= $fmap_desc else . end)' "$sub_config_file" > temp.json && mv temp.json "$sub_config_file"
-
-	else
-		echo "Subject $parID is not in fmap_descriptions.csv. add fieldmap SeriesDescriptions for subject and re-run"
-		exit
-	endif
+else # if does not exist
+	# make copy of template config file for parID
+	cp $configDir/template_dcm2bids_config.json $configDir/sub-${parID}_dcm2bids_config.json
+	set sub_config_file = $configDir/sub-${parID}_dcm2bids_config.json
+	
+	# update SeriesDescription for fieldmaps in configuration file 
+	# this code uses jq to modify the json. map() iterates over each element of "descriptions" and FIELDMAP_NAME_FV or FIELDMAP_NAME_SST will be replaced with variable set to fmap_desc
+	/storage/group/klk37/default/sw/jq/jq-linux64 --arg fmap_desc "$fv_fmap_desc" '.descriptions |= map(if .criteria.SeriesDescription == "FIELDMAP_NAME_FV" then .criteria.SeriesDescription |= $fmap_desc else . end)' "$sub_config_file" > temp.json && mv temp.json "$sub_config_file"
+	/storage/group/klk37/default/sw/jq/jq-linux64 --arg fmap_desc "$sst_fmap_desc" '.descriptions |= map(if .criteria.SeriesDescription == "FIELDMAP_NAME_SST" then .criteria.SeriesDescription |= $fmap_desc else . end)' "$sub_config_file" > temp.json && mv temp.json "$sub_config_file"
 endif
+
 
 ###################### Check for directories ######################
 
@@ -187,10 +189,10 @@ if ($run_dcm2bids == 1) then
         
 	cd $parRawDir/ses-1/anat	
 	
-        pydeface *T1w.nii.gz # call pydeface
-        rm *T1w.nii.gz # remove un-defaced mprage from raw_data
+    pydeface *T1w.nii.gz # call pydeface
+    rm *T1w.nii.gz # remove un-defaced mprage from raw_data
 
-        # remove _defaced from filename
+    # remove _defaced from filename
 	foreach file (*deface*.nii.gz)
 		set new_name = `echo "$file" | sed 's/_defaced//'`
 		mv "$file" "$new_name"
@@ -200,14 +202,47 @@ endif
 ###################### Add IntendedFor field ######################
 
 
-foreach task ("foodview" "sst")
+# check if both strings are NOT empty ("")
+if ( "$fv_fmap_desc" != "" && "$sst_fmap_desc" != "") then
+
+	foreach task ("foodview" "sst")
+
+		# Get array of fieldmap json files to modify
+		set fieldmap_jsons=`ls $parRawDir/ses-1/fmap/*${task}*json`
+
+		# Get array of functional scans to apply field map to
+		set func_array=`ls $parRawDir/ses-1/func/*${task}*nii.gz`
+
+		# Loop through fieldmap jsons
+		foreach json ($fieldmap_jsons)
+
+				# check if json already has "IndendedFor" key (-e gets exit status: 1 if false, 0 if true)
+				/storage/group/klk37/default/sw/jq/jq-linux64 -e 'has("IntendedFor")' $json > /dev/null
+
+				# if does not have "Indended for key (exit status = 1)
+				if($?) then
+						echo "adding IndendedFor key to $json"
+						# Loop through functional scans
+						foreach func ($func_array)
+								# add functional scan to "IntendedFor"
+								cat $json | /storage/group/klk37/default/sw/jq/jq-linux64 --arg v "$func" '.IntendedFor += [$v]' > temp.json
+								mv temp.json $json
+						end
+				# if does have "Indended for key (exit status != 1)
+				else
+						echo "$json already has IntendedFor key"
+				endif
+		end
+	end
+
+# else if one string is empty and the other is not (i.e., 1 fieldmap was collected)
+else if ( ( "$fv_fmap_desc" == "" && "$sst_fmap_desc" != "") || ( "$sst_fmap_desc" == "" && "$fv_fmap_desc" != "") ) then
 
 	# Get array of fieldmap json files to modify
-	set fieldmap_jsons=`ls $parRawDir/ses-1/fmap/*${task}*json`
+	set fieldmap_jsons=`ls $parRawDir/ses-1/fmap/*json`
 
 	# Get array of functional scans to apply field map to
-	#cd $parRawDir
-	set func_array=`ls $parRawDir/ses-1/func/*${task}*nii.gz`
+	set func_array=`ls $parRawDir/ses-1/func/*nii.gz`
 
 	# Loop through fieldmap jsons
 	foreach json ($fieldmap_jsons)
@@ -229,7 +264,8 @@ foreach task ("foodview" "sst")
 					echo "$json already has IntendedFor key"
 			endif
 	end
-end
+
+endif
 
 ###################### Add TaskName field ######################
 
