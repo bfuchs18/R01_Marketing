@@ -211,7 +211,16 @@ if ( "$fv_fmap_desc" != "" && "$sst_fmap_desc" != "") then
 		set fieldmap_jsons=`ls $parRawDir/ses-1/fmap/*${task}*json`
 
 		# Get array of functional scans to apply field map to
-		set func_array=`ls $parRawDir/ses-1/func/*${task}*nii.gz`
+		set func_array_fullpath=`ls $parRawDir/ses-1/func/*$task*nii.gz`
+
+		# Loop through each item in func_array_fullpath to remove first 65 characters (path prior to ses-1)
+		set func_array=()
+		foreach item ($func_array_fullpath)
+			# Remove first 65 characters
+			set modified_item = `echo $item | sed 's/^.\{65\}//'`
+			# Add the modified item to the new array
+			set func_array=($func_array $modified_item)
+		end
 
 		# Loop through fieldmap jsons
 		foreach json ($fieldmap_jsons)
@@ -242,7 +251,16 @@ else if ( ( "$fv_fmap_desc" == "" && "$sst_fmap_desc" != "") || ( "$sst_fmap_des
 	set fieldmap_jsons=`ls $parRawDir/ses-1/fmap/*json`
 
 	# Get array of functional scans to apply field map to
-	set func_array=`ls $parRawDir/ses-1/func/*nii.gz`
+	set func_array_fullpath=`ls $parRawDir/ses-1/func/*nii.gz`
+
+	# Loop through each item in func_array_fullpath to remove first 65 characters (path prior to ses-1)
+	set func_array=()
+	foreach item ($func_array_fullpath)
+		# Remove first 65 characters
+		set modified_item = `echo $item | sed 's/^.\{65\}//'`
+		# Add the modified item to the new array
+		set func_array=($func_array $modified_item)
+	end
 
 	# Loop through fieldmap jsons
 	foreach json ($fieldmap_jsons)

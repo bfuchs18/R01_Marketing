@@ -91,7 +91,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "magnitude1",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "NORM", "DIS2D", "MFSPLIT"],
@@ -101,7 +101,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "magnitude1",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "ND", "NORM"],
@@ -111,7 +111,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "magnitude2",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "NORM", "DIS2D", "MFSPLIT"],
@@ -121,7 +121,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "magnitude2",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "ND", "NORM"],
@@ -131,7 +131,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "DIS2D", "MFSPLIT", "PHASE"],
@@ -141,7 +141,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "DIS2D", "MFSPLIT"],
@@ -151,7 +151,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "ND"],
@@ -161,7 +161,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-foodview",
+        "customLabels": "acq-foodview",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_FV",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "ND", "PHASE"],
@@ -171,7 +171,7 @@
     {
         "dataType": "fmap",
         "modalityLabel": "magnitude1",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "NORM", "DIS2D", "MFSPLIT"],
@@ -181,7 +181,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "magnitude1",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "ND", "NORM"],
@@ -191,7 +191,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "magnitude2",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "NORM", "DIS2D", "MFSPLIT"],
@@ -201,7 +201,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "magnitude2",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "M", "ND", "NORM"],
@@ -211,7 +211,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "DIS2D", "MFSPLIT", "PHASE"],
@@ -221,7 +221,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "DIS2D", "MFSPLIT"],
@@ -231,7 +231,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "ND"],
@@ -241,7 +241,7 @@
         {
         "dataType": "fmap",
         "modalityLabel": "phasediff",
-        "customLabels": "task-sst",
+        "customLabels": "acq-sst",
         "criteria": {
             "SeriesDescription": "FIELDMAP_NAME_SST",
             "ImageType": ["ORIGINAL", "PRIMARY", "P", "ND", "PHASE"],
