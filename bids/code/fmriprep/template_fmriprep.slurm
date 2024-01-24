@@ -19,9 +19,9 @@ module load fmriprep/23.1.0
 echo "Done!"
 
 # freesurfer setup
-export FREESURFER_HOME=/storage/group/klk37/default/sw/freesurfer
-source $FREESURFER_HOME/7.3.2/SetUpFreeSurfer.sh
-export FS_LICENSE=$FREESURFER_HOME/license.txt
+export FREESURFER_HOME=/storage/group/klk37/default/sw/freesurfer/7.3.2
+source $FREESURFER_HOME/SetUpFreeSurfer.sh
+export FS_LICENSE=/storage/group/klk37/default/sw/freesurfer/license.txt
 
 # Go to the correct location
 cd $PBS_O_WORKDIR
@@ -34,9 +34,7 @@ unset PYTHONPATH
 fmriprep $bids_root_dir/raw_data $bids_root_dir/derivatives/preprocessed \
 	participant \
 	--participant_label PARNUM \
-	--skip-bids-validation \
 	--verbose \
-	--use-aroma \
 	--output-spaces MNIPediatricAsym:res-1:cohort-3 \
 	--fs-license-file $FS_LICENSE \
 	--work-dir $bids_root_dir/code/fmriprep/sub-PARNUM/work
