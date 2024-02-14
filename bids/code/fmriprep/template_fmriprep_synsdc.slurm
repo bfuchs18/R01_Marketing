@@ -30,13 +30,15 @@ bids_root_dir="/storage/group/klk37/default/R01_Marketing/bids"
 
 # Run the job itself
 unset PYTHONPATH
-fmriprep $bids_root_dir/raw_data $bids_root_dir/derivatives/preprocessed/fmriprep \
+fmriprep $bids_root_dir/raw_data $bids_root_dir/derivatives/preprocessed/fmriprep_synsdc \
 	participant \
 	--participant_label PARNUM \
 	--verbose \
+	--use-syn-sdc \
+    --ignore fieldmaps \
 	--output-spaces MNIPediatricAsym:res-1:cohort-3 \
 	--fs-license-file $FS_LICENSE \
-	--work-dir $bids_root_dir/code/fmriprep/sub-PARNUM/work
+	--work-dir $bids_root_dir/code/fmriprep/sub-PARNUM/work_synsdc
 
 # Finish up
 echo "Job Ended at `date`"

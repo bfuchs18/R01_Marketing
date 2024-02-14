@@ -40,7 +40,7 @@ do
     #loop through all needed scripts.
     
     #list of all script names
-    templates=( template_fmriprep.slurm )
+    templates=( template_fmriprep.slurm template_fmriprep_synsdc.slurm)
     for template_script in "${templates[@]}"
     do
     
