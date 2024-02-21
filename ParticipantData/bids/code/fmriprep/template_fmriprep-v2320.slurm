@@ -6,7 +6,7 @@
 #SBATCH --partition=open
 #SBATCH --output=%x.%j
 
-#Usage: sbatch sub-PARNUM_fmriprep.slurm
+#Usage: sbatch sub-PARNUM_fmriprep-v2320.slurm
 
 # Get started
 echo "Job started on `hostname` at `date`"
