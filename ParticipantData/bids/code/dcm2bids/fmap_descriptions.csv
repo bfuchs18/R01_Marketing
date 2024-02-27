@@ -4,4 +4,25 @@
 003,gre_field_mapping_FV,gre_field_mapping_sst
 005,gre_field_mapping_FV,gre_field_mapping_sst
 006,,gre_field_mapping
-999,gre_field_mapping,gre_field_mapping
+009,gre_field_mapping_fv,gre_field_mapping_sst
+010,gre_field_mapping_fv,gre_field_mapping_sst
+013,gre_field_mapping_-_fv,gre_field_mapping_-_sst
+014,gre_field_mapping_fv,gre_field_mapping_sst
+015,gre_field_mapping fv,gre_field_mapping sst
+017,gre_field_mapping_fv,
+018,gre_field_mapping_fv,gre_field_mapping sst
+019,gre_field_mapping_fv,gre_field_mapping_sst
+020,gre_field_mapping_FV,gre_field_mapping_sst
+028,gre_field_mapping_fv,gre_field_mapping_sst
+016,gre_field_mapping_FV,gre_field_mapping_SST
+029,gre_field_mapping_FV,gre_field_mapping_sst
+030,gre_field_mapping_fv,gre_field_mapping_sst
+032,gre_field_mapping FV,gre_field_mapping sst
+033,gre_field_mapping_fv,gre_field_mapping_sst
+035,gre_field_mapping_fv,gre_field_mapping_sst
+037,gre_field_mapping_fv,
+040,,
+041,gre_field_mapping_fv,
+042,gre_field_mapping_fv,gre_field_mapping_sst
+045,gre_field_mapping_fv,gre_field_mapping_sst
+025,gre_field_mapping_FV,gre_field_mapping
