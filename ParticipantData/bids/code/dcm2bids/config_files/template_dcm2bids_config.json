@@ -13,7 +13,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-foodview",
         "criteria": {
-            "SeriesDescription": "foodview-1*"
+            "SeriesDescription": "foodview-1*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -21,7 +22,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-foodview",
         "criteria": {
-            "SeriesDescription": "foodview-2*"
+            "SeriesDescription": "foodview-2*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -29,7 +31,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-foodview",
         "criteria": {
-            "SeriesDescription": "foodview-3*"
+            "SeriesDescription": "foodview-3*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -37,7 +40,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-foodview",
         "criteria": {
-            "SeriesDescription": "foodview-4*"
+            "SeriesDescription": "foodview-4*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -45,7 +49,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-sst",
         "criteria": {
-            "SeriesDescription": "sst-1*"
+            "SeriesDescription": "sst-1*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -53,7 +58,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-sst",
         "criteria": {
-            "SeriesDescription": "sst-2*"
+            "SeriesDescription": "sst-2*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -61,7 +67,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-sst",
         "criteria": {
-            "SeriesDescription": "sst-3*"
+            "SeriesDescription": "sst-3*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -69,7 +76,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-sst",
         "criteria": {
-            "SeriesDescription": "sst-4*"
+            "SeriesDescription": "sst-4*",
+            "AcquisitionNumber": 1
             }
          },       
 	 {
@@ -77,7 +85,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-sst",
         "criteria": {
-            "SeriesDescription": "sst-5*"
+            "SeriesDescription": "sst-5*",
+            "AcquisitionNumber": 1
             }
         },
         {
@@ -85,7 +94,8 @@
         "modalityLabel": "bold",
         "customLabels": "task-sst",
         "criteria": {
-            "SeriesDescription": "sst-6*"
+            "SeriesDescription": "sst-6*",
+            "AcquisitionNumber": 1
             }
         },
         {
