@@ -20,9 +20,14 @@ for par in ${@}
 do
     ###################### set up participant variables  ###########################
 
-    #make participant number have leading zeros (001)
-    parID_num=$(printf "%03d" $par)
-        
+    #add leading zeros if input is not 3 digits
+    length=${#par}
+    if [ $length -ne 3 ]; then
+        parID_num=$(printf "%03d" $par)
+    else
+        parID_num=$par
+    fi
+
     #set participant script folder name
     par_ScriptDir=$topdir/sub-${parID_num}
 
