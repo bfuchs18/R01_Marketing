@@ -1,20 +1,20 @@
 #!/bin/tcsh
 #  
 #Useage: 2_dcm2bids           $1	      
-#                        participantID	
+#                        participantID with leading zeros	
 #
 #
 # The purpose of this script is convert .dcm files to BIDS format using dcm2bids 
 # This script was written to be used in the Food Marketing R01. 
 # Written by Bari Fuchs Fall 2022.
 #
-# NOTE: prior to running this script for each participant, determine whether any extra scans were conducted
-# (e.g., extra MPRAGE or partial resting state) that will not be used in R01 data processing.
+# NOTE: prior to running this script for each participant, determine whether any extra scans exist in sourcedata/
+# (e.g., extra MPRAGE or functional scans) that should not be organized into BIDS and processed via fmriprep.
 # To prevent conversion of extra scans to BIDS format, cd to source/$parID and append "_extra" to the ser directory of extra scans.
 # For example, if scan 17 was an extra MPRAGE >> mv ser17 ser17_extra
 
 ###################### set up initial variables  ###########################   
-#set input argument 1 to variable 'parID' and make sure it has leading zeros
+#set input argument 1 to variable 'parID'
 set parID = "$1"
 
 ###################### setup ###########################   

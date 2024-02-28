@@ -1,14 +1,14 @@
 #!/bin/tcsh
 #  
 #Useage: 1_dcm2bids           $1	      
-#                        participantID	
+#                        participantID with leading zeros
 #
 #
 # The purpose of this script is to copy DICOMS from untouchedRaw to bids/sourcedata
 #
 
 ###################### set up initial variables  ###########################   
-#set input argument 1 to variable 'parID' and make sure it has leading zeros
+#set input argument 1 to variable 'parID'
 set parID = "$1"
 
 ###################### setup ###########################   
