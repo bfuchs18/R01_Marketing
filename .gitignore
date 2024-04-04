@@ -1,1 +1,5 @@
 *DS_Store*
+.Rproj.user
+ParticipantData/bids/sourcedata
+ParticipantData/untouchedRaw
+ParticipantData/bids/rawdata
