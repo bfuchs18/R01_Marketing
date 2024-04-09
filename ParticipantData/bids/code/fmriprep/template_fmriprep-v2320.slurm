@@ -30,7 +30,7 @@ unset PYTHONPATH
 # see: https://github.com/nipreps/smriprep/issues/407. Therefore, data will be preprocessed using output-space MNI152NLin2009cAsym (fMRIprep default)
 
 singularity run --cleanenv $singularity_dir/fmriprep-23.2.0.simg \
-	$bids_root_dir/raw_data $bids_root_dir/derivatives/preprocessed/fmriprep_v2320 \
+	$bids_root_dir/rawdata $bids_root_dir/derivatives/preprocessed/fmriprep_v2320 \
 	participant \
 	--participant_label PARNUM \
 	--verbose \

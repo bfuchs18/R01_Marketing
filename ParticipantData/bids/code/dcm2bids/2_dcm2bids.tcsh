@@ -35,7 +35,7 @@ set sourceDir = "$bidsDir/sourcedata"
 set parDicom_source = "$sourceDir/sub-${parID}/ses-1/dicom"
 
 #set path to raw_data directory -- this is where files in BIDS format are stored
-set rawDir = "$bidsDir/raw_data"
+set rawDir = "$bidsDir/rawdata"
 
 #set path to parID raw_data directory
 set parRawDir = "$rawDir/sub-${parID}"
