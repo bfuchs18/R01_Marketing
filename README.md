@@ -5,4 +5,4 @@ This repo contains code to process data from Keller Lab Marketing Study
   - 2_dcm2bids.tcsh: converts DICOMS in sourcedata to bids-formatted .nii in raw_data
   - batch_dcm2bids.slurm: runs 2_dcm2bids.tcsh for all subs in sourcedata on SLURM
 
-- bids/code/phenotype: contains code to process redcap data and organize into bids/phenotype
+- bids/code/beh_into_bids.R: script to process and organize redcap (phenotype) and task data into bids/ using dataREACHr functions (https://github.com/bfuchs18/dataREACHr)
