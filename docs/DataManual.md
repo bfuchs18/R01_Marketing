@@ -1628,26 +1628,17 @@ Overview of beh_into_bids.R:
 
 - Survey data is processed using dataREACHr::proc_redcap(). This function:
   * Imports visit and double-entry data downloaded from redcap
-    * The full file paths to downloaded data in bids/sourcedata/phenotype are required as function arguments
-  * Separates the visit data into 10 dataframes, one per child and parent for each visit (1-5) (e.g., child_visit_1_arm_1). 
-  * Calls dataREACHr functions to extract, process, and score survey data
-  * Integrates (merge, stack) data across visits or forms
+  * Calls dataREACHr and dataprepr functions to extract, process, and score data
   * Exports participants.tsv data files and participants.json meta-data files into [bids/](#bids).
   * Exports {survey}.tsv data files and {survey}.json meta-data files into [bids/phenotype/](#bidsphenotype).
 - Task data is processed using dataREACHr::proc_task(). This function:
-  * Copies task data from [bids/untouchedRaw](#untouchedraw) into [bids/sourcedata/](#bidssourcedata) using dataREACHr::util_org_sourcedata() 
-    * util_org_sourcedata() presently copies data for the following tasks: food view task, stop signal task
-  * Processes and exports Food View task data using dataREACHr::util_task_foodview()
-    * This function is called for each subject with food view task data in bids/sourcedata. 
-    * Processed data is exported into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/func/*_bold_events.tsv
-  * Processes and exports SST data using dataREACHr::util_task_sst()
-    * This function is called for each subject with sst data in bids/sourcedata. 
-    * Processed data is exported into 1 of 2 locations:
-      * (1) data from practice and behavioral runs will go into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/beh/*beh.tsv
-      * (2) data from fmri runs will go into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/func/*bold_events.tsv  
-  * Calls dataREACHr::write_task_jsons()
-    * This function exports 1 meta-data file (.json) per task into bids/rawdata
-    *  Presently exports for the following tasks: foodview_bold, sst_bold, sst_beh
+  * Copies task data from [bids/untouchedRaw](#untouchedraw) into [bids/sourcedata/](#bidssourcedata)
+    * This is done with util_org_sourcedata(), which presently copies data for: food view task, stop signal task
+  * Processes and exports task data into [bids/rawdata/](#bidsrawdata) for:
+    * food view task (using util_task_foodview())
+    * SST (using util_task_sst())
+  * Exports a meta-data JSON file into bids/rawdata for the following tasks: foodview_bold, sst_bold, sst_beh
+    * Done using write_task_jsons()
 - Survey and Task data in untouchedRaw/ and bids/ on OneDrive are synced to Roar Collab using rsync
 
 ### Neuroimaging data
