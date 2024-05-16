@@ -105,8 +105,12 @@
   - [Data Processing Pipeline](#data-processing-pipeline)
     - [Overview](#overview)
     - [Required access](#required-access)
-    - [Survey (redcap) data](#survey-redcap-data)
-    - [Task data](#task-data)
+    - [Retriving data from the source](#retriving-data-from-the-source)
+      - [Survey (redcap) data](#survey-redcap-data)
+      - [Task data](#task-data)
+      - [MRI data](#mri-data)
+    - [Running data processing scripts](#running-data-processing-scripts)
+      - [Survey and Task Data](#survey-and-task-data)
     - [Neuroimaging data](#neuroimaging-data)
     - [Software Required](#software-required)
   - [Data Quality Control](#data-quality-control)
@@ -1544,8 +1548,11 @@ Table X. Access required for data processing
 | Hoth |  /nfs/imaging-data/3Tusers/klk37/mrkt/ | email	l-sleic-helpdesk@lists.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu)  | email	l-sleic-helpdesk@lists.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu) | retrieve MRI data from source |
 | Roar Collab |  storage/group/klk37/ | follow instructions at https://www.icds.psu.edu/account-setup/  | email iask@ics.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu) | store MRI data in shared location; process MRI data; sync task and survey data from OneDrive |
 
+<div style="font-size: 16px;">
 
-### Survey (redcap) data
+### Retriving data from the source
+
+#### Survey (redcap) data
 
 1. Transfer data from source (REDCap) and to OneDrive
    1. Log in to redcap
@@ -1564,41 +1571,8 @@ Table X. Access required for data processing
       5. Select export then click icon to download
       6. Transfer file to OneDrive Folder: b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/sourcedata/phenotype
 
-2. Process data in R with dataREACHr::proc_redcap()
+#### Task data
 
-REDCap data downloaded into ParticipantData/bids/sourcedata/phenotype are organized into bids/ using functions from [dataREACHr](#datareachr). dataREACHr utilizies functions from [dataprepr](#dataprepr) to score validated questionnaires. Additional details about these packages can be found within each package's documentation. Details about installing dataREACHr and dataprepr can be found [here](#data-processing-software).
-
-The primary function used to process redcap data into bids/ is dataREACHr::proc_redcap().  This function:
-  * Imports visit and double-entry data downloaded from redcap
-    * The full file paths to downloaded data in bids/sourcedata/phenotype are required as function arguments
-  * Separates the visit data into 10 dataframes, one per child and parent for each visit (1-5) (e.g., child_visit_1_arm_1). 
-  * Calls dataREACHr::util_redcap_ functions to extract, process, and score survey data
-  * Integrates (merge, stack) data across visits or formss
-  * Exports participants.tsv data files and participants.json meta-data files into [bids/](#bids).
-  * Exports {survey}.tsv data files and {survey}.json meta-data files into [bids/phenotype/](#bidsphenotype).
-
-dataREACHr::proc_redcap() is called by the script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) in the [R01_Marketing GitHub Repository](##r01_marketing). Thus, task data can be processed by running beh_into_bids.R or by calling the proc_redcap() function elsewhere: 
-```
-# load dataREACHr
-
-# define path to ParticipantData (adjust with path)
-path_to_participant_data = "/path/to/ParticipantData"
-
-# define redcap file names (adjust with file name)
-visit_file_name =  "FoodMarketingResilie_DATA_2024-04-08_1303.csv"
-double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
-
-# combine paths and file names
-visit_data_path = paste0(path_to_participant_data, "/bids/sourcedata/phenotype/", visit_file_name)
-data_de_path = paste0(path_to_participant_data, "/bids/sourcedata/phenotype/", double_entry_file_name)
-
-# process redcap data
-proc_redcap(visit_data_path, data_de_path, overwrite = FALSE)
-
-```
-
-
-### Task data
 1. Copy data from source to OneDrive
    1. Locate task data at the source
       1. This location will be task-specfic; it is typically on the computer used to administer the task (Table X)
@@ -1621,38 +1595,60 @@ Table X. Copying Task Data to untouchedRaw
 
 <div style="font-size: 16px;">
 
-2. Process task data with beh_into_bids.R
+#### MRI data
 
-[beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) in the [R01_Marketing GitHub Repository](##r01_marketing)
+### Running data processing scripts
 
-Task data are processed using functions and scripts written in R. in R with dataREACHr::proc_task()
+#### Survey and Task Data
 
-Task data are organized into [bids/rawdata/](#bidsrawdata) using functions from [dataREACHr](#datareachr). The primary function to process task data is dataREACHr::proc_task(). This function:
-* Copies task data into [bids/sourcedata/](#bidssourcedata) using dataREACHr::util_org_sourcedata() 
-  * util_org_sourcedata() presently copies data for the following tasks: food view task, stop signal task
-* Processes and exports Food View task data using dataREACHr::util_task_foodview()
-  * This function is called for each subject with food view task data in bids/sourcedata. 
-  * Processed data is exported into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/func/*_bold_events.tsv
-* Processes and exports SST data using dataREACHr::util_task_sst()
-  * This function is called for each subject with sst data in bids/sourcedata. 
-  * Processed data is exported into 1 of 2 locations:
-    * (1) data from practice and behavioral runs will go into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/beh/*beh.tsv
-    * (2) data from fmri runs will go into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/func/*bold_events.tsv  
-* Calls dataREACHr::write_task_jsons()
-  * This function exports 1 meta-data file (.json) per task into bids/rawdata
-  *  Presently exports for the following tasks: foodview_bold, sst_bold, sst_beh
+Survey and task data are both processed using the [R](#r) script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) which is shared in the [R01_Marketing GitHub Repository](##r01_marketing).
 
-dataREACHr::proc_task() is called by the script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) in the [R01_Marketing GitHub Repository](##r01_marketing). Thus, task data can be processed by running beh_into_bids.R or by calling the proc_task() function elsewhere:
+Running beh_into_bids.R requires:
+1. That R is installed
+2. That the R package [dataREACHr](#datareachr) its dependencies, including [dataprepr](#dataprepr), are installed. Details about installing dataREACHr and dataprepr can be found [here](#data-processing-software).
+3. That the script correctly specifies (1) the path to ParticipantData on OneDrive, (2) the names of REDCap files in sourcedata, and (3) the PSU user ID*. To specify this information, modify the following lines of code in beh_into_bids.R:
 ```
-# load dataREACHr
+#### user setup (modify variables here) ####
 
-# define path to ParticipantData (adjust with path)
-path_to_participant_data = "/path/to/ParticipantData"
+# set path to ParticipantData directory on OneDrive (contains bids/ and untouchedRaw/)
+base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
-# process task data
-proc_task(base_wd = path_to_participant_data, overwrite = FALSE)
+# set redcap file names
+visit_file_name =  "FoodMarketingResilie_DATA_2024-05-03_1132.csv"
+double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
+
+# Penn State user ID
+## needed for syncing data between OneDrive and Roar Collab
+user_id = "baf44"
+
 ```
 
+
+Overview of beh_into_bids.R:
+
+- Survey data is processed using dataREACHr::proc_redcap(). This function:
+  * Imports visit and double-entry data downloaded from redcap
+    * The full file paths to downloaded data in bids/sourcedata/phenotype are required as function arguments
+  * Separates the visit data into 10 dataframes, one per child and parent for each visit (1-5) (e.g., child_visit_1_arm_1). 
+  * Calls dataREACHr functions to extract, process, and score survey data
+  * Integrates (merge, stack) data across visits or forms
+  * Exports participants.tsv data files and participants.json meta-data files into [bids/](#bids).
+  * Exports {survey}.tsv data files and {survey}.json meta-data files into [bids/phenotype/](#bidsphenotype).
+- Task data is processed using dataREACHr::proc_task(). This function:
+  * Copies task data from [bids/untouchedRaw](#untouchedraw) into [bids/sourcedata/](#bidssourcedata) using dataREACHr::util_org_sourcedata() 
+    * util_org_sourcedata() presently copies data for the following tasks: food view task, stop signal task
+  * Processes and exports Food View task data using dataREACHr::util_task_foodview()
+    * This function is called for each subject with food view task data in bids/sourcedata. 
+    * Processed data is exported into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/func/*_bold_events.tsv
+  * Processes and exports SST data using dataREACHr::util_task_sst()
+    * This function is called for each subject with sst data in bids/sourcedata. 
+    * Processed data is exported into 1 of 2 locations:
+      * (1) data from practice and behavioral runs will go into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/beh/*beh.tsv
+      * (2) data from fmri runs will go into [bids/rawdata/](#bidsrawdata)sub-{label}/ses-1/func/*bold_events.tsv  
+  * Calls dataREACHr::write_task_jsons()
+    * This function exports 1 meta-data file (.json) per task into bids/rawdata
+    *  Presently exports for the following tasks: foodview_bold, sst_bold, sst_beh
+- Survey and Task data in untouchedRaw/ and bids/ on OneDrive are synced to Roar Collab using rsync
 
 ### Neuroimaging data
 
