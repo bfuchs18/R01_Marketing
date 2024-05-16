@@ -103,6 +103,7 @@
     - [fmriprep](#fmriprep)
     - [afni](#afni)
   - [Data Processing Pipeline](#data-processing-pipeline)
+    - [Overview](#overview)
     - [Required access](#required-access)
     - [Survey (redcap) data](#survey-redcap-data)
     - [Task data](#task-data)
@@ -1514,39 +1515,35 @@ singularity build /storage/group/klk37/default/sw/fmriprep-23.2.0.simg docker://
 
 ## Data Processing Pipeline
 
+### Overview
 Broadly, data processing involves:
-1. Retrieving data from the source (Fig X, top panel)
+1. Retrieving data from the source
    1. This typically involves manual transfer of data onto OneDrive or RoarCollab
-   2. For task and MRI data, this should happen as soon as data is collected to minimize the chance of data loss
-2. Running processing scripts (Fig X, bottom panel)
+2. Running processing scripts
+
+While survey and task data could be processed on OneDrive or Roar Collab, the pipeline outlined below involves processing survey and task data "locally" (i.e., from one's own computer with synced OneDrive files) and then syncing processed data with Roar Collab. MRI data is processed on Roar Collab. 
 
 <img src="./images/REACH_processing_pipeline.png" alt="drawing" width="600"/>
 
-The steps to process survey, task, and MRI data are outlined below. 
-
 ### Required access
-Implementing the described pipeline will require access to the following servers and shared projects/folders:
-- REDCap (online survey administration system)
-  - Projects: 'Food Marketing Resilience/Project REACH' and 'REACH Data Double Entry'
-  - Access required to: retrieve Survey data from source
-  - Getting REDCap access: 
-    - Go to https://ctsi.psu.edu/research-support/redcap/ and select "REQUEST REDCAP ACCESS (NEW USERS)"
-  - Getting project access: ask Kathleen Keller (klk37@psu.edu) to grant access
+Implementing the described pipeline will require access to projects/folders in:
+- REDCap (online data collection software)
 - OneDrive (Microsoft's cloud storage service used by Penn State)
-  - Folder: b-childfoodlab_Shared
-  - Access required to: store task and survey data in shared location
-  - Getting OneDrive access: 
-  - Getting folder access: ask Kathleen Keller (klk37@psu.edu) to grant access
 - Hoth (server where SLEIC uploads imaging data)
-  - Folder: /nfs/imaging-data/3Tusers/klk37/mrkt/
-  - Access required to: retrieve MRI data from source
-  - Getting Hoth and folder access: email	l-sleic-helpdesk@lists.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu)
 - Roar Collab (Penn State's High Performance Computing Cluster)
-  - Folder: storage/group/klk37
-  - Access required to: store MRI data in shared location; process MRI data; sync task and survey data from OneDrive
-  - Getting Roar Collab access: follow instructions at https://www.icds.psu.edu/account-setup/ 
-  - Getting folder access: email iask@ics.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu)
-  - Required to: store MRI data in shared location; process MRI data; sync task and survey data from OneDrive
+
+Steps to aquire access are outlined in Table X.
+
+Table X. Access required for data processing
+<div style="font-size: 12px;">
+
+| Server | Project/Folder | Getting Server Access | Getting project/folder access | Required For... |
+| -------- | ------- | ------- | ------- | ------- |
+| REDCap | 'Food Marketing Resilience/Project REACH' and 'REACH Data Double Entry' projects | Go to https://ctsi.psu.edu/research-support/redcap/ and select "REQUEST REDCAP ACCESS (NEW USERS"; Requires REDCap training | ask Kathleen Keller (klk37@psu.edu) to grant access | retrieve Survey data from source |
+| OneDrive |  b-childfoodlab_Shared/ | ?? | ask Kathleen Keller (klk37@psu.edu) to grant access | store task and survey data in shared location |
+| Hoth |  /nfs/imaging-data/3Tusers/klk37/mrkt/ | email	l-sleic-helpdesk@lists.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu)  | email	l-sleic-helpdesk@lists.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu) | retrieve MRI data from source |
+| Roar Collab |  storage/group/klk37/ | follow instructions at https://www.icds.psu.edu/account-setup/  | email iask@ics.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu) | store MRI data in shared location; process MRI data; sync task and survey data from OneDrive |
+
 
 ### Survey (redcap) data
 
