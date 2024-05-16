@@ -1269,12 +1269,18 @@ Data in bids/ are organized and processed using scripts found in bids/code. When
 
 ##  Directory Organization
 
-Data are stored in 2 folders: untouchedRaw/ and bids/. These folders can be located on 2 servers:
+Data are stored on 2 servers:
 
-1. On OneDrive in ParticipantData/
-2. On Roar Collab in R01_Marketing/
+1. OneDrive (The cloud storage service used by Penn State)
+2. Roar Collab (Penn State's High Performance Computing Cluster)
 
-While different data are stored on each server for accessabilty and storage reasons (e.g., imaging data is only stored on Roar Collab), ParticipantData/ (OneDrive) and R01_Marketing/ (Roar Collab) could be synced across servers due to the same directory structure (however, imaging data is too large to be stored in OneDrive).
+Survey and task data are stored on both servers, while imaging data is stored on Roar Collab only (due to file size).
+
+Data on OneDrive are stored in the folder: 
+b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData
+
+Data on Roar Collab are stored in the folder:
+storage/group/klk37/default/R01_Marketing
 
 On OneDrive, the directory structure looks like:
 - b-childfoodlab_Shared
@@ -1302,6 +1308,8 @@ On Roar Collab, the directory structure looks like:
              - **phenotype**
              - **derivatives**
              - **code**
+
+Notice that the sub-directories within ParticipantData/ (on OneDrive) and R01_Marketing/ (on Roar Collab) are the same. This enables syncing survey and task data between the servers. The contents untouchedRaw/ and bids/ are described in Table 2.
 
 Table 2. Data directories and descriptions
 | Directory    | Description |
@@ -1334,7 +1342,7 @@ untouchedRaw/ contains task and MRI data transferred directly from the source. F
     - tictach_task
     - DICOMS * 
 
-*DICOMS are stored on Roar Collab only due to size 
+*DICOMS are stored on Roar Collab only due to size
 
 ### bids
 
@@ -1342,9 +1350,9 @@ Data within bids/ are organized to comply with the [Brain Imaging Data Structure
 
 ### bids/sourcedata
 
-bids/sourcedata/ contains copies of data from untouchedRaw/ that have been minimally or not processed. However, data are now organized by subject into subject folders (sub-{label}). Within subject folders, session folders (ses-{label}) are used to separate data collected at baseline (REACH visits 1 through 4) and follow-up (REACH visit 5). Task data are placed in beh/, while MRI data are placed in dicom/. 
+bids/sourcedata/ contains copies of data from untouchedRaw/. However, data are now organized by subject and session: each subject has a folder (sub-{label}) in /sourcedata, and within each subject folder are session folders (ses-{label}). Session folders  separate data collected at baseline (REACH visits 1 through 4) and follow-up (REACH visit 5). Within session folders, task data are stored in beh/ and MRI data are stored in dicom/. 
 
-bids/sourcedata/ also contains survey data downloaded from redcap, stored in /phenotype.
+bids/sourcedata/ also contains survey data downloaded from REDCap, stored in /phenotype.
 
 This looks like: 
 - bids
@@ -1364,34 +1372,37 @@ This looks like:
 
 ### bids/rawdata
 
-This folder contains "raw" task and MRI data -- this is data has been minimally processed from [bids/sourcedata/](#bidssourcedata) to comply with BIDS standards. When publically sharing task and MRI data, this is the data that gets shared. Similar to bids/sourcedata/, bids/rawdata/ is organized by sub and ses. However, subdirectories will differ by modality. MRI data will be organized into fmap/ func/ and anat/. Task data will be organized into func/ if it was collected alongside fMRI data and beh/ if it was not.
+This folder contains "raw" task and MRI data that has been minimally processed from [bids/sourcedata/](#bidssourcedata) to comply with BIDS standards. When publically sharing task and MRI data, this is the data that gets shared. Similar to bids/sourcedata/, bids/rawdata/ is organized by subject and session. However, subdirectories will differ by modality: MRI data is stored in fmap/, func/, and anat/. Task data is stored in func/ if it was collected alongside fMRI data and beh/ if it was not.
 
-
-*to do: Add something about organization of jsons? i.e., for beh data, jsons in rawdata/. For .nii files, jsons in directory with data*
+Meta-data for files in bids/rawdata are stored in corresponding JSON files. For MRI data (i.e., nii.gz files), JSONS are subject specific, so they are stored in subject folders alongside the MRI data. For task data (i.e., TSV files), JSONS are stored directly in rawdata/ and apply to all corresponding files in subject and session directories.
 
 This looks like: 
 - bids
-  - rawdata
-    - sub-{label}
-      - ses-1
-        - fmap
+  - rawdata/
+    - [Behavioral task meta-data JSONS]
+    - sub-{label}/
+      - ses-1/
+        - fmap/
           - [Field map MRI data - these will end with *.nii.gz]
-        - func
-          - [Functional MRI data for Food View Task and SST - these will end with *.nii.gz]
+          - [Field map meta-data JSON files]
+        - func/
+          - [fMRI data for Food View Task and SST - these will end with *.nii.gz]
+          - [fMRI meta-data JSON files]
           - [Behavioral data for Food View task and fMRI SST - these will end with *_events.tsv]
-        - anat
+        - anat/
           - [Structural MRI data - these will end with *.nii.gz]
-        - beh
+          - [Structural MRI meta-data JSON file]
+        - beh/
           - [Behavioral data for tasks *not* collected alongside fMRI data - these will end with *_beh.tsv]
-      - ses-2
-        - beh
+      - ses-2/
+        - beh/
           - [Behavioral data for tasks *not* collected alongside fMRI data - these will end with *_beh.tsv]
 
-Remember, MRI data (func/*nii.gz, fmap/ and anat/) will only exist on Roar Collab due to size. Behavioral data can be synced between OneDrive and Roar Collab. 
+Remember, MRI data (i.e., nii.gz files) will only exist on Roar Collab due to size. Task data (i.e., TSV files) can be synced between OneDrive and Roar Collab. 
 
 ### bids/phenotype
 
-This folder contains questionnaire, intake, anthropometrics, and dexa data stored in .tsv files. There will be a separate file for each survey. TSVs contain raw data, and can also contain derivative data (e.g., questionnaire scores, computed variables). Each data file is accompanied by a JSON meta-data file.
+This folder contains questionnaire, intake, anthropometrics, and dexa data stored in .tsv files. Data for each survey is saved in its own file. TSVs contain raw data, and can also contain derivative data (e.g., questionnaire scores, computed variables). Each data file is accompanied by a JSON meta-data file.
 
 For example:
 
