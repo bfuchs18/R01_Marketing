@@ -1520,7 +1520,9 @@ singularity build /storage/group/klk37/default/sw/fmriprep-23.2.0.simg docker://
 ## Data Processing Pipeline
 
 ### Overview
-Broadly, data processing involves:
+Here, data processing refers to the steps required to get data from its source into [bids/phenotype](#bidsphenotype) and [bids/rawdata](#bidsrawdata). 
+
+Broadly, this involves:
 1. Retrieving data from the source
    1. This typically involves manual transfer of data onto OneDrive or RoarCollab
 2. Running processing scripts
@@ -1541,7 +1543,7 @@ Steps to aquire access are outlined in Table X.
 Table X. Access required for data processing
 <div style="font-size: 12px;">
 
-| Server | Project/Folder | Getting Server Access | Getting project/folder access | Required For... |
+| Server | Project/Folder | Getting Server Access | Getting project/folder access | Required To... |
 | -------- | ------- | ------- | ------- | ------- |
 | REDCap | 'Food Marketing Resilience/Project REACH' and 'REACH Data Double Entry' projects | Go to https://ctsi.psu.edu/research-support/redcap/ and select "REQUEST REDCAP ACCESS (NEW USERS"; Requires REDCap training | ask Kathleen Keller (klk37@psu.edu) to grant access | retrieve Survey data from source |
 | OneDrive |  b-childfoodlab_Shared/ | ?? | ask Kathleen Keller (klk37@psu.edu) to grant access | store task and survey data in shared location |
@@ -1554,7 +1556,7 @@ Table X. Access required for data processing
 
 #### Survey (redcap) data
 
-1. Transfer data from source (REDCap) and to OneDrive
+To transfer survey data from source (REDCap) to OneDrive:
    1. Log in to redcap
    2. Download visit data
       1. Navigate to the REDCap project: Food Marketing Resilience/Project REACH
@@ -1573,12 +1575,13 @@ Table X. Access required for data processing
 
 #### Task data
 
-1. Copy data from source to OneDrive
+To copy task data from its source to OneDrive:
    1. Locate task data at the source
-      1. This location will be task-specfic; it is typically on the computer used to administer the task (Table X)
+      1. This location is task-specfic; it is typically on the computer used to administer the task (Table X)
    2. Copy data onto OneDrive into the task-specific folder in [untouchedRaw/](#untouchedraw) (i.e., b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/untouchedRaw/)
       1. This should happen as soon as possible after data is collected. 
          1. Unlike OneDrive, the computers used for task data collection are not permanent storage locations and are not backed up. 
+         2. Do not delete the data from the source. It can remain in that location as a backup until computer resources require files to be removed.
    3. If needed, rename the file in untouchedRaw to adhere to the expected file naming convention (Table X),
   
 Table X. Copying Task Data to untouchedRaw
@@ -1596,17 +1599,21 @@ Table X. Copying Task Data to untouchedRaw
 <div style="font-size: 16px;">
 
 #### MRI data
+To copy MRI data from its source (Hoth) to Roar Collab:
 
 ### Running data processing scripts
 
 #### Survey and Task Data
 
-Survey and task data are both processed using the [R](#r) script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) which is shared in the [R01_Marketing GitHub Repository](##r01_marketing).
+Survey and task data are both processed using the script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) which is shared in the [R01_Marketing GitHub Repository](##r01_marketing).
 
-Running beh_into_bids.R requires:
-1. That R is installed
+beh_into_bids.R was written to process files stored in OneDrive, provided they are synced to a local computer and the script is run locally. After processing data locally, beh_into_bids.R syncs data to Roar Collab.
+
+Therefore, running beh_into_bids.R requires:
+1. That [R](#r) is installed
 2. That the R package [dataREACHr](#datareachr) its dependencies, including [dataprepr](#dataprepr), are installed. Details about installing dataREACHr and dataprepr can be found [here](#data-processing-software).
-3. That the script correctly specifies (1) the path to ParticipantData on OneDrive, (2) the names of REDCap files in sourcedata, and (3) the PSU user ID*. To specify this information, modify the following lines of code in beh_into_bids.R:
+3. That the user has OneDrive files synced to their computer
+4. That the script correctly specifies (1) the path to ParticipantData on OneDrive, (2) the names of REDCap files in sourcedata, and (3) the PSU user ID. To specify this information, modify the following lines of code in beh_into_bids.R:
 ```
 #### user setup (modify variables here) ####
 

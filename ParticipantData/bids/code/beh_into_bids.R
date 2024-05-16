@@ -1,5 +1,11 @@
 # Process and organize data task and phenotype data into bids
 
+# This script was written to process files stored in OneDrive, provided they are synced to a local computer and the script is run locally. 
+# After processing data (which will be synced with OneDrive) locally, beh_into_bids.R syncs data to Roar Collab.
+# This script could be modified to process data on Roar Collab by:
+## (1) specifying the path to R01_Marketing on Roar Collab as base_dir
+## (2) commenting out the section on syncing data (or, reversing source and destination directories to sync the other way)
+
 #### load packages ####
 
 # load dataREACHr
@@ -7,14 +13,14 @@ load_all("/Users/baf44/projects/dataREACHr")
 
 #### user setup (modify variables here) ####
 
-# set path to ParticipantData directory on OneDrive (contains bids/ and untouchedRaw/)
+# define path to the ParticipantData directory on the local machine (synced with OneDrive)
 base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
-# set redcap file names
+# define names of redcap files to process
 visit_file_name =  "FoodMarketingResilie_DATA_2024-05-03_1132.csv"
 double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
 
-# Penn State user ID
+# define Penn State user ID
 ## needed for syncing data between OneDrive and Roar Collab
 user_id = "baf44"
 
