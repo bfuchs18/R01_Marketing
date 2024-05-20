@@ -42,7 +42,7 @@
     - [Child Screen Time Questionnaire (STQ)](#child-screen-time-questionnaire-stq)
     - [Loss of Control Eating Questionnaire (LOC)](#loss-of-control-eating-questionnaire-loc)
     - [Pictorial Personality Trains Questionnaire (PPTQ)](#pictorial-personality-trains-questionnaire-pptq)
-    - [Stress in Children Questionnaire (STQ)](#stress-in-children-questionnaire-stq)
+    - [Stress in Children Questionnaire (SIC)](#stress-in-children-questionnaire-sic)
   - [Parent-Reported Questionnaires](#parent-reported-questionnaires)
     - [Visit 1 Demographics](#visit-1-demographics)
     - [Parent Household Demographics Questionnaire](#parent-household-demographics-questionnaire)
@@ -422,17 +422,18 @@ All child questionnaires were administered by a trained research assistant using
 
 ### Kid's Brand Awareness Survey (KBAS)
 
-description...
+The KBAS is 50-item (25 per condition: toy, food), child-report measure, where children are asked to match the correct picture with food and toy logos. Two versions of the survey were administered (counterbalanced) which varied by category (food, toy) order. The KBAS was developed in the Keller Lab for Project REACH. 
 
-Scale:
+Scale: 
 
-Scoring: 
+Scoring: Correctly matched items are scored as a 1. Incorrectly matched items are scored as a 0. The number of correct responses are determined within a category. Scoring was implemented in REDCap.
 
 Subscales:
+  * Toy score
+  * Food score
 
-Database and Code Book/Dictionairy: 
-
-References:
+Database and meta-data in bids/phenotype: 
+  * kbas.tsv and kbas.json
 
 
 ### Child Screen Time Questionnaire (STQ)
@@ -467,29 +468,49 @@ References:
 
 description...
 
-Scale:
+Scale: The PPTQ was adminisered using the 3-point scale for younger children (6-9 years old)
 
 Scoring: 
+Scoring was implemented using [dataprepr](#dataprepr). 
 
-Subscales:
+Subscales: 
+* extraversion
+  * Items: 
+* neuroticism
+  * Items: 
+* openness to experience
+  * Items:
+* agreeableness
+  * Items:
+* conscientiousness
+  * Items:
 
-Database and Code Book/Dictionairy: 
+Database and meta-data in bids/phenotype: 
+  * pptq.tsv and pptq.json
 
 References:
+[Maćkiewicz M, Cieciuch J. Pictorial Personality Traits Questionnaire for Children (PPTQ-C)-A New Measure of Children's Personality Traits. Front Psychol. 2016 Apr 14;7:498. doi: 10.3389/fpsyg.2016.00498. PMID: 27252661; PMCID: PMC4879772.](#https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4879772/)
 
-### Stress in Children Questionnaire (STQ)
+### Stress in Children Questionnaire (SIC)
 
 description...
+Child-report questionnaire
 
 Scale:
 
 Scoring: 
 
 Subscales:
+  * Lack of Well being
+  * Distress
+  * Lack of Social Support
+  * Total score (grand mean)
 
-Database and Code Book/Dictionairy: 
 
-References:
+Database and meta-data in bids/phenotype: 
+  * sic.tsv and sic.json
+
+References: [Osika W, Friberg P, Wahrborg P. A new short self-rating questionnaire to assess stress in children. Int J Behav Med. 2007;14(2):108-117. doi:10.1007/BF03004176](#https://link.springer.com/article/10.1007/BF03004176)
 
 ## Parent-Reported Questionnaires
 
@@ -546,7 +567,8 @@ Scale:
 3) Somewhat False for Me
 4) Very False for Me
 
-Scoring: The mean of the responses is computed if there are no missing responses. Note, although there are 24 items, only 20 are used in scoring as there are 4 filler items
+Scoring: The mean of the responses is computed if there are no missing responses. Note, although there are 24 items, only 20 are used in scoring as there are 4 filler items. Scoring was implemented using [dataprepr](#dataprepr). 
+
 
 Subscales:
 * Behavioral Inhibition System (BIS)
@@ -571,7 +593,8 @@ Scale:
 2) Sometimes
 3) Always
 
-Scoring: The sume of responses for a scale is computed if all responses were completed.
+Scoring: The sume of responses for a scale is computed if all responses were completed. Scoring was implemented using [dataprepr](#dataprepr). 
+
 
 Subscales:
 
@@ -600,11 +623,12 @@ References:
   
 ### Binge Eating Scale (BES)
 
-description...
+Parent-report scale of child binge eating behaviors. The items in this questionnaire were adapted from Gormally et al., to ask about child behavior. 
 
 Scale:
 
-Scoring: The sum of the responses is computed if there are no missing responses
+Scoring: The sum of the responses is computed if there are no missing responses. Scoring was implemented using [dataprepr](#dataprepr). 
+
 
 Outcome Measures:
 * Total Score
@@ -631,7 +655,10 @@ Scale:
 6) Quite True of of Your Child
 7) Extremely True of Your Child
 
-Scoring: The mean of responses in each scale is computed, ignoring skipped items.
+Items were collected using base-0 (values 0-7) and rescaled to base-1 (values 1-7) before scoring.
+
+Scoring: The mean of responses in each scale is computed, ignoring skipped items. Scoring was implemented using [dataprepr](#dataprepr). 
+
 
 Subscales:
 * Activity Level
@@ -735,7 +762,8 @@ Scale: The scale differed based on section of the questionnaire
   4) Mostly
   5) Always
 
-Scoring: The mean of the responses is computed if there are no missing responses.
+Scoring: The mean of the responses is computed if there are no missing responses. Scoring was implemented using [dataprepr](#dataprepr). 
+
 
 Subscales:
 * Perceived Responsibility
@@ -764,26 +792,46 @@ Scale:
 4) Often
 5) Always
 
-Scoring: The mean of the responses is computed if there are no missing responses.
+Items were collected using base-0 (values 0-4) and rescaled to base-1 (values 1-5) before scoring.
 
-Subscales:
+Scoring: The mean of the responses is computed for each subscale if there are no missing responses. Scoring was implemented using [dataprepr](#dataprepr). 
+
+Wardle Subscales:
 * Food Responsiveness
+  * items: 12, 14, 19, 28, 34
 * Emotional Overeating
+  * items: 2, 13, 15, 27
 * Enjoyment of Food
+  * items: 1, 5, 20, 22
 * Desire to Drink
+  * items: 6, 29, 31
 * Satiety Responsiveness
-* Slowness in Eating
-* Emotional Undereating
+  * items (* = reverse scored): 3*, 17, 21, 26, 30
+* Slowness in Eating 
+  * items (* = reverse scored): 4*, 8, 18, 35
+* Emotional Undereating 
+  * items: 9, 11, 23, 25
 * Food Fussiness
+  * items (* = reverse scored): 7, 10*, 16*, 24, 32*, 33
 * Appraoch Behaviors
+  * items in FR, EOE, EF, DD subscales
 * Avoidant Behaviors
+  * items in SR, SE, EUE, FF subscales
+
+Manzano (3-factor) Subscales:
+* Reward-based eating
+  * items (* = reverse scored): 1, 3*, 4*, 5, 8*, 12, 14, 19, 20, 22, 28, 34
+* Picky Eating
+  * items: 7, 10, 16, 24, 32, 33
+* Emotional eating
+  * items: 2, 9, 13, 15, 23, 25
 
 Database and meta-data in bids/phenotype: 
   * cebq.tsv and cebq.json
   
 References:
 * [Wardle, J., Guthrie, C. A., Sanderson, S., & Rapoport, L. (2001). Development of the children’s eating behaviour questionnaire. Journal of Child Psychology and Psychiatry, 42, 963–970. https://doi.org/10.1017/S0021963001007727](#https://pubmed.ncbi.nlm.nih.gov/11693591/)
-
+* [Manzano MA, Strong DR, Kang Sim DE, Rhee KE, Boutelle KN. Psychometric properties of the Child Eating Behavior Questionnaire (CEBQ) in school age children with overweight and obesity: A proposed three‐factor structure. Pediatric Obesity. 2021;16(10):e12795. doi:10.1111/ijpo.12795')](#https://onlinelibrary.wiley.com/doi/abs/10.1111/ijpo.12795)
 
 ### Children's Sleep Habits Questionnaire - Abreviated (CSHQ-A)
 
@@ -811,7 +859,7 @@ Subscales:
 * Total
 
 Database and meta-data in bids/phenotype: 
-  * cfq.tsv and cfq.json
+  * cshq.tsv and cshq.json
 
 References:
 * [Owens, J. A., Spirito, A., & McGuinn, M. (2000). The Children’s Sleep Habits Questionnaire (CSHQ): Psychometric Properties of A Survey Instrument for School-Aged Children. SLEEP, 23(8), 1043–1052.](#https://pubmed.ncbi.nlm.nih.gov/11145319/)
@@ -829,7 +877,8 @@ Scoring:
 
 Subscales:
 
-Database and Code Book/Dictionairy: 
+Database and meta-data in bids/phenotype: 
+  * cfpq.tsv and cfpq.json
 
 References:
 
@@ -915,7 +964,8 @@ Scoring:
 
 Subscales:
 
-Database and Code Book/Dictionairy: 
+Database and meta-data in bids/phenotype: 
+  * fsq.tsv and fsq.json
 
 References:
 
@@ -1078,16 +1128,33 @@ References:
 ### Structure and Control in Parent Feeding (SCPF)
 
 description...
+34-item parent-report of child feeding practices. 
+
+Note, this scale was administered with the incorrect phrase for item 17. Therefore, data for item have been marked as missing.
 
 Scale: 
+0) Never
+1) Rarely
+2) Sometimes
+3) Often
+4) Always
 
 Scoring: 
 
 Subscales:
+* Limit Exposure
+  * Items: 1, 2, 3, 4, 6, 8, 13, 22, 31, 32, 33
+* Consistent feeding routines
+  * Items: 5, 7, 15, 16, 20, 23, 25, 26, 27, 28, 30
+* Restriction
+  * Items: 9, 10, 12, 14, 34
+* Pressure to eat
+  * Items: 17, 18, 19, 21, 24, 29
 
-Database and Code Book/Dictionairy: 
+Database and meta-data in bids/phenotype: 
+  * scpf.tsv and scpf.json
 
-References:
+References: [avage, J.S., Rollins, B.Y., Kugler, K.C. et al. Development of a theory-based questionnaire to assess structure and control in parent feeding (SCPF). Int J Behav Nutr Phys Act 14, 9 (2017). https://doi.org/10.1186/s12966-017-0466-2](#https://ijbnpa.biomedcentral.com/articles/10.1186/s12966-017-0466-2)
 
 ### Sensitivity to Punishment and Reward Questionnaire (SPSRQ)
 
@@ -1096,6 +1163,11 @@ description...
 Scale: 
 
 Scoring: 
+0) Strongly Disagree
+1) Disagree
+2) Neither Agree Nor Disagree
+3) Agree
+4) Strongly Agree
 
 Subscales:
 
@@ -1314,7 +1386,7 @@ On Roar Collab, the directory structure looks like:
              - **derivatives**
              - **code**
 
-Notice that the sub-directories within ParticipantData/ (on OneDrive) and R01_Marketing/ (on Roar Collab) are the same. This enables syncing survey and task data between the servers. The contents untouchedRaw/ and bids/ are described in Table 2.
+Notice that the sub-directories within ParticipantData/ (on OneDrive) and R01_Marketing/ (on Roar Collab) are the same. This enables syncing files in untouchedRaw/ and bids/ between the servers. The contents of these folders are summarized in Table 2 and detailed in subsections below.
 
 Table 2. Data directories and descriptions
 | Directory    | Description |
@@ -1329,7 +1401,6 @@ Table 2. Data directories and descriptions
 
 \* Survey refers to data collected in survey format via redcap, including questionnaires and researcher-entered data (e.g., intake measurements) 
 
-Each directory listed above is specified in detail in separate subsections below
 
 ### untouchedRaw
 
