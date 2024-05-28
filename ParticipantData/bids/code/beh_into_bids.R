@@ -17,7 +17,7 @@ load_all("/Users/baf44/projects/dataREACHr")
 base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
 # define names of redcap files to process
-visit_file_name =  "FoodMarketingResilie_DATA_2024-05-03_1132.csv"
+visit_file_name =  "FoodMarketingResilie_DATA_2024-05-20_1520.csv"
 double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
 
 # define Penn State user ID
@@ -34,8 +34,11 @@ data_de_path = paste0(base_dir, "/bids/sourcedata/phenotype/", double_entry_file
 redcap_data <-
   proc_redcap(visit_data_path,
               data_de_path,
-              overwrite = TRUE,
+              overwrite = FALSE,
               return_data = TRUE)
+
+# run quality checks on redcap data
+qc_redcap(redcap_data)
 
 #### process task data ####
 # process data: food view, sst ... 
