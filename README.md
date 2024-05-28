@@ -9,7 +9,7 @@ This repo contains code to process data from Keller Lab Marketing Study
   - mriqc_participant.slurm: runs participant-level MRIQC via SLURM
   - mriqc_group.slurm: runs group-level MRIQC via SLURM
 
- - bids/code/fmri: contains code to preprocess MRI data with fMRIPrep (https://fmriprep.org/en/stable/outputs.html)
+- bids/code/fmri: contains code to preprocess MRI data with fMRIPrep (https://fmriprep.org/en/stable/outputs.html)
   - gen_sub_fmriprep.sh: creates subject-specific scripts to run fmriprep
   - template_fmriprep-v2320.slurm: template for subject-specific scripts (used by gen_sub_fmriprep.sh)
  
