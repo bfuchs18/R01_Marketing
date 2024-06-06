@@ -7,12 +7,12 @@
   - [Inclusion/Exclusion Criteria](#inclusionexclusion-criteria)
 - [Study Design](#study-design)
   - [Baseline (ses-1)](#baseline-ses-1)
-    - [Visit 1](#visit-1)
-    - [Visit 2](#visit-2)
-    - [Visit 3](#visit-3)
-    - [Visit 4](#visit-4)
+    - [Child Visit Protocol 1 (visit 1)](#child-visit-protocol-1-visit-1)
+    - [Child Visit Protocol 2](#child-visit-protocol-2)
+    - [Child Visit Protocol 3](#child-visit-protocol-3)
+    - [Child Visit Protocol 4](#child-visit-protocol-4)
   - [Follow-up (ses-2)](#follow-up-ses-2)
-    - [Visit 5](#visit-5)
+    - [Child Visit Protocol 5 (Visit 5)](#child-visit-protocol-5-visit-5)
 - [Outcome Measures: Descriptions and Protocols](#outcome-measures-descriptions-and-protocols)
   - [Laboratory Eating Paradigms](#laboratory-eating-paradigms)
     - [Test Meal](#test-meal)
@@ -60,7 +60,6 @@
     - [Confusion, Hubbub, and Order Scale (CHAOS)](#confusion-hubbub-and-order-scale-chaos)
     - [Dutch Eating Behavior Questionnaire (DEBQ)](#dutch-eating-behavior-questionnaire-debq)
     - [External Food Cues Responsiveness Scale (EFCR)](#external-food-cues-responsiveness-scale-efcr)
-    - [Family Food Behvior Survey (FFBS)](#family-food-behvior-survey-ffbs)
     - [Feeding Strategies Questionnaire (FSQ)](#feeding-strategies-questionnaire-fsq)
     - [Fulkerson Home Food Inventory (FHFI)](#fulkerson-home-food-inventory-fhfi)
     - [Household Food Insecurity Access Scale (HFIAS)](#household-food-insecurity-access-scale-hfias)
@@ -141,10 +140,12 @@
 
 # Study Design
 
-## Baseline (ses-1)
-### Visit 1
+The study involved 4 baseline visits involving Child Visit Protocol 1, Child Visit Protocol 2, Child Visit Protocol 3, and Child Visit Protocol 4. Child Visit Protocol 1 always occurred on the first study visit, while protocols 2-4 could vary in order due to MRI availability. 
 
-The first visit takes place in Noll Lab. During the visit, the parent and child complete consent and assent, respectively. Child and parent [height and weight](#height-and-weight) are measured by a research and children complete a [Dual-Energy X-Ray Absorptiometry (DXA)](#dual-energy-x-ray-absorptiometry-dxa) scan. 
+## Baseline (ses-1)
+### Child Visit Protocol 1 (visit 1)
+
+The first visit takes place in Noll Lab. During the visit, the parent and child complete consent and assent, respectively. Child and parent [height and weight](#height-and-weight) are measured twice by a researcher and children complete a [Dual-Energy X-Ray Absorptiometry (DXA)](#dual-energy-x-ray-absorptiometry-dxa) scan. 
 Children then complete the [test meal](#test-meal) protocol with the neutral advertisment condition. This test meal is recorded to code [meal microstructure](#). The children also rate their fullness using [Freddy Fullness](#) and [liking](#) and [wanting](#) of foods. Children complete the [NIH toolbox](#nih-toolbox) and [Relative Reinforceing Value task](#relative-reinforcing-value-task-rrv) and watch a [mock fMRI video](#mock-scan-protocol). Both parents and children also complete questionnaires on REDCap.
 
 Child Measures:
@@ -170,12 +171,15 @@ Parent Measures:
 * [Percieved Stress Scale](#perceived-stress-scale-pss)
 * [Lifestyle Behavioral Checklist](#lifestyle-behavior-checklist-lbc)
 
-### Visit 2
+### Child Visit Protocol 2
 
-The second visit takes place in Chandlee Laboratory. Upon arrival, the children rate their [fullness](#fullness) to ensure they are in a neutral state prior to completing the (functional magnetic resonance imaging (fMRI) paradigm)[#]. If they rate their fullness below 25%, they are given a snack and then rate their fullness again. This is repeated one more time if fullness remains below 25% (i.e., maximum of 2 snacks administered). Then, children complete a practice run and 2 behavioral runs of the [SST ('Plate Sorting Game')](#functional---stop-signal-task-plate-sorting-game) before heading to SLEIC's MRI suite. In the MRI suite, children complete a [mock fMRI scan](#mock-scan-protocol) and then rate their [fullness](#fullness) and [state anxiety](#) before entering the MRI. In the scanner, children complete []. After the scan, children rate [state anxiety](#) and complete the [fMRI behavioral assessment](#post-scan-fmri-behavioral-assessment). Prior to the behavioral assessment, children are provided a snack (small pizza, bag of chips, apple juice; intake not measured). Parents complete questionnaires on REDCap.
+The second visit takes place in Chandlee Laboratory. Upon arrival, the children rate their [fullness](#fullness) to ensure they are in a neutral state prior to completing the (functional magnetic resonance imaging (fMRI) paradigm)[#]. If they rate their fullness below 25%, they are given a snack and then rate their fullness again. This is repeated one more time if fullness remains below 25% (i.e., maximum of 2 snacks administered). Then, children complete a practice run and 2 behavioral runs of the [SST ('Plate Sorting Game')](#functional---stop-signal-task-plate-sorting-game) before heading to SLEIC's MRI suite. In the MRI suite, children complete a [mock fMRI scan](#mock-scan-protocol) and then rate their [fullness](#fullness) and [state anxiety](#) before entering the MRI for the [fMRI Protocol](#functional-magnetic-resonance-imaging). After the scan, children rate [state anxiety](#) again and are provided a snack (small pizza, bag of chips, apple juice; intake not measured). Lastely, chidren complete the [post-fMRI behavioral assessment](#post-scan-fmri-behavioral-assessment). Parents complete questionnaires on REDCap.
 
 Child Measures:
-* [fMRI Protocol](#functional-magnetic-resonance-imaging)
+* [State Anxiety Ratings (CAMS)](#state-anxiety-ratings-cams)
+* [Stop signal task (beh and fmri)](#functional---stop-signal-task-plate-sorting-game)
+* [Food view task (fmri)](#functional-scans---food-view-task)
+* [Post-fMRI behavioral assessment](#post-scan-fmri-behavioral-assessment)
 
 Parent Measures:
 * [Children's Behavior Questionnaire](#child-behavior-questionnaire-cbq---short-form-version-1)
@@ -185,16 +189,16 @@ Parent Measures:
 * [Family Food Behavior Survey](#family-food-behvior-survey-ffbs)
 * [Feeding Strategies Questionnaire](#feeding-strategies-questionnaire-fsq)
 
-### Visit 3
+### Child Visit Protocol 3
 
-The third visit takes place in Chandlee Laboratory. During the visit, the consumes one of the [portion size meals](#), which is video recorded to code [meal microstructure](#). The children also rate their [fullness](#fullness) and [liking](#) of foods. 
+The third visit takes place in Chandlee Laboratory.
+and the ['Space Game'](#reinforcement-learning-space-game), which is a two-stage reinforcement learning task.
 
 Child Measures:
-* [Test Meal](#test-meal)
+* [Test Meal](#test-meal) following toy or food commerical exposure
 * [EAH food wanting questionnaire](#)
-* [Eating in the Absense of Hunger](#)
+* [Eating in the Absense of Hunger](#) following toy or food commerical exposure
 * [Reward-Related Decision-Making Task](#reward-related-decision-making-space-game)
-
 
 Parent Measures:
 * [Children's Leisure Activities Study Survey](#childrens-leisure-activities-study-survey-class)
@@ -206,9 +210,9 @@ Parent Measures:
 * [Dutch Eating Behavior Questionnaire](#dutch-eating-behavior-questionnaire-debq)
 * [Structure and Control in Parent Feeding Questionnaire](#structure-and-control-in-parent-feeding-scpf)
 
-### Visit 4
+### Child Visit Protocol 4
 
-The fourth visit takes place in Chandlee Laboratory. During the visit, the consumes one of the [portion size meals](#), which is video recorded to code [meal microstructure](#). The children also rate their fullness using [Freddy Fullness](#) and [liking](#) of foods. In addition to the meal, children complete an [IQ assessment](#) and the ['Space Game'](#reinforcement-learning-space-game), which is a two-stage reinforcement learning task. Both parents and chidlren also complete questionnaires on Qualtrics. Lastly, the child completes a [mock-scan protocol](#) to become familiar with the scanner.
+Child Visit Protocol 4 takes place in Chandlee Laboratory. 
 
 Child Measures:
 * [Test Meal](#test-meal)
@@ -218,7 +222,7 @@ Child Measures:
 * [Pavlovian-to-Instrumental Transfer Task](#pavlovian-to-instrumental-transfer-task-pit)
 * [Pictorial Personality Traits Questionnaire](#pictorial-personality-trains-questionnaire-pptq)
 * [Stress in Children Questionnaire](#stress-in-children-questionnaire-stq)
-* [WASI (IQ)](#wasi)
+* [WASI (IQ assessment)](#wasi)
 
 Parent Measures:
 * [Household Food Security Survey Module](#household-food-security-survey-module-hfssm)
@@ -230,9 +234,9 @@ Parent Measures:
 * [Comprehensive Feeding Practices Questionnaire](#comprehensive-feeding-practices-questionnaire-cfpq)
 
 ## Follow-up (ses-2)
-### Visit 5
+### Child Visit Protocol 5 (Visit 5)
 
-The fifth visit takes place in Noll Laboratory 1 year after [Visit 1](#visit-1). The children compelte a Dual-Energy X-Ray Absorptiometry (DXA) scan prior to a [standard laboratory meal](#) and the [Eating in the Absence of Hunger (EAH)](#) protocol. Eating paradigms are video recorded to code [meal microstructure](#) and [EAH behaivor](#). The children also rate their fullness using [Freddy Fullness](#) and [liking](#) and [wanting](#) of foods. Children also complete the [N-Back Task](#letter-n-back) and the ['Space Game'](#reinforcement-learning-space-game). Both parents and chidlren also complete questionnaires on Qualtrics.
+The fifth visit takes place in Noll Laboratory 1 year after [Visit 1](#visit-1). 
 
 Child Measures:
 * [Height and Weight](#height-and-weight)
@@ -281,6 +285,20 @@ References:
 ## Anthropometrics
 
 ### Height and Weight
+Height (m) and weight (kg) of the child and enrolled parent (parent1) are measured twice by a trained research at Noll Laboratory. The dual measurements are averaged to derive average height and weight for child and parent. Average measurements are used to calculate:
+* Parent1 BMI (kg/m<sup>2</sup>)
+* Child BMI (kg/m<sup>2</sup>)
+* Child BMI percentile (CDC reference for age and sex)
+* Child BMI z-score (CDC reference for age and sex)
+
+Height and weight of the biological parent that does not attend the visit (parent2) are reported by parent1 in the [Parent Household Demographics Questionnaire](#parent-household-demographics-questionnaire). Parent1-reported height and weight of parent2 are used to calculated:
+* Parent2 BMI
+
+The sexes of parent1 and parent2 are used to generate the variables:
+* Maternal BMI
+* Paternal BMI
+* Maternal BMI method (measured, report)
+* Paternal BMI method (measured, report)
 
 ### Dual-Energy X-Ray Absorptiometry (DXA)
 
@@ -423,16 +441,20 @@ All child questionnaires were administered by a trained research assistant using
 ### Kid's Brand Awareness Survey (KBAS)
 
 The KBAS is 50-item (25 per condition: toy, food), child-report measure, where children are asked to match the correct picture with food and toy logos. Two versions of the survey were administered (counterbalanced) which varied by category (food, toy) order. The KBAS was developed in the Keller Lab for Project REACH. 
+<!-- omit in toc -->
+#### Scale: 
 
-Scale: 
+<!-- omit in toc -->
+#### Scoring
+Correctly matched items are scored as a 1. Incorrectly matched items are scored as a 0. The number of correct responses are determined within a category. Scoring was implemented in REDCap.
 
-Scoring: Correctly matched items are scored as a 1. Incorrectly matched items are scored as a 0. The number of correct responses are determined within a category. Scoring was implemented in REDCap.
-
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
   * Toy score
   * Food score
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * kbas.tsv and kbas.json
 
 
@@ -440,55 +462,74 @@ Database and meta-data in bids/phenotype:
 
 description...
 
-Scale:
+<!-- omit in toc -->
+#### Scale:
 
-Scoring: 
+<!-- omit in toc -->
+#### Scoring: 
 
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
 
-Database and Code Book/Dictionairy: 
+<!-- omit in toc -->
+#### Database and Code Book/Dictionairy: 
 
-References:
+<!-- omit in toc -->
+#### References:
 
 ### Loss of Control Eating Questionnaire (LOC)
 
 description...
 
-Scale:
+<!-- omit in toc -->
+#### Scale:
 
-Scoring: 
+<!-- omit in toc -->
+#### Scoring: 
 
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
 
-Database and Code Book/Dictionairy: 
+<!-- omit in toc -->
+#### Database and Code Book/Dictionairy: 
 
-References:
+<!-- omit in toc -->
+#### References:
 
 ### Pictorial Personality Trains Questionnaire (PPTQ)
 
 description...
 
-Scale: The PPTQ was adminisered using the 3-point scale for younger children (6-9 years old)
+<!-- omit in toc -->
+#### Scale
+The PPTQ was adminisered using the 3-point scale for younger children (6-9 years old).
+1) Left image option
+2) It depends 
+3) Right image option 
 
-Scoring: 
-Scoring was implemented using [dataprepr](#dataprepr). 
+<!-- omit in toc -->
+#### Scoring
+Responses are reverse scored for items 2, 4, 6, 8, 10, 12, 14. The sum of responses is computed for each subscale if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
-Subscales: 
+<!-- omit in toc -->
+#### Subscales: 
 * extraversion
-  * Items: 
+  * Items: 1, 6, 11
 * neuroticism
-  * Items: 
+  * Items: 2, 7, 12
 * openness to experience
-  * Items:
-* agreeableness
-  * Items:
+  * Items: 3, 8, 13
 * conscientiousness
-  * Items:
+  * Items: 4, 9, 14
+* agreeableness
+  * Items: 5, 10, 15
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * pptq.tsv and pptq.json
 
-References:
+<!-- omit in toc -->
+#### References:
 [Maćkiewicz M, Cieciuch J. Pictorial Personality Traits Questionnaire for Children (PPTQ-C)-A New Measure of Children's Personality Traits. Front Psychol. 2016 Apr 14;7:498. doi: 10.3389/fpsyg.2016.00498. PMID: 27252661; PMCID: PMC4879772.](#https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4879772/)
 
 ### Stress in Children Questionnaire (SIC)
@@ -496,18 +537,27 @@ References:
 description...
 Child-report questionnaire
 
-Scale:
+<!-- omit in toc -->
+#### Scale:
+1) Never
+2) Sometimes
+3) Often
+4) Very Often
+  
+<!-- omit in toc -->
+#### Scoring: 
+Scoring was implemented using [dataprepr](#dataprepr). 
 
-Scoring: 
-
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
   * Lack of Well being
   * Distress
   * Lack of Social Support
   * Total score (grand mean)
 
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * sic.tsv and sic.json
 
 References: [Osika W, Friberg P, Wahrborg P. A new short self-rating questionnaire to assess stress in children. Int J Behav Med. 2007;14(2):108-117. doi:10.1007/BF03004176](#https://link.springer.com/article/10.1007/BF03004176)
@@ -530,7 +580,8 @@ Items from this questionnaire are reported in 2 databases in bids/phenotype:
 
 The Parent Household Demographics Questionnaire assesses parent demographics and the household environment. This questionnaire was developed within the Keller Lab for Study REACH.
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * household.tsv and household.json
 
 Items from this questionnaire that are commonly reported in papers or used as covariates (i.e., maternal education, family income) have also been included in demographics.tsv and demographics.json.
@@ -539,7 +590,9 @@ Items from this questionnaire that are commonly reported in papers or used as co
 
 The Alcohol Use Disorders Identification Test (AUDIT) is a 10-item screening instrument for hazardous and/or harmful alcohol consumption. A score of 8 or more indicates a strong likelihood of harmful alcohol consumption.
 
-Scale: The majority of questions follow the stated scale with alternative responses of equal weight in parentheses
+<!-- omit in toc -->
+#### Scale
+The majority of questions follow the stated scale with alternative responses of equal weight in parentheses:
 
 0) Never (1-2 drinks; No)
 1) Less than Monthly (Monthly or Less; 3 or 4 drinks)
@@ -547,57 +600,73 @@ Scale: The majority of questions follow the stated scale with alternative respon
 3) Weekly (2-3 Times a Week; 7 to 9 drinks)
 4) Daily or Almost Daily (4 or More Times a Week; 10 or more drinks; Yes, during the last year)
 
-Outcome Measures:
-* Total Score
-* Category (Not Harmful Consumtion or Likely Harmful Consumption)
+Note: 2 items (9 and 10) use the scale 0, 2, 4 (i.e., 1 and 3 are not included).
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Outcome Measures:
+* Total Score
+* Category (Not Harmful Consumtion, Likely Harmful Consumption)
+
+<!-- omit in toc -->
+#### Scoring
+The sum of responses is computed if there are no missing responses. Scores >= 8 are categorized as "Likely Harmful Consumption" while scores <8 are categorized as "Not Harmful Consumtion". Scoring is implemented using [dataprepr](#dataprepr). 
+
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * audit.tsv and audit.json
   
-References:
+<!-- omit in toc -->
+#### References:
 * [Saunders JB, Aasland OG, Babor TF, De La Fuente JR, Grant M. Development of the Alcohol Use Disorders Identification Test (AUDIT): WHO Collaborative Project on Early Detection of Persons with Harmful Alcohol Consumption-II. Addiction. 1993;88(6):791-804. doi:10.1111/j.1360-0443.1993.tb02093.x](#https://pubmed.ncbi.nlm.nih.gov/8329970/)
 
 ### Behavioral Inhibition System/Behavioral Activation System (BIS/BAS)
 
 description...
 
-Scale:
-1) Very True for Me
-2) Somewhat True for Me
-3) Somewhat False for Me
-4) Very False for Me
+<!-- omit in toc -->
+#### Raw data scale:
 
-Scoring: The mean of the responses is computed if there are no missing responses. Note, although there are 24 items, only 20 are used in scoring as there are 4 filler items. Scoring was implemented using [dataprepr](#dataprepr). 
+0) Very True for Me
+1) Somewhat True for Me
+2) Somewhat False for Me
+3) Very False for Me
 
+<!-- omit in toc -->
+#### Subscales / Outcome measures:
+| Subscale | Items* |
+| -------- | ------- | 
+| Behavioral Inhibition System (BIS) | 16, 24, 8, 13, 2*, 19, 22*|
+| Funseeking | 10, 20, 5, 15|
+| Drive | 9, 3, 12, 21 |
+| Reward Responsiveness | 7, 4, 18, 23, 14|
+| Behavioral Activation System (BAS) | Funseeking, Drive, and Reward Responsiveness items|
+* *reverse scored item
 
-Subscales:
-* Behavioral Inhibition System (BIS)
-* Behavioral Activation System (BAS)
-* Funseeking
-* Drive 
-* Reward Responsiveness
+<!-- omit in toc -->
+#### Scoring: Responses are scaled to base 1 (i.e., 1-4). The mean of scaled responses is computed for each subscale if there are no missing responses. Note, although there are 24 items, only 20 are used in scoring as there are 4 filler items. Scoring is implemented using [dataprepr](#dataprepr). 
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * bisbas.tsv and bisbas.json
   
-References:
+<!-- omit in toc -->
+#### References:
 * Muris P, Meesters C, de Kanter E, Timmerman PE. Behavioural inhibition and behavioural activation system scales for children: relationships with Eysenck’s personality traits and psychopathological symptoms. Personality and Individual Differences. 2005;38(4):831-841. doi:10.1016/j.paid.2004.06.007
 * Carver CS, White TL. Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: The BIS/BAS Scales. Journal of Personality and Social Psychology. 1994;67(2):319-333. doi:http://dx.doi.org/10.1037/0022-3514.67.2.319.
 
 ### Behavioral Rating Inventory of Executive Function-2 (BRIEF-2)
 
-The Behavioral Rating Index of Executive Function-2 (BRIEF-2) is a parent-report measure of everyday executive behaviors that is normed for age and gender. T scores of 60 or greater indicate high risk/clinical relevance for symptoms. 
+The Behavioral Rating Index of Executive Function-2 (BRIEF-2) is a parent-report measure of everyday executive behaviors that is normed for age and gender. T-scores of 60 or greater indicate high risk/clinical relevance for symptoms. 
 
-Scale: 
-1) Never
-2) Sometimes
-3) Always
+<!-- omit in toc -->
+#### Raw data scale:
 
-Scoring: The sume of responses for a scale is computed if all responses were completed. Scoring was implemented using [dataprepr](#dataprepr). 
+0) Never
+1) Sometimes
+2) Always
 
-
-Subscales:
-
+<!-- omit in toc -->
+#### Subscales:
 * Inhibit
 * Self-Monitor
 * Shift
@@ -615,28 +684,41 @@ Subscales:
 * Negativity
 * Infrequency
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Scoring
+Responses are scaled to base 1 (i.e., 1-3). The sum of responses for a subscale is computed if all responses were completed. Age and sex are used to determine subscale T-scores and percentiles. Scoring is implemented using [dataprepr](#dataprepr). 
+
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * brief2.tsv and brief2.json
   
-References:
+<!-- omit in toc -->
+#### References:
 * Gioia GA, Isquith PK, Guy SC, Kenworthy L. BRIEF-2: Behavior Rating Inventory of Executive Function: Professional Manual. Psychological Assessment Resources; 2015.
   
 ### Binge Eating Scale (BES)
 
 Parent-report scale of child binge eating behaviors. The items in this questionnaire were adapted from Gormally et al., to ask about child behavior. 
 
-Scale:
+<!-- omit in toc -->
+#### Raw data scale
+Items used a scale from 0-3 or 0-2, depending on the number of statements an item includes. 
+999) Don't Want to Answer
 
-Scoring: The sum of the responses is computed if there are no missing responses. Scoring was implemented using [dataprepr](#dataprepr). 
-
-
-Outcome Measures:
+<!-- omit in toc -->
+#### Outcome Measures:
 * Total Score
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Scoring: 
+The sum of the responses is computed if there are no missing or "Don't Want to Answer" responses. Scoring was implemented using [dataprepr](#dataprepr). 
+
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * bes.tsv and bes.json
   
-References:
+<!-- omit in toc -->
+#### References:
 * [Gormally, J., Black, S., Daston, S., & Rardin, D. (1982). The assessment of binge eating severity among obese persons. Addictive Behaviors, 7(1), 47–55. https://doi.org/10.1016/0306-4603(82)90024-7](#https://pubmed.ncbi.nlm.nih.gov/7080884/)
 * Timmerman, G. M. (1999). Binge Eating Scale: Further Assessment of Validity and Reliability. Journal of Applied Biobehavioral Research, 4(1), 1–12. https://doi.org/10.1111/j.1751-9861.1999.tb00051.x
 
@@ -645,22 +727,20 @@ References:
 
 The Child Behavior Questionnaire ask parents to rate 94 statements from 'Extremely Untrue of Your Child' (1) to 'Extremely True of Your Child' (7).
 
-Scale:
+<!-- omit in toc -->
+#### Raw Data Scale:
 
-1) Extremely Untrue of Your Child
-2) Quite Untrue of Your Child
-3) Slightly Untrue of Your Child
-4) Neither True nor False of Your Child
-5) Slightly True of of Your Child
-6) Quite True of of Your Child
-7) Extremely True of Your Child
+0) Extremely Untrue of Your Child
+1) Quite Untrue of Your Child
+2) Slightly Untrue of Your Child
+3) Neither True nor False of Your Child
+4) Slightly True of of Your Child
+5) Quite True of of Your Child
+6) Extremely True of Your Child
+7) N/A
 
-Items were collected using base-0 (values 0-7) and rescaled to base-1 (values 1-7) before scoring.
-
-Scoring: The mean of responses in each scale is computed, ignoring skipped items. Scoring was implemented using [dataprepr](#dataprepr). 
-
-
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
 * Activity Level
 * Anger/Frustration
 * Approach/Positive Anticipation
@@ -680,52 +760,60 @@ Subscales:
 * Big 3 Negative Affect - average of the scale scores for Anger, Discomfort, Fear, Sadness, and Soothability-reversed
 * Big 3 Effortful Control - average of the scale scores for Attention Focusing, Inhibitory Control, Low-Intesity Pleasure, and Perceptual Sensitivity
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Scoring
+7's (N/A) are recoded as missing (NA). Responses are scaled to base 1 (i.e., 1-7). The mean of scaled responses is computed for each subscale, ignoring skipped items. Scoring was implemented using [dataprepr](#dataprepr). 
+
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * cbq.tsv and cbq.json
   
-References:
+<!-- omit in toc -->
+#### References:
 * [Putnam SP, Rothbart MK. Development of Short and Very Short Forms of the Children’s Behavior Questionnaire. Journal of Personality Assessment. 2006;87(1):102-112. doi:10.1207/s15327752jpa8701_09 doi.org/10.1097/00004703-200112000-00007](#https://pubmed.ncbi.nlm.nih.gov/16856791/)
 * [Rothbart MΚ, Ahadi SA, Hershey KL. Temperament and Social Behavior in Childhood. Merrill-Palmer Quarterly. 1994;40(1):21-39](#https://www.jstor.org/stable/23087906)
-
-
-
-
-
-
-
-
-
 
 
 ### Children's Leisure Activities Study Survey (CLASS)
 
 description...
 
-Scale: 
+<!-- omit in toc -->
+#### Scale: 
 
-Scoring: 
+<!-- omit in toc -->
+#### Scoring: 
 
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
 
-Database and Code Book/Dictionairy: 
+<!-- omit in toc -->
+#### Database and Code Book/Dictionairy: 
 
-References:
+<!-- omit in toc -->
+#### References:
 
 ### Community Childhood Hunger Identification Project (CCHIP)
 
 description...
 
-Scale:
+<!-- omit in toc -->
+#### Scale:
+
 0) No
 1) Yes
 
-Scoring: The mean of the responses is computed if there are no missing responses. Only items 1, 5, 9, 13, 17, 21, 25, and 29 contribute to the total score.
-
-Outcome Measures:
+<!-- omit in toc -->
+#### Outcome Measures:
 * Total Score
 * Categorical Score (Not Hungry, At Risk for Hunger, Hungry)
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Scoring
+The mean of the responses is computed if there are no missing responses. Only items 1, 5, 9, 13, 17, 21, 25, and 29 contribute to the total score.
+
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * cchip.tsv and cchip.json
 
 References:
@@ -735,37 +823,40 @@ References:
 
 description...
 
-Scale: The scale differed based on section of the questionnaire
+<!-- omit in toc -->
+#### Raw Data Scale: 
+Response options differed based on section of the questionnaire
 
 * Perceived Weight:
-  1) Markedly Underweight
-  2) Underweight
-  3) Average
-  4) Overweight 
-  5) Markedly Overweight
+  0) Markedly Underweight
+  1) Underweight
+  2) Average
+  3) Overweight 
+  4) Markedly Overweight
+
 * Child Weight Concerns: 
-  1) Unconcerned
-  2) Slightly Unconcerned
-  3) Neutral
-  4) Slightly Concerned
-  5) Very Concerned
+  0) Unconcerned
+  1) Slightly Unconcerned
+  2) Neutral
+  3) Slightly Concerned
+  4) Very Concerned
+  99)  'N/A' (provided if the question asked about an age-range not applicable to the child)
+  
 * Restriction and Pressure to Eat: 
-  1) Disagree
-  2) Slightly Disagree
-  3) Neutral
-  4) Slightly Agree
-  5) Agree
+  0) Disagree
+  1) Slightly Disagree
+  2) Neutral
+  3) Slightly Agree
+  4) Agree
 * Monitoring: 
-  1) Never
-  2) Rarely
-  3) Sometimes
-  4) Mostly
-  5) Always
+  0) Never
+  1) Rarely
+  2) Sometimes
+  3) Mostly
+  4) Always
 
-Scoring: The mean of the responses is computed if there are no missing responses. Scoring was implemented using [dataprepr](#dataprepr). 
-
-
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
 * Perceived Responsibility
 * Perceived Child Weight
 * Perceived Parent Weight
@@ -774,10 +865,16 @@ Subscales:
 * Pressure to Eat
 * Monitoring
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Scoring: 
+Responses are scaled to base 1 (i.e., 1-5). For the Child Weight Concerns subscale the mean of the responses is computed, ignoring missing or N/A responses. For all other subscales, the mean of the responses is computed if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
+
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * cfq.tsv and cfq.json
   
-References:
+<!-- omit in toc -->
+#### References:
 * [Birch, L. L., Fisher, J. O., Grimm-Thomas, K., Markey, C. N., Sawyer, R., & Johnson, S. L. (2001). Confirmatory factor analysis of the Child Feeding Questionnaire: A measure of parental attitudes, beliefs and practices about child feeding and obesity proneness. Appetite, 36(3), 201–210. https://doi.org/10.1006/appe.2001.0398](#https://pubmed.ncbi.nlm.nih.gov/11358344/)
 
 
@@ -785,51 +882,45 @@ References:
 
 description...
 
-Scale:
-1) Never
-2) Rarely
-3) Sometimes
-4) Often
-5) Always
+<!-- omit in toc -->
+#### Scale: 
 
-Items were collected using base-0 (values 0-4) and rescaled to base-1 (values 1-5) before scoring.
+0) Never
+1) Rarely
+2) Sometimes
+3) Often
+4) Always
 
-Scoring: The mean of the responses is computed for each subscale if there are no missing responses. Scoring was implemented using [dataprepr](#dataprepr). 
+<!-- omit in toc -->
+#### Subscales/Outcome Measures:
 
-Wardle Subscales:
-* Food Responsiveness
-  * items: 12, 14, 19, 28, 34
-* Emotional Overeating
-  * items: 2, 13, 15, 27
-* Enjoyment of Food
-  * items: 1, 5, 20, 22
-* Desire to Drink
-  * items: 6, 29, 31
-* Satiety Responsiveness
-  * items (* = reverse scored): 3*, 17, 21, 26, 30
-* Slowness in Eating 
-  * items (* = reverse scored): 4*, 8, 18, 35
-* Emotional Undereating 
-  * items: 9, 11, 23, 25
-* Food Fussiness
-  * items (* = reverse scored): 7, 10*, 16*, 24, 32*, 33
-* Appraoch Behaviors
-  * items in FR, EOE, EF, DD subscales
-* Avoidant Behaviors
-  * items in SR, SE, EUE, FF subscales
+| Subscale | Items* |
+| -------- | ------- | 
+| Food Responsiveness (FR) | 12, 14, 19, 28, 34 |
+| Emotional Overeating (EOE) | 2, 13, 15, 27 |
+| Enjoyment of Food (EF) | 1, 5, 20, 22 |
+| Desire to Drink (DD) | 6, 29, 31 |
+| Satiety Responsiveness (SR) | 3*, 17, 21, 26, 30 |
+| Slowness in Eating (SE) | 4*, 8, 18, 35 |
+| Emotional Undereating (EUE) | 9, 11, 23, 25 |
+| Food Fussiness (FF)| 7, 10*, 16*, 24, 32*, 33 |
+| Approach Behaviors | items in FR, EOE, EF, DD subscales |
+| Avoidant Behaviors | items in SR, SE, EUE, FF subscales |
+| Reward-based eating^ | 1, 3*, 4*, 5, 8*, 12, 14, 19, 20, 22, 28, 34 |
+| Picky Eating^ | 7, 10, 16, 24, 32, 33 |
+| Emotional eating^ | 2, 9, 13, 15, 23, 25 |
+* *reverse scored item; ^Manzano 3-factor subscale
 
-Manzano (3-factor) Subscales:
-* Reward-based eating
-  * items (* = reverse scored): 1, 3*, 4*, 5, 8*, 12, 14, 19, 20, 22, 28, 34
-* Picky Eating
-  * items: 7, 10, 16, 24, 32, 33
-* Emotional eating
-  * items: 2, 9, 13, 15, 23, 25
+<!-- omit in toc -->
+#### Scoring
+Responses are scaled to base 1 (i.e., 1-5). The mean of the scaled responses is computed for each subscale if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * cebq.tsv and cebq.json
   
-References:
+<!-- omit in toc -->
+#### References:
 * [Wardle, J., Guthrie, C. A., Sanderson, S., & Rapoport, L. (2001). Development of the children’s eating behaviour questionnaire. Journal of Child Psychology and Psychiatry, 42, 963–970. https://doi.org/10.1017/S0021963001007727](#https://pubmed.ncbi.nlm.nih.gov/11693591/)
 * [Manzano MA, Strong DR, Kang Sim DE, Rhee KE, Boutelle KN. Psychometric properties of the Child Eating Behavior Questionnaire (CEBQ) in school age children with overweight and obesity: A proposed three‐factor structure. Pediatric Obesity. 2021;16(10):e12795. doi:10.1111/ijpo.12795')](#https://onlinelibrary.wiley.com/doi/abs/10.1111/ijpo.12795)
 
@@ -837,18 +928,16 @@ References:
 
 description...
 
-Scale: 
+<!-- omit in toc -->
+#### Scale: 
 1) Never
 2) Rarely
 3) Sometimes
 4) Usually
 5) Always
 
-Scoring: The mean of the responses is computed if there are no missing responses. 
-* The last section of the abreviated version of this scale was not administered (questions 19-22) so we are unable to use the reference cutoff for total score and we do not have the Daytime Sleepness subscale
-* We are still resolving subscale scoring as it is unclear which subscale the following items correspond to: 5, 6, 16, and 20
-
-Subscales:
+<!-- omit in toc -->
+#### Subscales:
 * Bedtime Resistance
 * Sleep Onset Delay
 * Sleep Duration
@@ -858,10 +947,18 @@ Subscales:
 * Sleep Disordered Breathing
 * Total
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Scoring: 
+The mean of the responses is computed if there are no missing responses. 
+* The last section of the abreviated version of this scale was not administered (questions 19-22) so we are unable to use the reference cutoff for total score and we do not have the Daytime Sleepness subscale
+* We are still resolving subscale scoring as it is unclear which subscale the following items correspond to: 5, 6, 16, and 20
+
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * cshq.tsv and cshq.json
 
-References:
+<!-- omit in toc -->
+#### References:
 * [Owens, J. A., Spirito, A., & McGuinn, M. (2000). The Children’s Sleep Habits Questionnaire (CSHQ): Psychometric Properties of A Survey Instrument for School-Aged Children. SLEEP, 23(8), 1043–1052.](#https://pubmed.ncbi.nlm.nih.gov/11145319/)
 * [Chawla, J. K., Howard, A., Burgess, S., & Heussler, H. (2021). Sleep problems in Australian children with Down syndrome: The need for greater awareness. Sleep Medicine, 78, 81–87. https://doi.org/10.1016/j.sleep.2020.12.022](#https://pubmed.ncbi.nlm.nih.gov/33412456/)
 
@@ -871,94 +968,116 @@ References:
 
 description...
 
-Scale: 
+<!-- omit in toc -->
+#### Scale: 
+0) Never
+1) Rarely
+2) Sometimes
+3) Mostly
+4) Always
 
-Scoring: 
+<!-- omit in toc -->
+#### Subscales:
+* Child control
+* Emotion Regulation
+* Encourage balance and variety
+* Environment
+* Food as reward
+* Involvement
+* Modeling
+* Monitoring
+* Pressure
+* Restriction for health
+* Restriction for weight control
+* Teaching about nutrition
 
-Subscales:
+<!-- omit in toc -->
+#### Scoring
+Response are scaled to base 1 (i.e., 1-5). The mean of the scaled responses is computed for each subscale if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
-Database and meta-data in bids/phenotype: 
+<!-- omit in toc -->
+#### Database and meta-data in bids/phenotype: 
   * cfpq.tsv and cfpq.json
 
-References:
+References: 
+* [Musher-Eizenman, D., Holub. S., Comprehensive Feeding Practices Questionnaire: Validation of a New Measure of Parental Feeding Practices, Journal of Pediatric Psychology, 32, 8, 2007, Pages 960-972]()
 
 ### Confusion, Hubbub, and Order Scale (CHAOS)
 
 description...
 
 Scale: 
-
-Scoring: 
+0) Very much like your own home
+1) Somewhat like your own home
+2) A little like your own home
+3) Not at all like your own home
 
 Subscales:
+* Total score
 
+Scoring: Response are scaled to base 1 (i.e., 1-4). The sum of scaled responses is calculated is there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
+ 
 Database and meta-data in bids/phenotype: 
   * chaos.tsv and chaos.json
 
 References:
+* [Matheny, A. P., Jr., Wachs, T. D., Ludwig, J. L., Phillips, K. (1995). Bringing order out of chaos: Psychometric characteristics of the confusion, hubbub, and order scale. Journal of Applied Developmental Psychology, 16(3), 429-444]()
 
 ### Dutch Eating Behavior Questionnaire (DEBQ)
 
 description...
 
-Scale: 
-
-Scoring: 
+Raw data scale: 
+0) Never
+1) Seldom
+2) Sometimes
+3) Often
+4) Very Often
 
 Subscales:
+* Emotional eating
+* External eating
+* Restrained eating
+
+Scoring: Response are scaled to base 1 (i.e., 1-5). The mean of the scaled responses is computed for each subscale if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
 Database and meta-data in bids/phenotype: 
   * debq.tsv and debq.json
 
 References:
+* [Wardle J. Eating style: a validation study of the Dutch Eating Behaviour Questionnaire in normal subjects and women with eating disorders. J Psychosom Res. 1987;31(2):161-9. doi: 10.1016/0022-3999(87)90072-9. PMID: 3473234.](#https://pubmed.ncbi.nlm.nih.gov/3473234/)
 
 ### External Food Cues Responsiveness Scale (EFCR)
 
 description...
 
-Scale: 
+Raw data scale: 
+0) Never
+1) Rarely
+2) Sometimes
+3) Often
+4) Always
 
-Scoring: 
+Scoring: Response are scaled to base 1 (i.e., 1-5). The mean of the scaled responses is computed if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
 Subscales:
+* Total score
 
 Database and meta-data in bids/phenotype: 
   * efcr.tsv and ecfr.json
 
 References:
-
-### Family Food Behvior Survey (FFBS)
-
-description...
-
-Scale: 
-0) Never True
-1) Rarely True
-2) Sometimes
-3) Often True
-4) Always True
-
-Scoring: The sum of the responses is computed if there are no missing responses. 
-  
-Subscales:
-* Maternal Control
-* Maternal Presences
-* Child Choice
-* Organization
-
-Database and meta-data in bids/phenotype: 
-  * ffbs.tsv and ffbs.json
-
-References:
-* [Baughcum, A. E., Powers, S. W., Johnson, S. B., Chamberlin, L. A., Deeks, C. M., Jain, A., & Whitaker, R. C. (2001). Maternal Feeding Practices and Beliefs and Their Relationships to Overweight in Early Childhood: Journal of Developmental & Behavioral Pediatrics, 22(6), 391–408. doi.org/10.1097/00004703-200112000-00007](#https://pubmed.ncbi.nlm.nih.gov/11773804/)
-* [McCurdy, K., & Gorman, K. S. (2010). Measuring family food environments in diverse families with young children. Appetite, 54(3), 615–618. doi.org/10.1016/j.appet.2010.03.004](#https://pubmed.ncbi.nlm.nih.gov/20227449/)
+* [Masterson TD, Gilbert-Diamond D, Lansigan RK, Kim SJ, Schiffelbein JE, Emond JA. Measurement of external food cue responsiveness in preschool-age children: Preliminary evidence for the use of the external food cue responsiveness scale. Appetite. 2019;139:119-126. doi:10.1016/j.appet.2019.04.024'](#https://pubmed.ncbi.nlm.nih.gov/31047939/)
 
 
 ### Feeding Strategies Questionnaire (FSQ)
 
 description...
 
-Scale: 
+Scale: Responses were collected using a sliding scale with the anchors:
+* 0 = Never
+* 50 = Sometimes*
+* 100 = Always 
 
 Scoring: 
 
@@ -988,22 +1107,33 @@ References:
 
 description...
 
-Scale: the scale differed depending on the item
-* Scale 1:
+Raw data Scales: the scale differed depending on the item
+
+* Event scale (Items asking if event occured):
   0) No 
   1) Yes
   -99) I don't know or Don't want to answer 
-* Scale 2:
-  1) Rarely
-  2) Sometimes
-  3) Often
-  -99) I don't know or Don't want to answer
 
-Scoring: The sum of the responses is computed after omitting any missing or skipped responses.
-  
-Outcome Measure:
+* Frequency scale (Items asking about frequency of event; administered only if responder indicated event occured):
+  0) Rarely
+  1) Sometimes
+  2) Often
+
+Outcome Measures:
 * Total Score
+  * Frequency items 1-9
 * Category Score
+  * Frequeny items 1-9
+* Anxiety domain indicator
+  * Event item 1
+* Insufficient Quality domain indicator
+  * Event items 2, 3, 4
+* Insufficient food intake and physical consequences domain indicator
+  * Event items 5, 6, 7, 8, 9
+
+Scoring: The value of unadminiseted Frequency items (i.e., corresponding event did not occur) are set to 0 (Rarely). The sum of the responses to Frequency items is computed if there are no missing responses (total score). Category score is determined based on responses to indiviudal Frequency items.  Indicator values are set to 1 if any Event item occured (value = 1) for a given domain.
+
+Scoring is implemented using [dataprepr](#dataprepr). 
 
 Database and meta-data in bids/phenotype: 
   * hfias.tsv and hfias.json
@@ -1022,22 +1152,45 @@ Scale:
 
 Scoring: 
 
-Subscales:
+Outcome measures:
+* U.S. Household Food Security Scale score
+* U.S. Household Food Security Scale category
+* U.S. Adult Food Security Scale score
+* U.S. Adult Food Security Scale category
+* Six-Item Food Security Scale score
+* Six-Item Food Security Scale category
+* U.S. Children's Food Security Scale score
+* U.S. Children's Food Security Scale category
 
 Database and meta-data in bids/phenotype: 
   * hfssm.tsv and hfssm.json
 
 References:
+* [U.S. HOUSEHOLD FOOD SECURITY SURVEY MODULE: THREE-STAGE DESIGN, WITH SCREENERS Economic Research Service, USDA September 2012](#https://www.ers.usda.gov/media/8271/hh2012.pdf)
 
 ### Lifestyle Behavior Checklist (LBC)
 
 description...
 
-Scale: 
+Scale: Two scales were used:
 
-Scoring: 
+Items asking the extent to which certain behaviors have been a problem used an integer scale from 0-6 with the anchors:
+* 0 = Not much at all
+* 3 = Somewhat
+* 6 = Very much
+
+Items asking how confident the responder is in dealing with a problem used an integer scale from 0-9 with the anchors:
+* 0 = Certain I cannot do it
+* 9 = Certain I can do it
+
+Scoring: Only items asking about the extent of certain behaviors are used in scoring. Response are scaled to base 1 (i.e., 1-7). The mean of the scaled responses is computed for each subscale if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
 Subscales:
+* Food-related misbehavior
+* Overeating
+* Emotion related to being overweight
+* Physical activity
+* Total score
 
 Database and meta-data in bids/phenotype: 
   * lbc.tsv and lbc.json
@@ -1051,9 +1204,16 @@ description...
 
 Scale: 
 
-Scoring: 
+0) Never
+1) Rarely
+2) Sometimes
+3) Often
+4) Always
 
 Subscales:
+* total score 
+
+Scoring: Response are scaled to base 1 (i.e., 1-5). The mean of the scaled responses is computed if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
 Database and meta-data in bids/phenotype: 
   * pmum.tsv and pmum.json
@@ -1064,17 +1224,31 @@ References:
 
 description...
 
+Higher total scores reflect higher percieved stress; 
 Scale: 
+
+0) Never
+1) Almost never
+2) Sometimes
+3) Fairly Often
+4) Very Always
 
 Scoring: 
 
-Subscales:
+Outcome measures/subscales:
+* Total perceived stress score
+  * Items (* = reverse scored): 1, 2, 3, 4*, 5*, 6, 7*, 8*, 9, 10
+* Perceived helplessness
+  * Items: 1, 2, 3, 6, 9, 10
+* Perceived self-efficacy
+  * Items: 4, 5, 7, 8
 
 Database and meta-data in bids/phenotype: 
   * pss.tsv and pss.json
 
 References:
-
+* [Cohen, S. and Williamson, G. Perceived Stress in a Probability Sample of the United States. Spacapan, S. and Oskamp, S. (Eds.) The Social Psychology of Health. Newbury Park, CA: Sage, 1988](#https://psycnet.apa.org/record/1988-98838-002)
+* [Taylor JM. Psychometric analysis of the Ten-Item Perceived Stress Scale. Psychol Assess. 2015 Mar;27(1):90-101. doi: 10.1037/a0038100. Epub 2014 Oct 27. PMID: 25346996.](#)
 
 ### Parental Strategies to Teach Children about Advertising (PSTCA)
 
@@ -1150,6 +1324,13 @@ Subscales:
   * Items: 9, 10, 12, 14, 34
 * Pressure to eat
   * Items: 17, 18, 19, 21, 24, 29
+
+| Subscale | Items | 
+| -------- | ------- | 
+| Limit Exposure | 1, 2, 3, 4, 6, 8, 13, 22, 31, 32, 33 |
+| Consistent feeding routines | 5, 7, 15, 16, 20, 23, 25, 26, 27, 28, 30 |
+| Restriction | 9, 10, 12, 14, 34 |
+| Pressure to eat | 17, 18, 19, 21, 24, 29 |
 
 Database and meta-data in bids/phenotype: 
   * scpf.tsv and scpf.json
@@ -1354,10 +1535,11 @@ Data are stored on 2 servers:
 Survey and task data are stored on both servers, while imaging data is stored on Roar Collab only (due to file size).
 
 Data on OneDrive are stored in the folder: 
-b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData
+b-childfoodlab_Shared > Active_Studies > MarketingResilienceRO1_8242020 > ParticipantData
 
-Data on Roar Collab are stored in the folder:
-storage/group/klk37/default/R01_Marketing
+Data
+on Roar Collab are stored in the folder:
+storage > group > klk37 > default > R01_Marketing
 
 On OneDrive, the directory structure looks like:
 - b-childfoodlab_Shared
@@ -1459,20 +1641,20 @@ This looks like:
     - sub-{label}/
       - ses-1/
         - fmap/
-          - [Field map MRI data - these will end with *.nii.gz]
+          - [Field map MRI data - these end with *.nii.gz]
           - [Field map meta-data JSON files]
         - func/
-          - [fMRI data for Food View Task and SST - these will end with *.nii.gz]
+          - [fMRI data for Food View Task and SST - these end with *.nii.gz]
           - [fMRI meta-data JSON files]
-          - [Behavioral data for Food View task and fMRI SST - these will end with *_events.tsv]
+          - [Behavioral data for Food View task and fMRI SST - these end with *_events.tsv]
         - anat/
-          - [Structural MRI data - these will end with *.nii.gz]
+          - [Structural MRI data - these end with *.nii.gz]
           - [Structural MRI meta-data JSON file]
         - beh/
-          - [Behavioral data for tasks *not* collected alongside fMRI data - these will end with *_beh.tsv]
+          - [Behavioral data for tasks *not* collected alongside fMRI data - these end with *_beh.tsv]
       - ses-2/
         - beh/
-          - [Behavioral data for tasks *not* collected alongside fMRI data - these will end with *_beh.tsv]
+          - [Behavioral data for tasks *not* collected alongside fMRI data - these end with *_beh.tsv]
 
 Remember, MRI data (i.e., nii.gz files) will only exist on Roar Collab due to size. Task data (i.e., TSV files) can be synced between OneDrive and Roar Collab. 
 
