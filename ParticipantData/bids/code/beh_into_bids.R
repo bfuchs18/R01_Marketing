@@ -34,7 +34,7 @@ data_de_path = paste0(base_dir, "/bids/sourcedata/phenotype/", double_entry_file
 redcap_data <-
   proc_redcap(visit_data_path,
               data_de_path,
-              overwrite = FALSE,
+              overwrite = TRUE,
               return_data = TRUE)
 
 # run quality checks on redcap data
@@ -46,11 +46,9 @@ qc_redcap(redcap_data)
 task_data <-
   proc_task(
     base_wd = base_dir,
-    overwrite_parsed_rrv = FALSE,
-    overwrite_sourcedata = FALSE,
-    overwrite_rawdata_vector = c("all_tasks"),
-    #overwrite_rawdata_vector = c(),
-    overwrite_jsons = FALSE,
+    overwrite_sourcedata = TRUE,
+    overwrite_rawdata = TRUE,
+    overwrite_jsons = TRUE,
     return_data = TRUE
   )
 
@@ -65,8 +63,9 @@ source_dir <- paste0(base_dir,"{untouchedRaw,bids}")
 ## destination: R01_Marketing on Roar Collab (submit.hpc.psu.edu)
 destination_dir = paste0(user_id, "@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing")
 
-# Build rsync command
+# Build rsync command 
+# TO DO: figure a way to sync without changing permissions 
 rsync_cmd <- paste("rsync -av --update", source_dir, destination_dir)
 
 # Execute rsync command - running this will prompt the user to enter their password
-system(rsync_cmd)
+# system(rsync_cmd) ## commented out until permissions issue is resolved
