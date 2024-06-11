@@ -1,0 +1,50 @@
+---
+title: "reach_fmri_sample"
+author: "baf44"
+date: "2023-12-15"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+
+library(dplyr)
+
+# import REACH data downloaded from REDCap
+#fmri_protocol <- read.csv("~/Downloads/FoodMarketingResilie_DATA_2023-12-15_1242.csv")
+fmri_protocol <- read.csv("~/Downloads/FoodMarketingResilie_DATA_2024-02-27_1715.csv")
+
+```
+
+```{r run counts}
+
+sum(fmri_protocol$mri_anatomy_complete_check == "0", na.rm = T)
+sum(fmri_protocol$mri_anatomy_complete_check == "1", na.rm = T)
+
+
+fmri_protocol <- fmri_protocol %>% mutate(foodcue_run_count = rowSums(.[grep("food_run", names(.))]))
+fmri_protocol <- fmri_protocol %>% mutate(sst_run_count = rowSums(.[grep("sst_run", names(.))]))
+
+sum(fmri_protocol$foodcue_run_count == "4", na.rm = T)
+sum(fmri_protocol$foodcue_run_count == "0", na.rm = T)
+sum(fmri_protocol$foodcue_run_count != "4", na.rm = T)
+sum(fmri_protocol$foodcue_run_count == "1" | fmri_protocol$foodcue_run_count == "2" | fmri_protocol$foodcue_run_count == "3", na.rm = T)
+sum(fmri_protocol$foodcue_run_count == "1" | fmri_protocol$foodcue_run_count == "2" | fmri_protocol$foodcue_run_count == "3" | fmri_protocol$foodcue_run_count == "4", na.rm = T)
+
+sum(fmri_protocol$sst_run_count == "6", na.rm = T)
+sum(fmri_protocol$sst_run_count == "0", na.rm = T)
+sum(fmri_protocol$sst_run_count != "6", na.rm = T)
+
+sum(fmri_protocol$sst_run_count == "1" | fmri_protocol$sst_run_count == "2" | fmri_protocol$sst_run_count == "3" | fmri_protocol$sst_run_count == "4" | fmri_protocol$sst_run_count == "5", na.rm = T)
+
+```
+
+## Including Plots
+
+
+```{r histograms, echo=FALSE}
+
+hist(fmri_protocol$foodcue_run_count, xlab = "total number of food view task runs completed", ylab = "number of children", ylim=c(0,50))
+hist(fmri_protocol$sst_run_count, xlab = "total number of SST runs completed", ylab = "number of children", ylim=c(0,50))
+```
