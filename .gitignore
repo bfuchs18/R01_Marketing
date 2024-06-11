@@ -4,3 +4,5 @@ ParticipantData/bids/sourcedata
 ParticipantData/untouchedRaw
 ParticipantData/bids/rawdata
 ParticipantData/bids/phenotype
+ParticipantData/bids/participants*
+*html
