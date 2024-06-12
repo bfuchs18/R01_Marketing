@@ -144,6 +144,8 @@ Study REACH involves a total of 5 visits for parent-child dyads. The first 4 vis
 
 The 4 baseline visits include: Child Visit Protocol 1, Child Visit Protocol 2, Child Visit Protocol 3, and Child Visit Protocol 4. Child Visit Protocol 1 always occurred on the first study visit, while Child Visit Protocols 2-4 could vary in order due to MRI availability. The follow-up visit includes Child Visit Protocol 5. 
 
+Parents completed sets of questionnaires for each of the 5 visits. 
+
 ## Baseline (ses-1)
 ### Child Visit Protocol 1 (visit 1)
 
@@ -638,7 +640,7 @@ The sum of responses is computed if there are no missing responses. Scores >= 8 
 
 ### Behavioral Inhibition System/Behavioral Activation System (BIS/BAS)
 
-The BIS/BAS scale is a 24-item self-report scale that assesses 2 motivational systems proposed to underlie behavior and affect: a behavioral inhibition system (BIS) and a behavioral activation system (BAS).
+The BIS/BAS scale assesses 2 motivational systems proposed to underlie behavior and affect: a behavioral inhibition system (BIS) and a behavioral activation system (BAS). The scale contains 20 scored items and 4 filler items. Parents completed the adapted parent-report version (Blair 2003) to assess child BIS/BAS sensitivity.
 
 <!-- omit in toc -->
 #### Raw data scale:
@@ -661,7 +663,7 @@ The BIS/BAS scale is a 24-item self-report scale that assesses 2 motivational sy
 
 <!-- omit in toc -->
 #### Scoring:
-Responses are scaled to base 1 (i.e., 1-4) and reverse scoring is implemented for reverse-scored items. The mean of scaled responses is computed for each subscale if there are no missing responses. Note, although there are 24 items, only 20 are used in scoring as there are 4 filler items. Scoring is implemented using [dataprepr](#dataprepr). 
+Responses are scaled to base 1 (i.e., 1-4) and reverse scoring is implemented for reverse-scored items. The mean of scaled responses is computed for each subscale if there are no missing responses. Scoring is implemented using [dataprepr](#dataprepr). 
 
 <!-- omit in toc -->
 #### Database and meta-data in bids/phenotype: 
@@ -669,9 +671,9 @@ Responses are scaled to base 1 (i.e., 1-4) and reverse scoring is implemented fo
   
 <!-- omit in toc -->
 #### References:
+* Original Scale: Carver CS, White TL. Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: The BIS/BAS Scales. Journal of Personality and Social Psychology. 1994;67(2):319-333. doi:http://dx.doi.org/10.1037/0022-3514.67.2.319.
+* Adapted parent-report scale: [Blair, C. (2003). Behavioral inhibition and behavioral activation in young children: Relations with self-regulation and adaptation to preschool in children attending head start. Developmental Psychobiology, 42(3), 301–311.](#https://onlinelibrary.wiley.com/doi/10.1002/dev.10103)
 * Muris P, Meesters C, de Kanter E, Timmerman PE. Behavioural inhibition and behavioural activation system scales for children: relationships with Eysenck’s personality traits and psychopathological symptoms. Personality and Individual Differences. 2005;38(4):831-841. doi:10.1016/j.paid.2004.06.007
-* Carver CS, White TL. Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: The BIS/BAS Scales. Journal of Personality and Social Psychology. 1994;67(2):319-333. doi:http://dx.doi.org/10.1037/0022-3514.67.2.319.
-
 ### Behavioral Rating Inventory of Executive Function-2 (BRIEF-2)
 
 The Behavioral Rating Index of Executive Function-2 (BRIEF-2) is a parent-report measure of everyday executive behaviors in children ages 5-18 that is normed for age and gender. T-scores of 60 or greater indicate high risk/clinical relevance for symptoms. 
