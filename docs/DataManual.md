@@ -671,9 +671,10 @@ Responses are scaled to base 1 (i.e., 1-4) and reverse scoring is implemented fo
   
 <!-- omit in toc -->
 #### References:
-* Original Scale: Carver CS, White TL. Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: The BIS/BAS Scales. Journal of Personality and Social Psychology. 1994;67(2):319-333. doi:http://dx.doi.org/10.1037/0022-3514.67.2.319.
+* Original Scale: [Carver CS, White TL. Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: The BIS/BAS Scales. Journal of Personality and Social Psychology. 1994;67(2):319-333. doi:http://dx.doi.org/10.1037/0022-3514.67.2.319.](#https://psycnet.apa.org/doiLanding?doi=10.1037%2F0022-3514.67.2.319)
 * Adapted parent-report scale: [Blair, C. (2003). Behavioral inhibition and behavioral activation in young children: Relations with self-regulation and adaptation to preschool in children attending head start. Developmental Psychobiology, 42(3), 301–311.](#https://onlinelibrary.wiley.com/doi/10.1002/dev.10103)
-* Muris P, Meesters C, de Kanter E, Timmerman PE. Behavioural inhibition and behavioural activation system scales for children: relationships with Eysenck’s personality traits and psychopathological symptoms. Personality and Individual Differences. 2005;38(4):831-841. doi:10.1016/j.paid.2004.06.007
+* [Muris P, Meesters C, de Kanter E, Timmerman PE. Behavioural inhibition and behavioural activation system scales for children: relationships with Eysenck’s personality traits and psychopathological symptoms. Personality and Individual Differences. 2005;38(4):831-841. doi:10.1016/j.paid.2004.06.007](#https://pure.eur.nl/en/publications/behavioural-inhibition-and-behavioural-activation-system-scales-f)
+
 ### Behavioral Rating Inventory of Executive Function-2 (BRIEF-2)
 
 The Behavioral Rating Index of Executive Function-2 (BRIEF-2) is a parent-report measure of everyday executive behaviors in children ages 5-18 that is normed for age and gender. T-scores of 60 or greater indicate high risk/clinical relevance for symptoms. 
