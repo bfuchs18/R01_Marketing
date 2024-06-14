@@ -46,9 +46,9 @@ qc_redcap(redcap_data)
 task_data <-
   proc_task(
     base_wd = base_dir,
-    overwrite_sourcedata = FALSE,
-    overwrite_rawdata = FALSE,
-    overwrite_jsons = FALSE,
+    overwrite_sourcedata = TRUE,
+    overwrite_rawdata = TRUE,
+    overwrite_jsons = TRUE,
     return_data = TRUE
   )
 
@@ -63,10 +63,15 @@ if (!dir.exists(beh_sum_dir)) {
 
 # rrv task
 rrv_deriv_data <- deriv_rrv(task_data$rrv_data)
+rrv_wide <- rrv_deriv_data[['summary']]
+rrv_long <- rrv_deriv_data[['summary_long']]
+
 json_rrv_deriv <- json_deriv_rrv()
+rrv_wide_json <- json_rrv_deriv[['rrv_summary_json']]
+rrv_long_json <- json_rrv_deriv[['rrv_summary_long_json']]
 
 write.table(
-  rrv_deriv_data,
+  rrv_wide,
   paste0(beh_sum_dir, "rrv.tsv"),
   quote = FALSE,
   sep = '\t',
@@ -75,7 +80,17 @@ write.table(
   na = "n/a" # use 'n/a' for missing values for BIDS compliance
 )
 
-write(json_rrv_deriv, paste0(beh_sum_dir, "rrv.json"))
+write.table(
+  rrv_long,
+  paste0(beh_sum_dir, "rrv_long.tsv"),
+  quote = FALSE,
+  sep = '\t',
+  col.names = TRUE,
+  row.names = FALSE,
+  na = "n/a" # use 'n/a' for missing values for BIDS compliance
+)
+write(rrv_wide_json, paste0(beh_sum_dir, "rrv.json"))
+write(rrv_long_json, paste0(beh_sum_dir, "rrv_long.json"))
 
 #### Sync data from OneDrive to RoarCollab ####
 
