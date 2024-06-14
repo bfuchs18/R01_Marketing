@@ -46,11 +46,36 @@ qc_redcap(redcap_data)
 task_data <-
   proc_task(
     base_wd = base_dir,
-    overwrite_sourcedata = TRUE,
-    overwrite_rawdata = TRUE,
-    overwrite_jsons = TRUE,
+    overwrite_sourcedata = FALSE,
+    overwrite_rawdata = FALSE,
+    overwrite_jsons = FALSE,
     return_data = TRUE
   )
+
+#### Generate derivatives ####
+
+# create directory for summary beh data if it doesn't exist
+beh_sum_dir <- paste0(base_dir, "/bids/derivatives/beh_summary_databases/")
+
+if (!dir.exists(beh_sum_dir)) {
+  dir.create(beh_sum_dir, recursive = TRUE)
+}
+
+# rrv task
+rrv_deriv_data <- deriv_rrv(task_data$rrv_data)
+json_rrv_deriv <- json_deriv_rrv()
+
+write.table(
+  rrv_deriv_data,
+  paste0(beh_sum_dir, "rrv.tsv"),
+  quote = FALSE,
+  sep = '\t',
+  col.names = TRUE,
+  row.names = FALSE,
+  na = "n/a" # use 'n/a' for missing values for BIDS compliance
+)
+
+write(json_rrv_deriv, paste0(beh_sum_dir, "rrv.json"))
 
 #### Sync data from OneDrive to RoarCollab ####
 
