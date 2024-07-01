@@ -640,7 +640,8 @@ The sum of responses is computed if there are no missing responses. Scores >= 8 
 
 ### Behavioral Inhibition System/Behavioral Activation System (BIS/BAS)
 
-The BIS/BAS scale assesses 2 motivational systems proposed to underlie behavior and affect: a behavioral inhibition system (BIS) and a behavioral activation system (BAS). The scale contains 20 scored items and 4 filler items. Parents completed the adapted parent-report version (Blair 2003) to assess child BIS/BAS sensitivity.
+The BIS/BAS scale assesses 2 motivational systems proposed to underlie behavior and affect: a behavioral inhibition system (BIS) and a behavioral activation system (BAS). The scale contains 20 scored items and 4 filler items. Parents completed a parent-report version using a 4-point likert scale to assess child BIS/BAS sensitivity.
+
 
 <!-- omit in toc -->
 #### Raw data scale:
@@ -654,12 +655,14 @@ The BIS/BAS scale assesses 2 motivational systems proposed to underlie behavior 
 #### Subscales / Outcome measures:
 | Subscale | Items* |
 | -------- | ------- | 
-| Behavioral Inhibition System (BIS) | 16, 24, 8, 13, 2*, 19, 22*|
-| Funseeking | 10, 20, 5, 15|
-| Drive | 9, 3, 12, 21 |
-| Reward Responsiveness | 7, 4, 18, 23, 14|
+| Behavioral Inhibition System (BIS) | 16*, 24*, 8*, 13*, 2, 19*, 22|
+| BAS Funseeking | 10*, 20*, 5*, 15*|
+| BAS Drive | 9*, 3*, 12*, 21* |
+| BAS Reward Responsiveness | 7*, 4*, 18*, 23*, 14*|
 | Behavioral Activation System (BAS) | Funseeking, Drive, and Reward Responsiveness items|
 * *reverse-scored item
+
+Note, in the literature, different versions of the BIS/BAS use different and opposing scoring scales (e.g., higher scores indicate disagreement vs agreement). The direction of the scale used here is consistent in direction with Carver et al., and Blair et al., but not Muris et al. [Documentation from the University of Washington](#https://depts.washington.edu/uwcssc/sites/default/files//hw00/d40/uwcssc/sites/default/files/BIS-BAS.pdf) suggests this version of the scale should be scored by reverse-scoring all items except 2 and 22, which is seeminly different that reported by Carver, but makes more sense intuitively (e.g., such that higher BIS scores indicate higher behavioral inhibition sensitivity).
 
 <!-- omit in toc -->
 #### Scoring:
@@ -671,9 +674,9 @@ Responses are scaled to base 1 (i.e., 1-4) and reverse scoring is implemented fo
   
 <!-- omit in toc -->
 #### References:
-* Original Scale: [Carver CS, White TL. Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: The BIS/BAS Scales. Journal of Personality and Social Psychology. 1994;67(2):319-333. doi:http://dx.doi.org/10.1037/0022-3514.67.2.319.](#https://psycnet.apa.org/doiLanding?doi=10.1037%2F0022-3514.67.2.319)
-* Adapted parent-report scale: [Blair, C. (2003). Behavioral inhibition and behavioral activation in young children: Relations with self-regulation and adaptation to preschool in children attending head start. Developmental Psychobiology, 42(3), 301–311.](#https://onlinelibrary.wiley.com/doi/10.1002/dev.10103)
-* [Muris P, Meesters C, de Kanter E, Timmerman PE. Behavioural inhibition and behavioural activation system scales for children: relationships with Eysenck’s personality traits and psychopathological symptoms. Personality and Individual Differences. 2005;38(4):831-841. doi:10.1016/j.paid.2004.06.007](#https://pure.eur.nl/en/publications/behavioural-inhibition-and-behavioural-activation-system-scales-f)
+* Original Scale for adults: [Carver CS, White TL. Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: The BIS/BAS Scales. Journal of Personality and Social Psychology. 1994;67(2):319-333. doi:http://dx.doi.org/10.1037/0022-3514.67.2.319.](#https://psycnet.apa.org/doiLanding?doi=10.1037%2F0022-3514.67.2.319)
+* Adapted parent-report scale (7-point likert): [Blair, C. (2003). Behavioral inhibition and behavioral activation in young children: Relations with self-regulation and adaptation to preschool in children attending head start. Developmental Psychobiology, 42(3), 301–311.](#https://onlinelibrary.wiley.com/doi/10.1002/dev.10103)
+* Adapted child-report scale (4-point likert): [Muris P, Meesters C, de Kanter E, Timmerman PE. Behavioural inhibition and behavioural activation system scales for children: relationships with Eysenck’s personality traits and psychopathological symptoms. Personality and Individual Differences. 2005;38(4):831-841. doi:10.1016/j.paid.2004.06.007](#https://pure.eur.nl/en/publications/behavioural-inhibition-and-behavioural-activation-system-scales-f)
 
 ### Behavioral Rating Inventory of Executive Function-2 (BRIEF-2)
 
