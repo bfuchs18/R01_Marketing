@@ -14,3 +14,5 @@ This repo contains code to process data from Keller Lab Marketing Study
   - template_fmriprep-v2320.slurm: template for subject-specific scripts (used by gen_sub_fmriprep.sh)
  
 - bids/code/beh_into_bids.R: script to process and organize redcap (phenotype) and task data into bids/ using dataREACHr functions (https://github.com/bfuchs18/dataREACHr)
+
+The README for project code is located in the [ParticipantData/bids/code/](ParticipantData/bids/code/README.md) directory.
