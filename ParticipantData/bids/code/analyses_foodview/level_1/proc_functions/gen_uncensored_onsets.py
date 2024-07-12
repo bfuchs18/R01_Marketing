@@ -31,27 +31,46 @@ def gen_uncensored_onsets(sub, bids_dir, overwrite = False, return_onset_df = Fa
     ### Check arguments ###
     #######################
 
-    # check that par_id arg is provided
-    ## add this
+    # set sub with leading zeros
+    if not sub:
+        print("sub is not defined")
+        raise Exception()
+    else:
+        sub = str(sub).zfill(3)
     
-    # check that bids_dir arg is provided
-    ## add this
+    # set bids_dir
+    if not bids_dir:
 
-    # check that overwrite arg is provided and boolean
-    ## add this
+        print("bids_dir must be string")
+        raise Exception()
 
+    elif isinstance(bids_dir, str):
+
+        # make input string a path
+        bids_dir = Path(bids_dir)
+
+    else: 
+        print("bids_dir must be string")
+        raise Exception()
+
+    # check overwrite
+    if not isinstance(overwrite, bool):
+        print("overwrite must be boolean (True or False)")
+        raise Exception()
+
+    # check return_onset_df
+    if not isinstance(return_onset_df, bool):
+        print("return_onset_df must be boolean (True or False)")
+        raise Exception()
+    
     ##############
     ### Set up ###
     ##############
 
-    #set specific paths
-    bids_dir = Path(bids_dir)
+    # define output directory
     out_dir = os.path.join(bids_dir, 'derivatives/analyses/foodview/level_1/sub-' + str(sub) + '/onsets_uncensored')
 
-    # set sub with leading zeros
-    sub = str(sub).zfill(3)
-
-    # make onset directory if it doesnt exist
+    # make output directory if it doesnt exist
     os.makedirs(out_dir, exist_ok=True)
 
     # get list of events files
@@ -182,4 +201,6 @@ def gen_uncensored_onsets(sub, bids_dir, overwrite = False, return_onset_df = Fa
 
     if return_onset_df is True:
         # return dictionary or dataframe? 
+        # could return something that can go straight into gen_censored_onsets instead of needing to upload files?
+        ## this would require something is returned for every subject? even if they have onset files? 
         return()
