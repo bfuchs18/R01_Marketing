@@ -44,7 +44,7 @@ analysis_dir = os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview')
 # call processing functions
 
 try:
-    gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False)
+    onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False)
 except:
     print("Discontinuing gen_uncensored_onsets() for sub-" + sub)
 
@@ -53,4 +53,12 @@ try:
 except:
     print("Discontinuing gen_regressor_file() for sub-" + sub)
 
+try:
+    gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
+except:
+    print("Discontinuing gen_censor_files() for sub-" + sub)
 
+# try:
+#     gen_censored_onsets.gen_censored_onsets(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
+# except:
+#     print("Discontinuing gen_censored_onsets() for sub-" + sub)

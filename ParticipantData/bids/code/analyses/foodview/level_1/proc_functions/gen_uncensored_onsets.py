@@ -26,7 +26,7 @@ rawdata_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUni
 analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/foodview"
 overwrite = True
 
-def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, return_onset_df = False):
+def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, return_onset_dict = True):
     """
     This function creates uncensored onset files (AFNI format) for the food view task for a given subject
     One onset file is generated for each of the following trial types: food commercial block (food_ad), toy commercial block (toy_ad), high-ED savory food image block after toy commercial (hed_savory_toy_cond), high-ED savory food image block after food commercial (hed_savory_food_cond), high-ED sweet food image block after toy commercial (hed_sweet_toy_cond), high-ED sweet food image block after food commercial (hed_sweet_food_cond), low-ED savory food image block after toy commercial (led_savory_toy_cond), low-ED savory food image block after food commercial (led_savory_food_cond), low-ED sweet food image block after toy commercial (led_sweet_toy_cond), low-ED sweet food image block after food commercial (led_sweet_food_cond)
@@ -36,7 +36,7 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         bids_dir (str) - path to bids_dir/ directory. Events files will be loaded from bids/rawdata/sub-{sub}/ses-1/func/
         analysis_dir (str) - path to output directory in bids/derivatives/analyses. Uncensored onset files will be exported into bids/derivatives/analyses/{analysis_dir}/level_1/sub-{sub}/onsets_uncensored/
         overwrite (boolean) - specify if output files should be overwritten (default = False)
-        return_onset_df (boolean) - specify if onset times should be returned in a dataframe
+        return_onset_dict (boolean) - specify if onset times should be returned in a dataframe
     """
 
     #######################
@@ -86,8 +86,8 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         raise Exception()
 
     # check return_onset_df
-    if not isinstance(return_onset_df, bool):
-        print("return_onset_df must be boolean (True or False)")
+    if not isinstance(return_onset_dict, bool):
+        print("return_onset_dict must be boolean (True or False)")
         raise Exception()
     
     ##############
@@ -225,8 +225,5 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         else:
             print(trial_type_key + ' uncensored onset files already exist for sub ' + str(sub) + '. Use overwrite = True to overwrite')
             
-    if return_onset_df is True:
-        # return dictionary or dataframe? 
-        # could return something that can go straight into gen_censored_onsets instead of needing to upload files?
-        ## this would require something is returned for every subject? even if they have onset files? 
-        return()
+    if return_onset_dict: 
+        return(onsets_dict)
