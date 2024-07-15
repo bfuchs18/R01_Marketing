@@ -19,7 +19,7 @@ from pathlib import Path
 
 # for debugging
 sub = 1
-fmriprep_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/fmriprep_v2320"
+fmriprep_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/preprocefmriprep_v2320"
 analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/foodview"
 overwrite = True
 
@@ -47,21 +47,6 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     else:
         sub = str(sub).zfill(3)
     
-    # set bids_dir
-    if not bids_dir:
-
-        print("bids_dir must be string")
-        raise Exception()
-
-    elif isinstance(bids_dir, str):
-
-        # make input string a path
-        bids_dir = Path(bids_dir)
-
-    else: 
-        print("bids_dir must be string")
-        raise Exception()
-
     # set fmriprep_dir
     if not fmriprep_dir:
 
@@ -159,8 +144,8 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     if filepath.exists() and not overwrite:
         print('Nuisance regressor file already exist for sub-' + str(sub) + '. Use overwrite = True to overwrite')
     else:
-        run_regressors_data.to_csv(str(filepath), sep = '\t', encoding='ascii', index = False, header=False)
+        all_runs_regressors_data.to_csv(str(filepath), sep = '\t', encoding='ascii', index = False, header=True)
 
     # return dataframe
     if return_dataframe is True:
-        return(run_regressors_data)
+        return(all_runs_regressors_data)
