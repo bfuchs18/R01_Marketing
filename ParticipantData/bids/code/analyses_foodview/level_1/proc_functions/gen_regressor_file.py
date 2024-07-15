@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This function creates a CSV file with nuisance regressors for first-level analyses in AFNI based on fmriprep confound files
-
-The following variables will be included: trans_x, trans_y, trans_z, rot_x, rot_y, rot_z, csf, white_matter, trans_x_derivative1, trans_y_derivative1, trans_z_derivative1, rot_x_derivative1, rot_y_derivative1, rot_z_derivative1
-
 @author: baf44
 """
 
@@ -23,10 +19,22 @@ from pathlib import Path
 
 # for debugging
 sub = 1
-bids_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids"
+fmriprep_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/fmriprep_v2320"
+analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/foodview"
 overwrite = True
 
-def gen_regressor_file(sub, bids_dir, overwrite = False, return_dataframe = False):
+def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, return_dataframe = False):
+    """
+    This function will creates a CSV file with nuisance regressors for first-level analyses in AFNI based on fmriprep confound files for a given subject
+    The following variables will be included: trans_x, trans_y, trans_z, rot_x, rot_y, rot_z, csf, white_matter, trans_x_derivative1, trans_y_derivative1, trans_z_derivative1, rot_x_derivative1, rot_y_derivative1, rot_z_derivative1
+
+    Inputs:
+        sub 
+        fmriprep_dir (str) - path to fmriprep/ directory. Confound files will be loaded from bids/derivatives/preprocessed/{fmriprep_path}/sub-{sub}/ses-1/func/
+        analysis_dir (str) - path to output directory in bids/derivatives/analyses. Censor files will be exported into bids/derivatives/analyses/{analysis_dir}/level_1/sub-{sub}/
+        overwrite (boolean) - specify if output files should be overwritten (default = False)
+        return_dataframe (boolean) - specify if nuisance regressors should be returned in a dataframe
+    """
 
     #######################
     ### Check arguments ###
@@ -54,6 +62,36 @@ def gen_regressor_file(sub, bids_dir, overwrite = False, return_dataframe = Fals
         print("bids_dir must be string")
         raise Exception()
 
+    # set fmriprep_dir
+    if not fmriprep_dir:
+
+        print("fmriprep_dir must be string")
+        raise Exception()
+
+    elif isinstance(fmriprep_dir, str):
+
+        # make input string a path
+        fmriprep_dir = Path(fmriprep_dir)
+
+    else: 
+        print("bids_dir must be string")
+        raise Exception()
+    
+    # set analysis_dir
+    if not analysis_dir:
+
+        print("analysis_dir must be string")
+        raise Exception()
+
+    elif isinstance(analysis_dir, str):
+
+        # make input string a path
+        analysis_dir = Path(analysis_dir)
+
+    else: 
+        print("analysis_dir must be string")
+        raise Exception()
+
     # check overwrite
     if not isinstance(overwrite, bool):
         print("overwrite must be boolean (True or False)")
@@ -69,10 +107,10 @@ def gen_regressor_file(sub, bids_dir, overwrite = False, return_dataframe = Fals
     ##############
 
     # define fmriprep dir
-    fmriprep_dir = os.path.join(bids_dir, 'derivatives/preprocessed/fmriprep_v2320/sub-' + str(sub) + '/ses-1/func/')
+    sub_fmriprep_dir = os.path.join(fmriprep_dir, 'sub-' + str(sub) + '/ses-1/func/')
 
     # get list of fmriprep confound files
-    confound_files = list(Path(fmriprep_dir).rglob('*foodview*confounds_timeseries.tsv'))
+    confound_files = list(Path(sub_fmriprep_dir).rglob('*foodview*confounds_timeseries.tsv'))
 
     # abort of no events files
     if len(confound_files) < 1:
@@ -108,20 +146,20 @@ def gen_regressor_file(sub, bids_dir, overwrite = False, return_dataframe = Fals
     ### Export regressor files ###
     ##############################
 
-    # define output directory
-    out_dir = os.path.join(bids_dir, 'derivatives/analyses/foodview/level_1/sub-' + str(sub) + '/')
+    # define subject export dir
+    sub_analysis_dir = os.path.join(analysis_dir, 'level_1/sub-' + str(sub) + '/')
 
-    # make output directory if it doesnt exist
-    os.makedirs(out_dir, exist_ok=True)
-
+    # Make directory for export 
+    Path(sub_analysis_dir).mkdir(parents=True, exist_ok=True)
+    
     # define output file path
-    output_path = Path(out_dir).joinpath('sub-' + sub + '_nuisance_regressors.tsv')
+    filepath = Path(sub_analysis_dir).joinpath('sub-' + sub + '_nuisance_regressors.tsv')
 
     # issue message if the file already exists and overwrite is False, otherwise export
-    if output_path.exists() & (overwrite is False):
+    if filepath.exists() & (overwrite is False):
         print('Nuisance regressor file already exist for sub-' + str(sub) + ' ... Use overwrite = True to overwrite')
     else:
-        run_regressors_data.to_csv(str(output_path), sep = '\t', encoding='ascii', index = False, header=False)
+        run_regressors_data.to_csv(str(filepath), sep = '\t', encoding='ascii', index = False, header=False)
 
     # return dataframe
     if return_dataframe is True:
