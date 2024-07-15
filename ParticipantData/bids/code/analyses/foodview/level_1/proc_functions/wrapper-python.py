@@ -22,6 +22,7 @@ import gen_uncensored_onsets
 import gen_censor_files
 import gen_regressor_file
 import gen_censored_onsets
+import gen_censor_summary
 
 # process command line arguments
 parser = argparse.ArgumentParser()
@@ -44,7 +45,7 @@ analysis_dir = os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview')
 # call processing functions
 
 try:
-    onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False)
+    uncensored_onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False)
 except:
     print("Discontinuing gen_uncensored_onsets() for sub-" + sub)
 
@@ -54,11 +55,20 @@ except:
     print("Discontinuing gen_regressor_file() for sub-" + sub)
 
 try:
-    gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
+    censor_files = gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
 except:
     print("Discontinuing gen_censor_files() for sub-" + sub)
 
+### TO DO: write this function to generate a censor summary based on uncensored_onsets_dict and censor_files
+
 # try:
-#     gen_censored_onsets.gen_censored_onsets(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
+#     censor_summary = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_files = censor_files, analysis_dir = analysis_dir, overwrite = False)
+# except:
+#     print("Discontinuing gen_censor_summary() for sub-" + sub)
+
+### TO DO: write this function to generate censored onsets given censor_summary and a given criteria
+
+# try:
+#     gen_censored_onsets.gen_censored_onsets(sub = sub, censor_summary = censor_summary, run_criteria = XX, analysis_dir = analysis_dir, overwrite = False)
 # except:
 #     print("Discontinuing gen_censored_onsets() for sub-" + sub)
