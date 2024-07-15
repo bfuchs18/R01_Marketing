@@ -108,14 +108,6 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         print('No *events.tsv files found for sub ' + str(sub))
         raise Exception()
 
-    # get list of existing onset files 
-    onset_files = list(Path(sub_onset_dir).rglob('*.txt'))
-
-    # exit if onset files exist and overwrite is False
-    if len(onset_files) > 0 & (overwrite is False):
-        print('Uncensored onset files already exist for sub ' + str(sub) + '. Use overwrite = True to overwrite')
-        raise Exception()
-
     ##########################################
     ### Extract onset times for each block ###
     ##########################################
@@ -205,27 +197,34 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         # define path to outfuile
         out_file_path = Path(sub_onset_dir).joinpath('sub-' + sub + '_' + trial_type_key + '_onsets.txt')
         
-        # get array of runs in ascending order
-        runnum_keys_sorted = sorted(onsets_dict[trial_type_key].keys()) 
+        if not out_file_path.exists() or overwrite:
 
-        # open a text file for writing
-        with open(out_file_path, 'w') as file:
+            print('Exporting ' + trial_type_key + ' uncensored onset file for sub ' + str(sub))
+            
+            # get array of runs in ascending order
+            runnum_keys_sorted = sorted(onsets_dict[trial_type_key].keys()) 
 
-            # for each run
-            for run_num in runnum_keys_sorted:
+            # open a text file for writing
+            with open(out_file_path, 'w') as file:
 
-                # extract onset values
-                onset_values = onsets_dict[trial_type_key][run_num]
+                # for each run
+                for run_num in runnum_keys_sorted:
 
-                # row is '*' if no onset values, otherwise it is tab separated onsets
-                if not onset_values:
-                    row = "*"
-                else: 
-                    row = '\t'.join(str(x) for x in onset_values)
+                    # extract onset values
+                    onset_values = onsets_dict[trial_type_key][run_num]
 
-                # write row to file
-                file.write(row + '\n')
+                    # row is '*' if no onset values, otherwise it is tab separated onsets
+                    if not onset_values:
+                        row = "*"
+                    else: 
+                        row = '\t'.join(str(x) for x in onset_values)
 
+                    # write row to file
+                    file.write(row + '\n')
+
+        else:
+            print(trial_type_key + ' uncensored onset files already exist for sub ' + str(sub) + '. Use overwrite = True to overwrite')
+            
     if return_onset_df is True:
         # return dictionary or dataframe? 
         # could return something that can go straight into gen_censored_onsets instead of needing to upload files?
