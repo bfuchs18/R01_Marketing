@@ -8,3 +8,4 @@ ParticipantData/bids/participants*
 ParticipantData/bids/derivatives* 
 *html
 .Rhistory
+*__pycache__*
