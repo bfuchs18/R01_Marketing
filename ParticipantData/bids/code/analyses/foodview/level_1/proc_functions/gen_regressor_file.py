@@ -40,52 +40,34 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     ### Check arguments ###
     #######################
 
-    # set sub with leading zeros
-    if not sub:
-        print("sub is not defined")
-        raise Exception()
-    else:
-        sub = str(sub).zfill(3)
+    # check sub
+    try:
+        sub_int = int(sub)  # Attempt to convert sub to an integer
+        sub = str(sub).zfill(3) # define sub as string with 3 leading zeros
+    except (ValueError, TypeError):
+        raise ValueError("The required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
     
     # set fmriprep_dir
-    if not fmriprep_dir:
-
-        print("fmriprep_dir must be string")
-        raise Exception()
-
-    elif isinstance(fmriprep_dir, str):
-
+    if isinstance(fmriprep_dir, str):
         # make input string a path
         fmriprep_dir = Path(fmriprep_dir)
-
     else: 
-        print("bids_dir must be string")
-        raise Exception()
+        raise TypeError("bids_dir must be string")
     
     # set analysis_dir
-    if not analysis_dir:
-
-        print("analysis_dir must be string")
-        raise Exception()
-
-    elif isinstance(analysis_dir, str):
-
+    if isinstance(analysis_dir, str):
         # make input string a path
         analysis_dir = Path(analysis_dir)
-
     else: 
-        print("analysis_dir must be string")
-        raise Exception()
+        raise TypeError("analysis_dir must be string")
 
     # check overwrite
     if not isinstance(overwrite, bool):
-        print("overwrite must be boolean (True or False)")
-        raise Exception()
+        raise TypeError("overwrite must be boolean (True or False)")
 
     # check return_dataframe
     if not isinstance(return_dataframe, bool):
-        print("return_dataframe must be boolean (True or False)")
-        raise Exception()
+        raise TypeError("return_dataframe must be boolean (True or False)")
     
     ##############
     ### Set up ###

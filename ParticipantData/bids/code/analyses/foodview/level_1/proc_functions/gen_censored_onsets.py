@@ -42,66 +42,51 @@ def gen_censored_onsets(sub, uncensored_onsets_dict, censor_summary_dataframe, p
     ### Check arguments ###
     #######################
 
-    # set sub with leading zeros
-    if not sub:
-        print("sub is not defined")
-        raise Exception()
-    else:
-        sub = str(sub).zfill(3)
+    # check sub
+    try:
+        sub_int = int(sub)  # Attempt to convert sub to an integer
+        sub = str(sub).zfill(3) # define sub as string with 3 leading zeros
+    except (ValueError, TypeError):
+        raise ValueError("The required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
     
     # check uncensored_onsets_dict
     if not isinstance(uncensored_onsets_dict, dict):
-        print("uncensored_onsets_dict must be a dictionary")
-        raise Exception()
+        raise TypeError("uncensored_onsets_dict must be a dictionary")
     
     # check censor_summary_dataframe
     if not isinstance(censor_summary_dataframe, pd.DataFrame):
-        print("censor_summary_dataframe must be pandas dataframe")
-        raise Exception()
+        raise TypeError("censor_summary_dataframe must be pandas dataframe")
 
     # check p_uncensored_trs_thresh and p_uncensored_image_trs_thresh
     if p_uncensored_trs_thresh or p_uncensored_image_trs_thresh:
         if p_uncensored_trs_thresh:
             # check value is float
             if not isinstance(p_uncensored_trs_thresh, float):
-                print("p_uncensored_trs_thresh must be float (e.g., p_uncensored_trs_thresh = .8)")
-                raise Exception()
+                raise TypeError("p_uncensored_trs_thresh must be float (e.g., p_uncensored_trs_thresh = .8)")
         if p_uncensored_image_trs_thresh:
             # check value is float
             if not isinstance(p_uncensored_image_trs_thresh, float):
-                print("p_uncensored_image_trs_thresh must be float (e.g., p_uncensored_image_trs_thresh = .8)")
-                raise Exception()
+                raise TypeError("p_uncensored_image_trs_thresh must be float (e.g., p_uncensored_image_trs_thresh = .8)")
     else: 
-        print("p_uncensored_trs_thresh or p_uncensored_image_trs_thresh but be provided")
-        raise Exception()
+        raise Exception("p_uncensored_trs_thresh or p_uncensored_image_trs_thresh but be provided")
 
 
     # set analysis_dir
-    if not analysis_dir:
-
-        print("analysis_dir must be string")
-        raise Exception()
-
-    elif isinstance(analysis_dir, str):
-
+    if isinstance(analysis_dir, str):
         # make input string a path
         analysis_dir = Path(analysis_dir)
-
     else: 
-        print("analysis_dir must be string")
-        raise Exception()
+        raise TypeError("analysis_dir must be string")
 
     # check overwrite
     if not isinstance(overwrite, bool):
-        print("overwrite must be boolean (True or False)")
-        raise Exception()
+        raise TypeError("overwrite must be boolean (True or False)")
    
     # check fd_thresh input
     if isinstance(fd_thresh, int) or isinstance(fd_thresh, float):
             fd_thresh = float(fd_thresh)
     else:
-        print("rmsd must be integer or float")
-        raise Exception()
+        raise TypeError("rmsd must be integer or float")
     
     ###############################
     ### Determine censored runs ###

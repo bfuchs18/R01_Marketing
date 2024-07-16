@@ -43,52 +43,34 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
     ### Check arguments ###
     #######################
 
-    # set sub with leading zeros
-    if not sub:
-        print("sub is not defined")
-        raise Exception()
-    else:
-        sub = str(sub).zfill(3)
+    # check sub
+    try:
+        sub_int = int(sub)  # Attempt to convert sub to an integer
+        sub = str(sub).zfill(3) # define sub as string with 3 leading zeros
+    except (ValueError, TypeError):
+        raise ValueError("The required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
     
     # set rawdata_dir
-    if not rawdata_dir:
-
-        print("rawdata_dir must be string")
-        raise Exception()
-
-    elif isinstance(rawdata_dir, str):
-
+    if isinstance(rawdata_dir, str):
         # make input string a path
         rawdata_dir = Path(rawdata_dir)
-
     else: 
-        print("rawdata_dir must be string")
-        raise Exception()
+        raise TypeError("rawdata_dir must be string")
 
     # set analysis_dir
-    if not analysis_dir:
-
-        print("analysis_dir must be string")
-        raise Exception()
-
-    elif isinstance(analysis_dir, str):
-
+    if isinstance(analysis_dir, str):
         # make input string a path
         analysis_dir = Path(analysis_dir)
-
     else: 
-        print("analysis_dir must be string")
-        raise Exception()
-    
+        raise TypeError("analysis_dir must be string")
+
     # check overwrite
     if not isinstance(overwrite, bool):
-        print("overwrite must be boolean (True or False)")
-        raise Exception()
+        raise TypeError("overwrite must be boolean (True or False)")
 
     # check return_onset_df
     if not isinstance(return_onset_dict, bool):
-        print("return_onset_dict must be boolean (True or False)")
-        raise Exception()
+        raise TypeError("return_onset_dict must be boolean (True or False)")
     
     ##############
     ### Set up ###

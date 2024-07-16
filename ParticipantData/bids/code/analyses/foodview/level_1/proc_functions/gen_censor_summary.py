@@ -40,39 +40,29 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
     ### Check arguments ###
     #######################
 
-    # set sub with leading zeros
-    if not sub:
-        print("sub is not defined")
-        raise Exception()
-    else:
-        sub = str(sub).zfill(3)
+    # check sub
+    try:
+        sub_int = int(sub)  # Attempt to convert sub to an integer
+        sub = str(sub).zfill(3) # define sub as string with 3 leading zeros
+    except (ValueError, TypeError):
+        raise ValueError("The required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
     
     # set analysis_dir
-    if not analysis_dir:
-
-        print("analysis_dir must be string")
-        raise Exception()
-
-    elif isinstance(analysis_dir, str):
-
+    if isinstance(analysis_dir, str):
         # make input string a path
         analysis_dir = Path(analysis_dir)
-
     else: 
-        print("analysis_dir must be string")
-        raise Exception()
+        raise TypeError("analysis_dir must be string")
 
     # check overwrite
     if not isinstance(overwrite, bool):
-        print("overwrite must be boolean (True or False)")
-        raise Exception()
+        raise TypeError("overwrite must be boolean (True or False)")
    
     # check fd_thresh input
     if isinstance(fd_thresh, int) or isinstance(fd_thresh, float):
             fd_thresh = float(fd_thresh)
     else:
-        print("rmsd must be integer or float")
-        raise Exception()
+        raise TypeError("fd_thresh must be integer or float")
     
     ##########################################################################
     ### Make commerical and image block TR onset dicts (across conditions) ###
