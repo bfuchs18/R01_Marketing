@@ -161,9 +161,10 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
     # convert dictionary to dataframe
     summary_dataframe = pd.DataFrame.from_dict(summary_dict, orient='index')
     summary_dataframe['sub'] = sub # add subject column
+    summary_dataframe['fd_thresh'] = fd_thresh # add subject column
 
     # reorder so subject column is first
-    cols = ['sub'] + pd.DataFrame.from_dict(summary_dict, orient='index').columns.tolist()
+    cols = ['sub', 'fd_thresh'] + pd.DataFrame.from_dict(summary_dict, orient='index').columns.tolist()
     summary_dataframe = summary_dataframe[cols]
 
     ##############
@@ -180,7 +181,7 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
     file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-foodview_censor-summary_' + str(censor_str) + '.tsv'))
 
     if not file_name.exists() or overwrite:
-
+        print("Exporting censor summary for sub " + str(sub))
         summary_dataframe.to_csv(str(file_name), sep = '\t', encoding='utf-8-sig', index = False)
 
     if return_summary_dataframe:
