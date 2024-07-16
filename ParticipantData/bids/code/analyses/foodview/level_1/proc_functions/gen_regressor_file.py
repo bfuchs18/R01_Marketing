@@ -138,13 +138,13 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     Path(sub_analysis_dir).mkdir(parents=True, exist_ok=True)
     
     # define output file path
-    filepath = Path(sub_analysis_dir).joinpath('sub-' + sub + '_nuisance_regressors.tsv')
+    file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-foodview_all-runs_nuisance-regressors.tsv'))
 
     # issue message if the file already exists and overwrite is False, otherwise export
-    if filepath.exists() and not overwrite:
+    if file_name.exists() and not overwrite:
         print('Nuisance regressor file already exist for sub-' + str(sub) + '. Use overwrite = True to overwrite')
     else:
-        all_runs_regressors_data.to_csv(str(filepath), sep = '\t', encoding='ascii', index = False, header=True)
+        all_runs_regressors_data.to_csv(str(file_name), sep = '\t', encoding='ascii', index = False, header=True)
 
     # return dataframe
     if return_dataframe is True:
