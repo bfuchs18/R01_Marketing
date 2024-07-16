@@ -117,16 +117,16 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
 
     # initialize nested dictionary with 1 dictionary per condition (key = run number, value = [])
     onsets_dict = {
-    'ad_food': {i: [] for i in range(1, n_runs + 1)},
-    'ad_toy': {i: [] for i in range(1, n_runs + 1)},
-    'hed_savory_toy_cond': {i: [] for i in range(1, n_runs + 1)},
-    'hed_savory_food_cond': {i: [] for i in range(1, n_runs + 1)},
-    'led_savory_toy_cond': {i: [] for i in range(1, n_runs + 1)},
-    'led_savory_food_cond': {i: [] for i in range(1, n_runs + 1)},
-    'hed_sweet_toy_cond': {i: [] for i in range(1, n_runs + 1)},
-    'hed_sweet_food_cond': {i: [] for i in range(1, n_runs + 1)},
-    'led_sweet_toy_cond': {i: [] for i in range(1, n_runs + 1)},
-    'led_sweet_food_cond': {i: [] for i in range(1, n_runs + 1)},
+    'ad_food': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'ad_toy': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'hed_savory_toy_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'hed_savory_food_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'led_savory_toy_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'led_savory_food_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'hed_sweet_toy_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'hed_sweet_food_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'led_sweet_toy_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
+    'led_sweet_food_cond': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
     }
 
     # loop though eventsfiles
@@ -137,7 +137,6 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
 
         # extract run number from file name
         run = file_name.split("_")[3]
-        run_num = int(run[4:])
 
         #load data
         events_dat = pd.read_csv(str(file_path), sep = '\t', encoding = 'utf-8-sig', engine='python')
@@ -168,7 +167,7 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
                     onset = block_cond_rows['onset'].min()
 
                     # save values to dictionary (append list for run key)
-                    onsets_dict[trial_type][run_num].append(onset)
+                    onsets_dict[trial_type][run].append(onset)
 
         # get image block onsets for each condition
         
@@ -189,7 +188,7 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
                 onset = cond_rows['onset'].min()
 
                 # save value to dictionary
-                onsets_dict[trial_type][run_num].append(onset)
+                onsets_dict[trial_type][run].append(onset)
 
     # export onset files
     for trial_type_key in onsets_dict:
@@ -208,10 +207,10 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
             with open(out_file_path, 'w') as file:
 
                 # for each run
-                for run_num in runnum_keys_sorted:
+                for run in runnum_keys_sorted:
 
                     # extract onset values
-                    onset_values = onsets_dict[trial_type_key][run_num]
+                    onset_values = onsets_dict[trial_type_key][run]
 
                     # row is '*' if no onset values, otherwise it is tab separated onsets
                     if not onset_values:
