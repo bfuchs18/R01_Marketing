@@ -39,32 +39,27 @@ else:
     bids_dir = args.bidsdir
 
 # define strings with paths for processing fucntions
-rawdata_dir = os.path.join(bids_dir, 'rawdata/')
+rawdata_dir = os.path.join(bids_dir, 'rawdata')
 fmriprep_dir = os.path.join(bids_dir, 'derivatives', 'preprocessed', 'fmriprep_v2320')
 analysis_dir = os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview')
 
-# call processing functions
-try:
-    uncensored_onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False, return_onset_dict = True)
-except:
-    print("Discontinuing gen_uncensored_onsets() for sub-" + sub)
 
-try:
-    gen_regressor_file.gen_regressor_file(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
-except:
-    print("Discontinuing gen_regressor_file() for sub-" + sub)
+# call processing functions 
+print("\n*****************************************************************")
+print(f"**** Starting Food View Task python processing for sub-{sub} ****")
+print("*****************************************************************")
 
-try:
-    censordata_dict = gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False, return_censordata_dict = True) # use default fd_thresh (.9)
-except:
-    print("Discontinuing gen_censor_files() for sub-" + sub)
+print("\n*** Running function to generate uncensored onset files ***")
+uncensored_onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False, return_onset_dict = True)
 
-try:
-    censor_summary_dataframe = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censordata_dict = censordata_dict, analysis_dir = analysis_dir, overwrite = False, return_summary_dataframe = True) # use default fd_thresh (.9)
-except:
-    print("Discontinuing gen_censor_summary() for sub-" + sub)
+print("\n*** Running function to generate nuissance regressor file ***")
+gen_regressor_file.gen_regressor_file(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
 
-try:
-    gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir) # use default fd_thresh (.9)
-except:
-    print("Discontinuing gen_censored_onsets() for sub-" + sub)
+print("\n*** Running function to generate censor files ***")
+censordata_dict = gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False, return_censordata_dict = True) # use default fd_thresh (.9)
+
+print("\n*** Running function to generate censor summary file ***")
+censor_summary_dataframe = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censordata_dict = censordata_dict, analysis_dir = analysis_dir, overwrite = False, return_summary_dataframe = True) # use default fd_thresh (.9)
+
+print("\n*** Running function to generate censored onset file ***")
+gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir) # use default fd_thresh (.9)
