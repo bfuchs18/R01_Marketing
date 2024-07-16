@@ -182,7 +182,7 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
     file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-foodview_censor-summary_' + str(censor_str) + '.tsv'))
 
     if not file_name.exists() or overwrite:
-        print("Exporting censor summary for sub " + str(sub))
+        print(f"Exporting censor summary for sub {str(sub)}")
         summary_dataframe.to_csv(str(file_name), sep = '\t', encoding='utf-8-sig', index = False)
 
     if return_summary_dataframe:
