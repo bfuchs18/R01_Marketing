@@ -21,8 +21,9 @@ import argparse
 import gen_uncensored_onsets
 import gen_censor_files
 import gen_regressor_file
-import gen_censored_onsets
 import gen_censor_summary
+import gen_censored_onsets
+
 
 # process command line arguments
 parser = argparse.ArgumentParser()
@@ -43,9 +44,8 @@ fmriprep_dir = os.path.join(bids_dir, 'derivatives', 'preprocessed', 'fmriprep_v
 analysis_dir = os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview')
 
 # call processing functions
-
 try:
-    uncensored_onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False)
+    uncensored_onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False, return_onset_dict = True)
 except:
     print("Discontinuing gen_uncensored_onsets() for sub-" + sub)
 
@@ -55,20 +55,16 @@ except:
     print("Discontinuing gen_regressor_file() for sub-" + sub)
 
 try:
-    censor_files = gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
+    censordata_dict = gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False, return_censordata_dict = True) # use default fd_thresh (.9)
 except:
     print("Discontinuing gen_censor_files() for sub-" + sub)
 
-### TO DO: write this function to generate a censor summary based on uncensored_onsets_dict and censor_files
+try:
+    censor_summary_dataframe = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censordata_dict = censordata_dict, analysis_dir = analysis_dir, overwrite = False, return_summary_dataframe = True) # use default fd_thresh (.9)
+except:
+    print("Discontinuing gen_censor_summary() for sub-" + sub)
 
-# try:
-#     censor_summary = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_files = censor_files, analysis_dir = analysis_dir, overwrite = False)
-# except:
-#     print("Discontinuing gen_censor_summary() for sub-" + sub)
-
-### TO DO: write this function to generate censored onsets given censor_summary and a given criteria
-
-# try:
-#     gen_censored_onsets.gen_censored_onsets(sub = sub, censor_summary = censor_summary, run_criteria = XX, analysis_dir = analysis_dir, overwrite = False)
-# except:
-#     print("Discontinuing gen_censored_onsets() for sub-" + sub)
+try:
+    gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir) # use default fd_thresh (.9)
+except:
+    print("Discontinuing gen_censored_onsets() for sub-" + sub)
