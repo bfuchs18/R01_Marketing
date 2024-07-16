@@ -159,12 +159,13 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
         }
 
     # convert dictionary to dataframe
-    summary_dataframe = pd.DataFrame.from_dict(summary_dict, orient='index')
+    summary_dataframe = pd.DataFrame.from_dict(summary_dict, orient='index').reset_index()
+    summary_dataframe.rename(columns={'index': 'run'}, inplace=True)
     summary_dataframe['sub'] = sub # add subject column
     summary_dataframe['fd_thresh'] = fd_thresh # add subject column
 
     # reorder so subject column is first
-    cols = ['sub', 'fd_thresh'] + pd.DataFrame.from_dict(summary_dict, orient='index').columns.tolist()
+    cols = ['sub', 'run', 'fd_thresh'] + pd.DataFrame.from_dict(summary_dict, orient='index').columns.tolist()
     summary_dataframe = summary_dataframe[cols]
 
     ##############
