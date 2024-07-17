@@ -25,6 +25,7 @@ sub = 1
 rawdata_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/rawdata"
 analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/foodview"
 overwrite = True
+return_onset_dict = True
 
 def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, return_onset_dict = True):
     """
@@ -174,10 +175,10 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
 
     # export onset files
     for trial_type_key in onsets_dict:
-        
+
         # define path to outfuile
         out_file_path = Path(sub_onset_dir).joinpath('sub-' + sub + '_' + trial_type_key + '_onsets.txt')
-        
+
         if not out_file_path.exists() or overwrite:
 
             print('Exporting ' + trial_type_key + ' uncensored onset file for sub ' + str(sub))
@@ -194,11 +195,12 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
                     # extract onset values
                     onset_values = onsets_dict[trial_type_key][run]
 
-                    # row is '*' if no onset values, otherwise it is tab separated onsets
+                    # row is '* *' if no onset values, otherwise it is tab separated onsets
+                    ## add asterick at the end of each row, because 1 column format is interpreted by AFNI as global times
                     if not onset_values:
-                        row = "*"
+                        row = "*\t*"
                     else: 
-                        row = '\t'.join(str(x) for x in onset_values)
+                        row = '\t'.join(str(x) for x in onset_values)  + '\t*'
 
                     # write row to file
                     file.write(row + '\n')

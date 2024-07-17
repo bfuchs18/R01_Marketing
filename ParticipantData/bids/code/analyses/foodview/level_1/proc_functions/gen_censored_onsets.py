@@ -174,11 +174,12 @@ def gen_censored_onsets(sub, uncensored_onsets_dict, censor_summary_dataframe, p
                     # extract onset values
                     onset_values = censored_onsets_dict[trial_type_key][run]
 
-                    # row is '*' if no onset values, otherwise it is tab separated onsets
+                    # row is '* *' if no onset values, otherwise it is tab separated onsets
+                    ## add asterick at the end of each row, because 1 column format is interpreted by AFNI as global times
                     if not onset_values:
-                        row = "*"
+                        row = "*\t*"
                     else: 
-                        row = '\t'.join(str(x) for x in onset_values)
+                        row = '\t'.join(str(x) for x in onset_values)  + '\t*'
 
                     # write row to file
                     file.write(row + '\n')
