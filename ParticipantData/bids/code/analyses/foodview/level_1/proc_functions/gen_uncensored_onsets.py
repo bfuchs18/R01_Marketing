@@ -125,10 +125,10 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         events_dat = pd.read_csv(str(file_path), sep = '\t', encoding = 'utf-8-sig', engine='python')
 
         #extract video rows
-        video_rows = events_dat[events_dat['stim_file'].str.contains('mp4')].copy()
+        video_rows = events_dat[events_dat['stim_file_name'].str.contains('mp4')].copy()
 
         # add block column that contains the block identifer from stimulus file name (e.g., setA_blockB_toy2.mp4 yields "B")
-        video_rows['block'] = video_rows['stim_file'].str.split('_').str[1].str[-1]
+        video_rows['block'] = video_rows['stim_file_name'].str.split('_').str[1].str[-1]
 
         # get number of video events -- will be zero if child aborted scan before any vid blocks finished
         n_vid_events = len(video_rows)
@@ -139,7 +139,7 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
             # extract onsets by ad condition and block
             for ad_cond in ["toy", "food"]:
 
-                ad_cond_rows = video_rows[video_rows['stim_file'].str.contains(ad_cond)].copy()
+                ad_cond_rows = video_rows[video_rows['stim_file_name'].str.contains(ad_cond)].copy()
 
                 for block in ad_cond_rows['block'].unique():
                     
@@ -159,7 +159,7 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         
         for food_cond in ["hed_savory", "hed_sweet", "led_savory", "led_sweet"]:
 
-            cond_rows = events_dat[events_dat['stim_file'].str.contains(food_cond)].copy()
+            cond_rows = events_dat[events_dat['stim_file_name'].str.contains(food_cond)].copy()
 
             # get number of images for given condition
             n_jpeg_events = len(cond_rows)
