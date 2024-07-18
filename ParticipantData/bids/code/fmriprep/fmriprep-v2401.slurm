@@ -93,7 +93,7 @@ else
 			--verbose \
 			--output-spaces MNI152NLin2009cAsym:res-native \
 			--fs-license-file $FS_LICENSE \
-			--work-dir $bids_root_dir/code/fmriprep/sub-$subj/work_v2401
+			--work-dir $bids_root_dir/code/fmriprep/work_v2401/sub-$subj/
     fi
 fi
 
