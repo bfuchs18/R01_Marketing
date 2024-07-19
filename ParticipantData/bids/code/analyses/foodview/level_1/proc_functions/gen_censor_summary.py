@@ -47,6 +47,16 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
     except (ValueError, TypeError):
         raise ValueError("The required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
     
+    # check uncensored_onsets_dict
+    if not isinstance(uncensored_onsets_dict, dict):
+        print(uncensored_onsets_dict)
+        raise TypeError("uncensored_onsets_dict must be dict")
+   
+    # check censordata_dict
+    if not isinstance(censordata_dict, dict):
+        print(censordata_dict)
+        raise TypeError("censordata_dict must be dict")
+   
     # set analysis_dir
     if isinstance(analysis_dir, str):
         # make input string a path
