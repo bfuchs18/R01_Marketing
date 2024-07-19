@@ -5,29 +5,55 @@
 # $2 : fmriprep_dir (string) -- e.g., "/storage/group/klk37/default/R01_Marketing/bids/derivatives/preprocessed/fmriprep_v2320"
 # $3 : analysis_dir (string) -- e.g., "/storage/group/klk37/default/R01_Marketing/bids/derivatives/analyses/foodview"	
 
-########## Define directories ##########
+########## Check args ##########
+
+# check there are 3 arguments
+if [ ! $# -eq 3 ]; then
+    echo "ERROR: Incorrect number of arguments supplied to afni_proc.sh. Should be 3: sub, fmriprep_dir, anaysis_dir"
+	exit
+fi
 
 # set sub from arg 1
 ID_nozero=$(echo $1 | sed 's/^0*//') #remove leading zeros from arg 1 if they were included -- trying to add leading zeros to numbers with leading zeros can lead to issues (https://stackoverflow.com/questions/8078167/printf-in-bash-09-and-08-are-invalid-numbers-07-and-06-are-fine)
 ID=`printf %03d $ID_nozero` # add leading zeros back
 subID="sub-$ID" # add sub- prefix
 
-# set fmriprep_dirs for arg 2
-fmriprep_dir=$2
-func_fmriprep_dir="$fmriprep_dir/$subID/ses-1/func/"
-anat_fmriprep_dir="$fmriprep_dir/$subID/ses-1/anat/"
+# set fmriprep_dir from arg 2
+if [ ! -d "$2" ]; then # check arg 2 is an existing directory
+     echo "ERROR: arg 2 supplied to afni_blue_scale.sh (fmriprep_dir) does not reflect an existing directory"
+     exit
+else
+	# set fmriprep_dir
+	fmriprep_dir=$2
 
-# set analysis_dirs from arg 3
+	# set directories to retrieve files from
+	func_fmriprep_dir="$fmriprep_dir/$subID/ses-1/func/"
+	anat_fmriprep_dir="$fmriprep_dir/$subID/ses-1/anat/"
+
+	# check for existance of subject fmriprep directory
+	if [ ! -d "$func_fmriprep_dir" ]; then
+    	echo "ERROR: $func_fmriprep_dir does not exist. Check arg 2 (fmriprep_dir) for accuracy and that fmriprep was run for $subID."
+    	exit
+	fi
+fi
+
+# set analysis_dir from arg 3
 analysis_dir=$3
 sub_analysis_dir="$analysis_dir/level_1/$subID/"
 
-# set onsetdir
-onset_dir="$sub_analysis_dir/onsets_uncensored/"
 
 ########## afniproc ##########
+echo ""
+echo "*****************************************************"
+echo "************ Starting afniproc $subID **************"
+echo "*****************************************************"
+echo ""
+
+# specifiy directory with onset files
+onset_dir="$sub_analysis_dir/onsets_uncensored/"
 
 # make outdir if it doesnt exist
-outdir=${sub_analysis_dir}/afniproc
+outdir=${sub_analysis_dir}/afniproc_onsets_uncensored
 
 if [ ! -d "$outdir" ]; then
     mkdir -p "$outdir"
@@ -71,4 +97,5 @@ afni_proc.py -subj_id $subID                                 \
         -regress_est_blur_epits                                  \
         -regress_est_blur_errts                                  \
         -regress_run_clustsim no                                 \
-        -html_review_style pythonic                              
+        -html_review_style pythonic                              \
+        -execute
