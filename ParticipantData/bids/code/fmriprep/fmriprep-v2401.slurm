@@ -91,7 +91,7 @@ else
 			participant \
 			--participant_label $subj \
 			--verbose \
-			--output-spaces MNI152NLin2009cAsym:res-native \
+			--output-spaces MNIPediatricAsym:res-1:cohort-3 \
 			--fs-license-file $FS_LICENSE \
 			--work-dir $bids_root_dir/code/fmriprep/work_v2401/sub-$subj/
     fi
