@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=10
-#SBATCH --mem-per-cpu=20GB
+#SBATCH --ntasks-per-node=20
+#SBATCH --mem-per-cpu=5GB
 #SBATCH --time=24:00:00
 #SBATCH --partition=open
-#SBATCH --output=slurm_fmriprep_%a.out
+#SBATCH --output=slurm_fmriprep_%A_%a.out
 #SBATCH --array=1-94
 #
 # Useage: 
@@ -98,8 +98,8 @@ else
 fi
 
 # Rename the default SLURM output file to custom output file
-output_file="$code_dir/fmriprep-v2401_sub-${subj}.out"
-mv $code_dir/slurm_fmriprep_${SLURM_ARRAY_TASK_ID}.out $output_file
+output_file="$code_dir/fmriprep-v2401_sub-${subj}_${SLURM_ARRAY_JOB_ID}.out"
+mv $code_dir/slurm_fmriprep_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $output_file
 
 # Finish up
 date=$(date +"%Y-%m-%d")
