@@ -201,7 +201,6 @@ endif
 
 ###################### Add IntendedFor field ######################
 
-
 # check if both strings are NOT empty ("")
 if ( "$fv_fmap_desc" != "" && "$sst_fmap_desc" != "") then
 
@@ -216,8 +215,10 @@ if ( "$fv_fmap_desc" != "" && "$sst_fmap_desc" != "") then
 		# Loop through each item in func_array_fullpath to remove first 65 characters (path prior to ses-1)
 		set func_array=()
 		foreach item ($func_array_fullpath)
-			# Remove first 65 characters
-			set modified_item = `echo $item | sed 's/^.\{65\}//'`
+
+			# Remove $parRawDir from $item and remove the leading /
+			set modified_item = `echo $item | sed "s#$parRawDir##" | sed 's|^/||'`
+
 			# Add the modified item to the new array
 			set func_array=($func_array $modified_item)
 		end
@@ -229,10 +230,11 @@ if ( "$fv_fmap_desc" != "" && "$sst_fmap_desc" != "") then
 				/storage/group/klk37/default/sw/jq/jq-linux64 -e 'has("IntendedFor")' $json > /dev/null
 
 				# if does not have "Indended for key (exit status = 1)
-				if($?) then
+				if ($? != 0) then
 						echo "adding IndendedFor key to $json"
 						# Loop through functional scans
 						foreach func ($func_array)
+								echo $func
 								# add functional scan to "IntendedFor"
 								cat $json | /storage/group/klk37/default/sw/jq/jq-linux64 --arg v "$func" '.IntendedFor += [$v]' > temp.json
 								mv temp.json $json
@@ -256,8 +258,10 @@ else if ( ( "$fv_fmap_desc" == "" && "$sst_fmap_desc" != "") || ( "$sst_fmap_des
 	# Loop through each item in func_array_fullpath to remove first 65 characters (path prior to ses-1)
 	set func_array=()
 	foreach item ($func_array_fullpath)
-		# Remove first 65 characters
-		set modified_item = `echo $item | sed 's/^.\{65\}//'`
+
+		# Remove $parRawDir from $item and remove the leading /
+		set modified_item = `echo $item | sed "s#$parRawDir##" | sed 's|^/||'`
+
 		# Add the modified item to the new array
 		set func_array=($func_array $modified_item)
 	end
@@ -269,8 +273,8 @@ else if ( ( "$fv_fmap_desc" == "" && "$sst_fmap_desc" != "") || ( "$sst_fmap_des
 			/storage/group/klk37/default/sw/jq/jq-linux64 -e 'has("IntendedFor")' $json > /dev/null
 
 			# if does not have "Indended for key (exit status = 1)
-			if($?) then
-					echo "adding IndendedFor key to $json"
+			if ($? != 0) then
+					echo "adding IntendedFor key to $json"
 					# Loop through functional scans
 					foreach func ($func_array)
 							# add functional scan to "IntendedFor"
@@ -297,7 +301,7 @@ foreach json ($func_jsons)
 	/storage/group/klk37/default/sw/jq/jq-linux64 -e 'has("TaskName")' $json > /dev/null
 
     # if does not have "TaskName" key (exit status = 1)
-    if($?) then
+    if ($? != 0) then
 			echo "adding TaskName key to $json"
 			if ( "$json" =~ *foodview* ) then
 					cat $json | /storage/group/klk37/default/sw/jq/jq-linux64 --arg v "foodview" '.TaskName += $v' > temp.json
