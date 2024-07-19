@@ -40,7 +40,7 @@ else:
 
 # define strings with paths for processing fucntions
 rawdata_dir = os.path.join(bids_dir, 'rawdata')
-fmriprep_dir = os.path.join(bids_dir, 'derivatives', 'preprocessed', 'fmriprep_v2320')
+fmriprep_dir = os.path.join(bids_dir, 'derivatives', 'preprocessed', 'fmriprep_v2401')
 analysis_dir = os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview')
 
 
@@ -62,4 +62,4 @@ print("\n*** Running function to generate censor summary file ***")
 censor_summary_dataframe = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censordata_dict = censordata_dict, analysis_dir = analysis_dir, overwrite = False, return_summary_dataframe = True) # use default fd_thresh (.9)
 
 print("\n*** Running function to generate censored onset file ***")
-gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir) # use default fd_thresh (.9)
+gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir, overwrite=False) # use default fd_thresh (.9)
