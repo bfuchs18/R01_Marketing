@@ -126,7 +126,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     if file_name.exists() and not overwrite:
         print('Nuisance regressor file already exist for sub-' + str(sub) + '. Use overwrite = True to overwrite')
     else:
-        all_runs_regressors_data.to_csv(str(file_name), sep = '\t', encoding='ascii', index = False, header=True)
+        all_runs_regressors_data.to_csv(str(file_name), sep = '\t', encoding='ascii', index = False, header=False)
 
     # return dataframe
     if return_dataframe is True:
