@@ -17,8 +17,9 @@
 echo "Job started on `hostname` at `date`"
 
 # Set directories
-singularity_dir="/storage/group/klk37/default/sw"
-bids_root_dir="/storage/group/klk37/default/R01_Marketing/bids"
+singularity_dir="/storage/group/klk37/default/sw/"
+bids_root_dir="/storage/group/klk37/default/R01_Marketing/bids/"
+rawdata_dir="/storage/group/klk37/default/R01_Marketing/bids/rawdata/"
 code_dir="$bids_root_dir/code/fmriprep/"
 
 # Define list of subjects to process
