@@ -1,0 +1,78 @@
+---
+title: "sample summary"
+author: "baf44"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(devtools)
+load_all("/Users/bari/projects/dataREACHr")
+
+# set base_dir
+base_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
+
+# define names of redcap files to process
+visit_file_name =  "FoodMarketingResilie_DATA_2024-07-23_1618.csv"
+double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
+
+#### process redcap data ####
+
+# assign paths to data downloaded from redcap
+visit_data_path = paste0(base_dir, "/bids/sourcedata/phenotype/", visit_file_name)
+data_de_path = paste0(base_dir, "/bids/sourcedata/phenotype/", double_entry_file_name)
+
+# process redcap data and export into bids/phenotype
+redcap_data <-
+  proc_redcap(visit_data_path,
+              data_de_path,
+              overwrite = FALSE,
+              return_data = TRUE)
+
+#extract participants data
+participants_data <- redcap_data$phenotype_data$participants
+
+```
+
+```{r visit counts by risk counts}
+
+# count number of baseline visits completed
+participants_data$visit_count <- rowSums(!is.na(participants_data[c("child_protocol_1_date", "child_protocol_2_date", "child_protocol_3_date", "child_protocol_4_date", "child_protocol_5_date")]))
+
+participants_data$risk_status_maternal.y <- as.factor(participants_data$risk_status_maternal.y)
+participants_data$sex <- as.factor(participants_data$sex)
+
+long_count <- as.data.frame(participants_data %>%
+  dplyr::count(risk_status_maternal.y, visit_count, sex) %>%
+  dplyr::filter(visit_count > 0))
+
+long_count$visit_count <-as.factor(long_count$visit_count)
+
+# bar plot: counts by risk status
+ggplot(data = long_count, aes(x = visit_count, y = n, fill = risk_status_maternal.y)) +
+  # Implement a grouped bar chart
+geom_bar(position = "dodge", stat = "identity")
+
+
+# bar plot: counts by risk status and sex
+ggplot(long_count) +
+  geom_bar(aes(x = visit_count, y = n, fill = sex),
+           position = "stack",
+           stat = "identity") +
+  facet_grid(~ risk_status_maternal.y, switch = "x") +
+  labs(
+    x = "Number of visits completed",
+    y = "Number of Participants",  # Custom label for the y-axis
+    fill = "Sex",                  # Custom label for the fill legend
+    title = "Visit Counts by Risk Status and Sex"  # Custom title
+  ) +
+  theme(strip.placement = "outside",
+        strip.background = element_rect(fill = NA, color = "white"),
+        strip.text = element_text(size = 10, face = "bold"),  # Increase facet label size
+        plot.title = element_text(size = 14, face = "bold", hjust = 0.5), #center and bold title
+        axis.title.x = element_text(size = 12),  # Increase x-axis title size
+        axis.title.y = element_text(size = 12)   # Increase y-axis title sizee
+)
+        #panel.spacing = unit(-.01,"cm")) # add this to remove space between risk panels
+```
