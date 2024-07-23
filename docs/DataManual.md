@@ -3,14 +3,13 @@
 
 - [Introduction](#introduction)
   - [Overview of Study](#overview-of-study)
-  - [Inclusion/Exclusion Criteria](#inclusionexclusion-criteria)
 - [Study Design](#study-design)
-  - [Baseline (ses-1)](#baseline-ses-1)
+  - [Baseline visits (session 1)](#baseline-visits-session-1)
     - [Child Visit Protocol 1 (visit 1)](#child-visit-protocol-1-visit-1)
     - [Child Visit Protocol 2](#child-visit-protocol-2)
     - [Child Visit Protocol 3](#child-visit-protocol-3)
     - [Child Visit Protocol 4](#child-visit-protocol-4)
-  - [Follow-up (ses-2)](#follow-up-ses-2)
+  - [Follow-up visit (session 2)](#follow-up-visit-session-2)
     - [Child Visit Protocol 5 (Visit 5)](#child-visit-protocol-5-visit-5)
 - [Outcome Measures: Descriptions and Protocols](#outcome-measures-descriptions-and-protocols)
   - [Laboratory Eating Paradigms](#laboratory-eating-paradigms)
@@ -107,10 +106,12 @@
       - [Survey (redcap) data](#survey-redcap-data)
       - [Task data](#task-data)
       - [MRI data](#mri-data)
-    - [Running data processing scripts](#running-data-processing-scripts)
+    - [MRI data processing example for subject 001](#mri-data-processing-example-for-subject-001)
+    - [Explanation of MRI data processing steps](#explanation-of-mri-data-processing-steps)
+    - [Organizing data into BIDS with processing scripts](#organizing-data-into-bids-with-processing-scripts)
       - [Survey and Task Data](#survey-and-task-data)
     - [Neuroimaging data](#neuroimaging-data)
-    - [Software Required](#software-required)
+      - [Example processing for sub 001](#example-processing-for-sub-001)
   - [Data Quality Control](#data-quality-control)
       - [Survey data](#survey-data)
       - [MRI data](#mri-data-1)
@@ -135,18 +136,19 @@
 ## Overview of Study
 
   
-## Inclusion/Exclusion Criteria
-
-
 # Study Design
 
-Study REACH involves a total of 5 visits for parent-child dyads. The first 4 visits occur ~1 week apart -- these are referred to baseline or session 1 ('ses-1') visits; the 5th visit occurs ~1 year after baseline -- this is referred to as follow-up or session 2 ('ses-2').
+Study REACH involves a total of 5 visits for parent-child dyads (Figure 1). The first 4 visits occur ~1 week apart; these are referred to as baseline or session 1 ('ses-1') visits; the 5th visit occurs ~1 year after baseline; this visit is referred to as follow-up or session 2 ('ses-2').
 
 The 4 baseline visits include: Child Visit Protocol 1, Child Visit Protocol 2, Child Visit Protocol 3, and Child Visit Protocol 4. Child Visit Protocol 1 always occurred on the first study visit, while Child Visit Protocols 2-4 could vary in order due to MRI availability. The follow-up visit includes Child Visit Protocol 5. 
 
 Parents completed sets of questionnaires for each of the 5 visits. 
 
-## Baseline (ses-1)
+
+<img src="./images/REACH_visits.png" alt="drawing" width="800"/> \
+Figure 1. Timeline of REACH visits and their associated child visit protocols. 
+
+## Baseline visits (session 1)
 ### Child Visit Protocol 1 (visit 1)
 
 The first visit takes place in Noll Lab. During the visit, the parent and child complete consent and assent, respectively. Child and parent [height and weight](#height-and-weight) are measured twice by a researcher and children complete a [Dual-Energy X-Ray Absorptiometry (DXA)](#dual-energy-x-ray-absorptiometry-dxa) scan. 
@@ -237,7 +239,7 @@ Parent Measures:
 * [Fulkerson Home Food Inventory](#fulkerson-home-food-inventory-fhfi)
 * [Comprehensive Feeding Practices Questionnaire](#comprehensive-feeding-practices-questionnaire-cfpq)
 
-## Follow-up (ses-2)
+## Follow-up visit (session 2)
 ### Child Visit Protocol 5 (Visit 5)
 
 The fifth visit takes place in Noll Laboratory 1 year after [Visit 1](#visit-1). 
@@ -1863,7 +1865,7 @@ devtools::install_github("alainapearce/dataprepr")
 *  Data processing scripts expect dcm2bids to be loaded via a conda environment described in /bids/code/dcm2bids/dcm2bids.yml. 
 
 The conda env can be created from the yml file using the following command6s on Roar Collab
-```'//////////////
+```
 # if conda has not been initialized, may need to run this first and then close and reopen terminal
 conda init bash 
 
@@ -1900,14 +1902,14 @@ singularity build /storage/group/klk37/default/sw/mriqc-24.0.0.simg  docker://ni
 ### fmriprep
 * [https://fmriprep.org/en/stable/outputs.html](https://fmriprep.org/en/stable/outputs.html)
 * fMRIprep is a preprocessing software for MRI data
-* On Roar Collab, fMRIprep version 23.2.0 is available in a Singularity Container within /storage/group/klk37/default/sw/fmriprep-23.2.0.simg. By using this singularity container, we can use a version of fMRIprep that is not presently available to all users of Roar Collab.
+* On Roar Collab, fMRIprep version 24.0.1 is available in a Singularity Container within /storage/group/klk37/default/sw/fmriprep-23.2.0.simg. By using this singularity container, we can use a version of fMRIprep that is not presently available to all users of Roar Collab.
 
 The container was created by running the following command on Roar Collab
 ```
-singularity build /storage/group/klk37/default/sw/fmriprep-23.2.0.simg docker://nipreps/fmriprep:23.2.0
+singularity build /storage/group/klk37/default/sw/fmriprep-24.0.1.simg docker://nipreps/fmriprep:24.0.1
 ```
 
-* Version 23.2.0 was selected for processing because it is (or was) the most recent version available, however, v23.2.0 does not have the pediatric MNI template available for normalization. For use of other versions, a separate singularity container can be prepared by specifying a different version number in the command above
+* Version 24.0.1 was selected for processing because it is (or was) the most recent version available, however, v23.2.0 does not have the pediatric MNI template available for normalization. For use of other versions, a separate singularity container can be prepared by specifying a different version number in the command above
 
 ### afni
 
@@ -1997,11 +1999,50 @@ To copy MRI data from its source (Hoth) to Roar Collab:
 
 [Add these details]
 
-### Running data processing scripts
+### MRI data processing example for subject 001
+
+Process and organize MRI task data locally in R (requires having OneDrive synced):\
+Note: events.tsv files are required for fmriprep, so this must be done before running fmriprep
+- dataREACHr::proc_task()
+- generate bids/rawdata/*/func/*events.tsv files 
+
+
+Process and organize MRI scan data for Roar Collab terminal:
+```
+### copy data from Hoth to untouchedRaw/ on RoarCollab ###
+
+
+### copy data from untouchedRaw/ into bids/sourcedata/ ###
+
+# naviagate to directory with script
+cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
+
+# run shell script for sub 001
+./1_pre-dcm2bids.tsch 001
+
+### Manual inspection and labeling of extra scans in sourcedata ###
+
+### Organize MRI data into BIDS (bids/rawdata/) ###
+
+# naviagate to directory with script
+cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
+
+# activate dcm2bids conda env
+conda activate dcm2bids
+
+# run shell script for sub 001
+./2_dcm2bids.tsch 001
+
+```
+
+### Explanation of MRI data processing steps
+
+
+### Organizing data into BIDS with processing scripts
 
 #### Survey and Task Data
 
-Survey and task data are both processed using the script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) which is shared in the [R01_Marketing GitHub Repository](##r01_marketing).
+Survey and task data are processed and organized into BIDS using the script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) which is shared in the [R01_Marketing GitHub Repository](##r01_marketing).
 
 beh_into_bids.R was written to process files stored in OneDrive, provided they are synced to a local computer and the script is run locally. After processing data locally, beh_into_bids.R syncs data to Roar Collab.
 
@@ -2026,7 +2067,6 @@ user_id = "baf44"
 
 ```
 
-
 Overview of beh_into_bids.R:
 
 - Survey data is processed using dataREACHr::proc_redcap(). This function:
@@ -2042,38 +2082,44 @@ Overview of beh_into_bids.R:
     * SST (using util_task_sst())
   * Exports a meta-data JSON file into bids/rawdata for the following tasks: foodview_bold, sst_bold, sst_beh
     * Done using write_task_jsons()
-- Survey and Task data in untouchedRaw/ and bids/ on OneDrive are synced to Roar Collab using rsync
+- Survey and Task data in untouchedRaw/ and bids/ on OneDrive (local) are synced to Roar Collab using rsync
 
 ### Neuroimaging data
 
+#### Example processing for sub 001
+Following these steps requires that data have already copied from Hoth to Roar Collab
 
+SSH into Roar Collab
+```
+ssh
+```
+From Roar Collab, run data processing shell scripts
+```
+### 1. copy data from untouchedRaw/ into bids/sourcedata/ ###
 
-### Software Required
+# naviagate to directory with script
+cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
 
-* Python
+# run shell script for sub 001
+./1_pre-dcm2bids.tsch 001
 
-Mac
+### 2. Manual steps ###
 
-Windows
+#### label extra scans in sourcedata/
+#### add names of fieldmaps to fmap_descriptions.csv
 
+### 3. Organize MRI data into BIDS (bids/rawdata/) ###
 
-* Matlab
+# naviagate to directory with script
+cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
 
-Mac
+# activate dcm2bids conda env
+conda activate dcm2bids
 
-Windows
+# run shell script for sub 001
+./2_dcm2bids.tsch 001
 
-* R
-
-Mac
-
-Windows
-
-* LaTex
-
-Mac
-
-Windows
+```
 
 
 ## Data Quality Control
