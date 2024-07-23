@@ -1,9 +1,10 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
-#SBATCH --mem-per-cpu=5GB
+#SBATCH --mem-per-cpu=4GB
 #SBATCH --time=4:00:00
-#SBATCH --partition=open
+#SBATCH --account=klk37
+#SBATCH --partition=sla-prio 
 #SBATCH --output=slurm_lev1_%a.out
 #SBATCH --array=1-94
 #
@@ -37,11 +38,15 @@ if [ "$#" -eq 0 ]; then
     # Create an array to store the subs to process
     subs=()
 
-    # Loop through subfolders in rawdata_dir that with begin with sub-
-    for folder in "$fmriprep_dir"sub-*; do
+    # Loop through html files in fmriprep_dir that with begin with sub-
+    for html in "$fmriprep_dir"sub-*html; do
 
-        # Extract the string following "sub-" and add it to the array subs
-        sub=$(basename "$folder" | sed 's/sub-//')
+        # extract sub ID
+        base=$(basename "$html") # get file basename
+        base="${base%.html}" # remove .html from end of basename
+        sub="${base#sub-}" # remove 'sub-' from beginning of base
+
+        # add sub ID to the array subs
         subs+=("$sub")
 
     done
