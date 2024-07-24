@@ -5,7 +5,7 @@
 #SBATCH --time=4:00:00
 #SBATCH --account=klk37
 #SBATCH --partition=sla-prio 
-#SBATCH --output=slurm_lev1_%a.out
+#SBATCH --output=slurm_lev1_%A_%a.out
 #SBATCH --array=1-94
 #
 # Useage: 
@@ -92,8 +92,8 @@ else
 fi
 
 # Rename the default SLURM output file to custom output file
-output_file="$code_dir/lev1_sub-${sub}.out"
-mv $code_dir/slurm_lev1_${SLURM_ARRAY_TASK_ID}.out $output_file
+output_file="$code_dir/sub-${sub}_lev1_${SLURM_ARRAY_JOB_ID}.out"
+mv $code_dir/slurm_lev1_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $output_file
 
 # Finish up
 date=$(date +"%Y-%m-%d")
