@@ -6,25 +6,29 @@
 ## (1) specifying the path to R01_Marketing on Roar Collab as base_dir
 ## (2) commenting out the section on syncing data (or, reversing source and destination directories to sync the other way)
 
-#### load packages ####
 
-# load dataREACHr
-load_all("/Users/baf44/projects/dataREACHr")
+# load packages -----
 
-#### user setup (modify variables here) ####
+# load dataREACHr (load_all() from devtools package)
+#load_all("/Users/baf44/projects/dataREACHr")
+library(devtools)
+load_all("/Users/bari/projects/dataREACHr")
+
+# user setup (modify variables here) -----
 
 # define path to the ParticipantData directory on the local machine (synced with OneDrive)
-base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
+#base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
+base_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
 # define names of redcap files to process
-visit_file_name =  "FoodMarketingResilie_DATA_2024-06-26_1426.csv"
+visit_file_name =  "FoodMarketingResilie_DATA_2024-07-23_1618.csv"
 double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
 
 # define Penn State user ID
 ## needed for syncing data between OneDrive and Roar Collab
 user_id = "baf44"
 
-#### process redcap data ####
+# process redcap data -----
 
 # assign paths to data downloaded from redcap
 visit_data_path = paste0(base_dir, "/bids/sourcedata/phenotype/", visit_file_name)
@@ -37,22 +41,21 @@ redcap_data <-
               overwrite = TRUE,
               return_data = TRUE)
 
-# run quality checks on redcap data
+## run quality checks on redcap data -----
 qc_redcap(redcap_data)
 
-#### process task data ####
-# process data: food view, sst ... 
+# process task data -----
 
 task_data <-
   proc_task(
     base_wd = base_dir,
     overwrite_sourcedata = FALSE,
-    overwrite_rawdata = FALSE,
+    overwrite_rawdata = TRUE,
     overwrite_jsons = TRUE,
     return_data = TRUE
   )
 
-#### Generate derivatives ####
+# generate derivative task databases -----
 
 # create directory for summary beh data if it doesn't exist
 beh_sum_dir <- paste0(base_dir, "/bids/derivatives/beh_summary_databases/")
@@ -60,8 +63,8 @@ beh_sum_dir <- paste0(base_dir, "/bids/derivatives/beh_summary_databases/")
 if (!dir.exists(beh_sum_dir)) {
   dir.create(beh_sum_dir, recursive = TRUE)
 }
-
-# rrv task
+ 
+## rrv task -----
 rrv_deriv_data <- deriv_rrv(task_data$rrv_data)
 rrv_wide <- rrv_deriv_data[['summary']]
 rrv_long <- rrv_deriv_data[['summary_long']]
@@ -92,7 +95,39 @@ write.table(
 write(rrv_wide_json, paste0(beh_sum_dir, "rrv.json"))
 write(rrv_long_json, paste0(beh_sum_dir, "rrv_long.json"))
 
-#### Sync data from OneDrive to RoarCollab ####
+
+## foodview task -----
+
+foodview_deriv_data <- deriv_foodview(task_data$foodview)
+foodview_bycond <- foodview_deriv_data[['summary_long_by_cond']]
+foodview_byblock <- foodview_deriv_data[['summary_long_by_block']]
+
+json_foodview_deriv <- json_deriv_foodview()
+foodview_bycond_json <- json_foodview_deriv[['foodview_bycond_json']]
+
+write.table(
+  foodview_bycond,
+  paste0(beh_sum_dir, "foodview_long_by_cond.tsv"),
+  quote = FALSE,
+  sep = '\t',
+  col.names = TRUE,
+  row.names = FALSE,
+  na = "n/a" # use 'n/a' for missing values for BIDS compliance
+)
+
+write.table(
+  foodview_byblock,
+  paste0(beh_sum_dir, "foodview_long_by_block.tsv"),
+  quote = FALSE,
+  sep = '\t',
+  col.names = TRUE,
+  row.names = FALSE,
+  na = "n/a" # use 'n/a' for missing values for BIDS compliance
+)
+
+write(foodview_bycond_json, paste0(beh_sum_dir, "foodview_bycond.json"))
+
+# Sync data from OneDrive to RoarCollab -----
 
 # to keep raw and processed phenotype/task data on Roar Collab up-to-date with OneDrive, it is recommended to update RoarCollab with rsync after re-processing.
 # syncing data between OneDrive and Roar Collab requires having access to Roar Collab and Kathleen Keller's group folder
