@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
 #SBATCH --mem-per-cpu=4GB
-#SBATCH --time=4:00:00
+#SBATCH --time=6:00:00
 #SBATCH --account=klk37
 #SBATCH --partition=sla-prio 
 #SBATCH --output=slurm_lev1_%A_%a.out
