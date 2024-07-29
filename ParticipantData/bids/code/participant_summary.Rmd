@@ -35,44 +35,24 @@ participants_data <- redcap_data$phenotype_data$participants
 
 ```
 
+To do: figure out which children have BMI's outside of range
+
+
 ```{r visit counts by risk counts}
 
-# count number of baseline visits completed
-participants_data$visit_count <- rowSums(!is.na(participants_data[c("child_protocol_1_date", "child_protocol_2_date", "child_protocol_3_date", "child_protocol_4_date", "child_protocol_5_date")]))
-
-participants_data$risk_status_maternal.y <- as.factor(participants_data$risk_status_maternal.y)
-participants_data$sex <- as.factor(participants_data$sex)
-
-long_count <- as.data.frame(participants_data %>%
-  dplyr::count(risk_status_maternal.y, visit_count, sex) %>%
-  dplyr::filter(visit_count > 0))
-
-long_count$visit_count <-as.factor(long_count$visit_count)
-
-# bar plot: counts by risk status
-ggplot(data = long_count, aes(x = visit_count, y = n, fill = risk_status_maternal.y)) +
-  # Implement a grouped bar chart
-geom_bar(position = "dodge", stat = "identity")
+# make long dataframe of visit dates
+visits_long <- participants_data %>%
+  pivot_longer(cols = child_protocol_1_date:child_protocol_5_date, names_to = "child_protocol_number", values_to = "child_protocol_date") %>%
+  filter(!is.na(child_protocol_date))
 
 
-# bar plot: counts by risk status and sex
-ggplot(long_count) +
-  geom_bar(aes(x = visit_count, y = n, fill = sex),
-           position = "stack",
-           stat = "identity") +
-  facet_grid(~ risk_status_maternal.y, switch = "x") +
-  labs(
-    x = "Number of visits completed",
-    y = "Number of Participants",  # Custom label for the y-axis
-    fill = "Sex",                  # Custom label for the fill legend
-    title = "Visit Counts by Risk Status and Sex"  # Custom title
-  ) +
-  theme(strip.placement = "outside",
-        strip.background = element_rect(fill = NA, color = "white"),
-        strip.text = element_text(size = 10, face = "bold"),  # Increase facet label size
-        plot.title = element_text(size = 14, face = "bold", hjust = 0.5), #center and bold title
-        axis.title.x = element_text(size = 12),  # Increase x-axis title size
-        axis.title.y = element_text(size = 12)   # Increase y-axis title sizee
-)
-        #panel.spacing = unit(-.01,"cm")) # add this to remove space between risk panels
+# Plot: visit protocol counts by risk status
+ggplot(visits_long, aes(x = child_protocol_number, fill = risk_status_maternal.y)) +
+  geom_bar(position = "dodge", stat = "count") +
+  geom_text(data = counts, aes(x = Column, y = Count, label = Count, group = risk_status_maternal.y),
+            position = position_dodge(width = 0.9), vjust = -0.5) +
+  labs(title = "Number of Visits per Visit Protocol by Risk", x = "Visit protocol", y = "Count") +
+  theme_minimal()
+
+
 ```
