@@ -58,3 +58,10 @@ for file_path in sub_summary_files:
 
 # concatenate all dataframes into a single dataframes
 group_data = pd.concat(dataframe_list, ignore_index=True)
+
+# Make directory for export 
+Path(os.path.join(analysis_dir, 'level_2')).mkdir(parents=True, exist_ok=True)
+
+# define output file path
+file_name = Path(os.path.join(analysis_dir, 'level_2', 'group_censor_summary.tsv'))
+group_data.to_csv(str(file_name), sep = '\t', encoding='ascii', index = False, header=True)
