@@ -104,6 +104,7 @@ foodview_byblock <- foodview_deriv_data[['summary_long_by_block']]
 
 json_foodview_deriv <- json_deriv_foodview()
 foodview_bycond_json <- json_foodview_deriv[['foodview_bycond_json']]
+foodview_byblock_json <- json_foodview_deriv[['foodview_byblock_json']]
 
 write.table(
   foodview_bycond,
@@ -125,7 +126,40 @@ write.table(
   na = "n/a" # use 'n/a' for missing values for BIDS compliance
 )
 
-write(foodview_bycond_json, paste0(beh_sum_dir, "foodview_bycond.json"))
+write(foodview_bycond_json, paste0(beh_sum_dir, "foodview_long_by_cond.json"))
+write(foodview_byblock_json, paste0(beh_sum_dir, "foodview_long_by_block.json"))
+
+## sst -----
+sst_deriv_data <- deriv_sst(task_data$sst)
+sst_byrun <- sst_deriv_data[['summary_long_by_run']]
+sst_byblock <- sst_deriv_data[['summary_long_by_block']]
+
+json_sst_deriv <- json_deriv_sst()
+sst_byblock_json <- json_sst_deriv[['sst_byblock_json']]
+#sst_byrun_json <- json_sst_deriv[['sst_byrun_json']] # not yet returned by json_deriv_sst()
+
+write.table(
+  sst_byrun,
+  paste0(beh_sum_dir, "sst_long_by_run.tsv"),
+  quote = FALSE,
+  sep = '\t',
+  col.names = TRUE,
+  row.names = FALSE,
+  na = "n/a" # use 'n/a' for missing values for BIDS compliance
+)
+
+write.table(
+  sst_byblock,
+  paste0(beh_sum_dir, "sst_long_by_block.tsv"),
+  quote = FALSE,
+  sep = '\t',
+  col.names = TRUE,
+  row.names = FALSE,
+  na = "n/a" # use 'n/a' for missing values for BIDS compliance
+)
+
+write(sst_byblock_json, paste0(beh_sum_dir, "sst_long_by_block.json"))
+#write(sst_byrun_json, paste0(beh_sum_dir, "sst_long_by_run.json"))
 
 # Sync data from OneDrive to RoarCollab -----
 
@@ -139,8 +173,10 @@ source_dir <- paste0(base_dir,"{untouchedRaw,bids}")
 destination_dir = paste0(user_id, "@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing")
 
 # Build rsync command 
-# TO DO: figure a way to sync without changing permissions 
 rsync_cmd <- paste("rsync -av --update", source_dir, destination_dir)
 
 # Execute rsync command - running this will prompt the user to enter their password
 # system(rsync_cmd) ## commented out until permissions issue is resolved
+
+# TO DO: figure a way to specify group (klk37)/permissions of files during or after syncing 
+# until then, ssh in and use chgrp -R klk37 *
