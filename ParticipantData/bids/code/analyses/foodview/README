@@ -1,0 +1,9 @@
+Code development:
+Scripts are developed locally on Bari's computer, where they are committed and pushed to GitHub.
+Scripts are then synced to Roar Collab for testing and running on the HPC.
+Changes are made locally and re-synced to Roar Collab. 
+
+To sync files from local to Roar Collab:
+
+>> cd /Users/bari/projects/Keller_Marketing/ParticipantData/bids/code/analyses/
+>> rsync -av --update foodview baf44@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing/bids/code/analyses/
