@@ -30,6 +30,7 @@
     - [State Anxiety Ratings (CAMS)](#state-anxiety-ratings-cams)
     - [Structural scan](#structural-scan)
     - [Functional scans - Food View Task](#functional-scans---food-view-task)
+      - [Data and meta-data:](#data-and-meta-data)
     - [Functional Scans - Stop Signal Task ("Plate Sorting Game")](#functional-scans---stop-signal-task-plate-sorting-game)
     - [Field maps](#field-maps)
     - [Post-scan fMRI behavioral assessment](#post-scan-fmri-behavioral-assessment)
@@ -396,6 +397,17 @@ Food images were selected from Dr. Jens Blechert's Food Pics database. Images we
 <!-- omit in toc -->
 #### Outcome Metrics
 
+<!-- omit in toc -->
+#### Behavioral Metrics
+
+#### Data and meta-data: 
+  * Individual subject data:
+    * bids/rawdata/*/
+  * Summary databases:
+    * bids/derivatives/beh_summary_databases/foodview_long_by_block.tsv and foodview_long_by_block.json
+    * bids/derivatives/beh_summary_databases/foodview_long_by_cond.tsv and foodview_long_by_cond.json
+
+  
 ### Functional Scans - Stop Signal Task ("Plate Sorting Game")
 
 The stop-signal task (SST) assesses inhibitory control by measuring the latency of response inhibition. To assess the effects of food (vs. toy) commercials on inhibitory control, children performed rounds of the SST after viewing toy and food commercials. 
@@ -410,13 +422,13 @@ The SST was adapted from the implementation in (Verbruggen, Logan, & Stevens, 20
 
 The SST was administered using [Matlab2018b and Psychtoolbox3]. 
 
-The SST included 6 functional MRI runs (~XX min each). Each run included XX commerical blocks and stop signal blocks. Commercial and stop signal blocks were presented in alternating order, always starting with a commercial block. Commercial blocks contained 1 commercial (~15 seconds). Within a run, commercials blocks were either all food or all toy commericals. 
+SST blocks were administered under practice, behavioral, and fmri contexts. Each block included 36 event trials (10 stop trials and 26 go trials).
 
-[During stop signal blocks, plates of food were presented with a triangle-folded napkin on either the left or right side of the plate (go stimulus; see Figure 1) for 1500 ms with an inter-stimulus-interval of 50 ms (i.e., fixation). Children were asked to sort the plates according to which side of the plate the napkin was on and to press the left or right arrow keys when the napkin appeared on the left or right side of the plate, respectively. They were encouraged to respond as quickly as possible. They were also told that the plate would be sometimes get covered with a warmer dome (i.e., stop-signal; see Figure 1) and were instructed not to respond if the dome appeared.  The warmer dome (i.e., stop-signal) was presented after variable delay on 25% of trials. The variable stop-signal delay (SSD) was determined by a step-wise adaptive procedure which increased the SSD 50ms after each successful stop trial and reduced the SSD by 50 ms after each unsuccessful stop trial with the first SSD = 250 ms. This adaptive procedure maintained ~0.50 probability of successful response inhibition. The task parameters were based on specifications articulated by Verbruggen and colleagues (2019) for best practices in measuring stop-signal reaction time according to the theoretical racehorse model. ]
+During each trial, a plate of food was presented with a triangle-folded napkin on either the left or right side of the plate (go stimulus; see Figure 1) [for 1500 ms with an inter-stimulus-interval of 50 ms (i.e., fixation) ??]. Children were asked to sort the plates according to which side of the plate the napkin was on and to press the left or right arrow keys when the napkin appeared on the left or right side of the plate, respectively. They were encouraged to respond as quickly as possible. On stop trials, the plate would get covered with a warmer dome (i.e., stop-signal; see Figure 1). Children were instructed not to respond when the dome appeared.  The warmer dome (i.e., stop-signal) was presented after a variable stop-signal delay (SSD) determined by a step-wise adaptive procedure which increased the SSD 50ms after each successful stop trial and reduced the SSD by 50 ms after each unsuccessful stop trial with the first SSD = 250 ms. This adaptive procedure maintained ~0.50 probability of successful response inhibition. The task parameters were based on specifications articulated by Verbruggen and colleagues (2019) for best practices in measuring stop-signal reaction time according to the theoretical racehorse model.
 
-The task consisted of N trials across 4 randomized blocks (i.e., N trials per block), two of which included foods with high-energy density (ED; i.e. a chocolate brownie) and two of which included foods with low-ED (i.e. blueberries). 
+The practice context included an explanation of the task followed by 1 SST block. During the practice block, children recieved feedback after each trial [explanation]. 
 
-Prior to the task, children completed 32 practice trials to ensure they understood the instructions. After the practice, children were reminded to respond quickly and told that they may be encourage to respond quickly during the task. To prevent children from slowing throughout the task, which is a known issue, the message ‘Faster’ was presented after trials in which they responded slower than 1.5 standard deviations below their mean reaction time in practice. Between each block, children were given the opportunity to take a break and were shown their average response time (e.g., ‘How Fast Were You?’), given encouragement for how quickly the were responding (e.g., ‘Wow, that is faster than a second’), and were reminded not to press the arrow keys if the dome covered the plate.  
+During behavioral and fmri contexts, children completed runs which included 2 commerical and 2 SST blocks each. There were 2 behavioral runs and 6 fmri runs. Within a run, commercial and SST blocks were presented in alternating order, always starting with a commercial block. Within a run, commercials blocks were either all food or all toy commericals. Each commerical block contained 1 commerical (~15 seconds). During behavioral blocks only, the message ‘Faster’ was presented after SST trials when children responded slower than 1.5 standard deviations below their mean reaction time in practice (to prevent children from slowing throughout the task). Between behavioral runs, children were given the opportunity to take a break and were shown their average response time (e.g., ‘How Fast Were You?’), given encouragement for how quickly the were responding (e.g., ‘Wow, that is faster than a second’), and were reminded not to press the arrow keys if the dome covered the plate.  
 
 Stim images...
 
