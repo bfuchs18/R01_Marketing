@@ -3,8 +3,7 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mem-per-cpu=4GB
 #SBATCH --time=6:00:00
-#SBATCH --account=klk37
-#SBATCH --partition=sla-prio 
+#SBATCH --partition=open
 #SBATCH --output=slurm_lev1_%A_%a.out
 #SBATCH --array=1-94
 #
@@ -87,6 +86,7 @@ else
 
     # Run afniproc
     singularity exec $singularity_dir/afni-23.1.10.simg bash $code_dir/proc_functions/afni_proc.sh $sub $fmriprep_dir $analysis_dir
+    singularity exec $singularity_dir/afni-23.1.10.simg bash $code_dir/proc_functions/afni_proc_2.sh $sub $fmriprep_dir $analysis_dir
 
 
 fi
