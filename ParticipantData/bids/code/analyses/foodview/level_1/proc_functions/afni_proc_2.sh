@@ -90,9 +90,14 @@ afni_proc.py -subj_id $subID                                 \
         -regress_motion_per_run                                  \
         -regress_opts_3dD                                        \
             -jobs 10                                              \
-            -censor $sub_analysis_dir/${subID}_ses-1_task-foodview_all-runs_censor_fd-0.9.1D    \
+            -censor $sub_analysis_dir/${subID}_ses-1_task-foodview_run-0*_censor_fd-0.9.1D    \
             -gltsym 'SYM: +hed_sav_food +hed_sw_food +led_sav_food +led_sw_food -hed_sav_toy -hed_sw_toy -led_sav_toy -led_sw_toy ' -glt_label 1 image_FvT           \
             -gltsym 'SYM: +ad_food -ad_toy ' -glt_label 2 comm_FvT           \
+            -gltsym 'SYM: +hed_sav_food +hed_sav_toy +hed_sw_food +hed_sw_toy -led_sav_food -led_sav_toy -led_sw_food -led_sw_toy' -glt_label 3 image_HEDvLED           \
+            -gltsym 'SYM: +hed_sav_food -hed_sav_toy +hed_sw_food -hed_sw_toy' -glt_label 4 image_HED_FvT           \
+            -gltsym 'SYM: +led_sav_food -led_sav_toy +led_sw_food -led_sw_toy' -glt_label 5 image_LED_FvT           \
+            -gltsym 'SYM: +hed_sav_food -hed_sav_toy +led_sav_food -led_sav_toy' -glt_label 6 image_sav_FvT           \
+            -gltsym 'SYM: +hed_sw_food -hed_sw_toy +led_sw_food -led_sw_toy' -glt_label 7 image_sw_FvT           \
         -regress_compute_fitts                                   \
         -regress_make_ideal_sum sum_ideal.1D                     \
         -regress_est_blur_epits                                  \
