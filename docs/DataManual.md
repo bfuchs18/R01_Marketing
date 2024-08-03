@@ -1927,6 +1927,18 @@ singularity build /storage/group/klk37/default/sw/fmriprep-24.0.1.simg docker://
 * Version 24.0.1 was selected for processing because it is (or was) the most recent version available. To use other versions, build another singularity container by specifying a different version number in the command above
 
 ### afni
+* On Roar Collab, AFNI version 24.2.01 is available in a Singularity Container within /storage/group/klk37/default/sw/afni-24.2.01.simg. By using this singularity container, we can use a version of AFNI that is not presently available to all users of Roar Collab.
+
+The container was created by running the following command in a Bash terminal on Roar Collab
+```bash
+# If 24.2.01 is the latest version available (check tags to see AFNIs latest push: https://hub.docker.com/r/afni/afni_make_build/tags), can use this command:
+singularity pull afni-24.2.01.simg docker://afni/afni_make_build
+
+# pull version 24.2.01
+singularity pull afni-24.2.01.simg docker://afni/afni_make_build:AFNI_24.2.01
+
+```
+
 
 ## Data Processing Pipeline
 
