@@ -31,6 +31,7 @@ parser.add_argument("-s", "--sub", type=int, help="subject ID (e.g., 001)")
 parser.add_argument("-d", "--bidsdir", help="string with path to bids directiry (e.g., '/path/to/bids/'")
 args = parser.parse_args()
 
+# check for command line args
 if args.sub is None or args.bidsdir is None:
     parser.print_help()
     sys.exit(1)  # Exit with a non-zero status indicating an error
@@ -38,7 +39,7 @@ else:
     sub = str(args.sub).zfill(3)
     bids_dir = args.bidsdir
 
-# define strings with paths for processing fucntions
+# define strings with paths used as input in processing functions
 rawdata_dir = os.path.join(bids_dir, 'rawdata')
 fmriprep_dir = os.path.join(bids_dir, 'derivatives', 'preprocessed', 'fmriprep_v2401')
 analysis_dir = os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview')

@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This function creates uncensored onset files (AFNI format) for the food view task.
-One onset file is generated for each of the following trial types: food commercial block (food_ad), toy commercial block (toy_ad), high-ED savory food image block after toy commercial (hed_savory_toy_cond), high-ED savory food image block after food commercial (hed_savory_food_cond), high-ED sweet food image block after toy commercial (hed_sweet_toy_cond), high-ED sweet food image block after food commercial (hed_sweet_food_cond), low-ED savory food image block after toy commercial (led_savory_toy_cond), low-ED savory food image block after food commercial (led_savory_food_cond), low-ED sweet food image block after toy commercial (led_sweet_toy_cond), low-ED sweet food image block after food commercial (led_sweet_food_cond)
-
 @author: baf44
 """
 
@@ -20,24 +17,28 @@ from pathlib import Path
 ####                                                                      ####
 ##############################################################################
 
-# for debugging
-sub = 1
-rawdata_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/rawdata"
-analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/foodview"
-overwrite = True
-return_onset_dict = True
-
 def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, return_onset_dict = True):
     """
-    This function creates uncensored onset files (AFNI format) for the food view task for a given subject
-    One onset file is generated for each of the following trial types: food commercial block (food_ad), toy commercial block (toy_ad), high-ED savory food image block after toy commercial (hed_savory_toy_cond), high-ED savory food image block after food commercial (hed_savory_food_cond), high-ED sweet food image block after toy commercial (hed_sweet_toy_cond), high-ED sweet food image block after food commercial (hed_sweet_food_cond), low-ED savory food image block after toy commercial (led_savory_toy_cond), low-ED savory food image block after food commercial (led_savory_food_cond), low-ED sweet food image block after toy commercial (led_sweet_toy_cond), low-ED sweet food image block after food commercial (led_sweet_food_cond)
+    This function creates uncensored onset (timing) files for the food view task for a given subject. Files are formatted for analyses in AFNI.
+    Timing information is derived from *_events.tsv files for data organized in BIDS format
+    One onset file is generated for each of the following trial types: 
+        food commercial block (food_ad), 
+        toy commercial block (toy_ad), 
+        high-ED savory food image block after toy commercial (hed_savory_toy_cond), 
+        high-ED savory food image block after food commercial (hed_savory_food_cond), 
+        high-ED sweet food image block after toy commercial (hed_sweet_toy_cond), 
+        high-ED sweet food image block after food commercial (hed_sweet_food_cond), 
+        low-ED savory food image block after toy commercial (led_savory_toy_cond), 
+        low-ED savory food image block after food commercial (led_savory_food_cond), 
+        low-ED sweet food image block after toy commercial (led_sweet_toy_cond), 
+        low-ED sweet food image block after food commercial (led_sweet_food_cond)
 
     Inputs:
-        sub 
-        bids_dir (str) - path to bids_dir/ directory. Events files will be loaded from bids/rawdata/sub-{sub}/ses-1/func/
-        analysis_dir (str) - path to output directory in bids/derivatives/analyses. Uncensored onset files will be exported into bids/derivatives/analyses/{analysis_dir}/level_1/sub-{sub}/onsets_uncensored/
+        sub (int) - subject/participant ID
+        bids_dir (str) - path to bids_dir/ directory. Events TSV files will be loaded from bids/rawdata/sub-{sub}/ses-1/func/
+        analysis_dir (str) - path to output directory (full path to project folder in bids/derivatives/analyses). Uncensored onset files will be exported into bids/derivatives/analyses/{analysis_dir}/level_1/sub-{sub}/onsets_uncensored/
         overwrite (boolean) - specify if output files should be overwritten (default = False)
-        return_onset_dict (boolean) - specify if onset times should be returned in a dataframe
+        return_onset_dict (boolean) - specify if onset times should be returned in a dataframe (default = True)
     """
 
     #######################
@@ -49,29 +50,29 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         sub_int = int(sub)  # Attempt to convert sub to an integer
         sub = str(sub).zfill(3) # define sub as string with 3 leading zeros
     except (ValueError, TypeError):
-        raise ValueError("The required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
+        raise ValueError("required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
     
     # set rawdata_dir
     if isinstance(rawdata_dir, str):
         # make input string a path
         rawdata_dir = Path(rawdata_dir)
     else: 
-        raise TypeError("rawdata_dir must be string")
+        raise TypeError("required argument 'rawdata_dir' must be string")
 
     # set analysis_dir
     if isinstance(analysis_dir, str):
         # make input string a path
         analysis_dir = Path(analysis_dir)
     else: 
-        raise TypeError("analysis_dir must be string")
+        raise TypeError("required argument 'analysis_dir' must be string")
 
     # check overwrite
     if not isinstance(overwrite, bool):
-        raise TypeError("overwrite must be boolean (True or False)")
+        raise TypeError("argumenet 'overwrite' must be boolean (True or False)")
 
     # check return_onset_df
     if not isinstance(return_onset_dict, bool):
-        raise TypeError("return_onset_dict must be boolean (True or False)")
+        raise TypeError("argument 'return_onset_dict' must be boolean (True or False)")
     
     ##############
     ### Set up ###
@@ -98,7 +99,7 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
     # get number of runs
     n_runs = len(events_files)
 
-    # initialize nested dictionary with 1 dictionary per condition (key = run number, value = [])
+    # initialize nested dictionary with 1 dictionary per condition (key = condition, value = dictionary with 1 key per run (e.g., 'run-01') with value = [])
     onsets_dict = {
     'ad_food': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
     'ad_toy': {'run-0' + str(i): [] for i in range(1, n_runs + 1)},
@@ -154,14 +155,15 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
 
         # get image block onsets for each condition
         
-        ## note: each food image conditions occur 1x per run (either after food or toy commercial),
+        ## note: each food image condition occur 1x per run (either after food or toy commercial),
         ## so there is no need to also loop by commercial type (just need extract which commercial condition it followed)
         
         for food_cond in ["hed_savory", "hed_sweet", "led_savory", "led_sweet"]:
 
+            # subset rows for given condition
             cond_rows = events_dat[events_dat['stim_file_name'].str.contains(food_cond)].copy()
 
-            # get number of images for given condition
+            # get number of images events for given condition
             n_jpeg_events = len(cond_rows)
 
             # if has image events
@@ -179,6 +181,7 @@ def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, ret
         # define path to outfuile
         out_file_path = Path(sub_onset_dir).joinpath('sub-' + sub + '_' + trial_type_key + '_onsets.txt')
 
+        # if file doesnt exist or overwrite = True
         if not out_file_path.exists() or overwrite:
 
             print('Exporting ' + trial_type_key + ' uncensored onset file for sub ' + str(sub))
