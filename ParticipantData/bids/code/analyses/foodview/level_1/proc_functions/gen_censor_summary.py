@@ -21,11 +21,11 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
         (8) the number and (9) percentage of censored commerical block TRs
 
     Inputs:
-        sub 
+        sub (int) - participant ID 
         uncensored_onsets_dict: dictionary returned by gen_uncensored_onsets())
         censordata_dict: dictionary returned by gen_censor_files())
         fd_thresh (int or float) - threshold use to censor TRs in gen_censor_files() -- this will be used to name the output file
-        analysis_dir (str) - path to output directory in bids/derivatives/analyses
+        analysis_dir (str) - path to output directory (full path to project folder in bids/derivatives/analyses)
         overwrite (boolean) - specify if output file should be overwritten (default = False)
         return_summary_dataframe (boolean) - specify if summary_dataframe should be returned
 
@@ -45,39 +45,40 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
         sub_int = int(sub)  # Attempt to convert sub to an integer
         sub = str(sub).zfill(3) # define sub as string with 3 leading zeros
     except (ValueError, TypeError):
-        raise ValueError("The required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
+        raise ValueError("required argument 'sub' must be a integer (e.g., 1) or a value that can be converted to an integer (e.g., '001')")
     
     # check uncensored_onsets_dict
     if not isinstance(uncensored_onsets_dict, dict):
         print(uncensored_onsets_dict)
-        raise TypeError("uncensored_onsets_dict must be dict")
+        raise TypeError("required argument uncensored_onsets_dict must be dict")
    
     # check censordata_dict
     if not isinstance(censordata_dict, dict):
         print(censordata_dict)
-        raise TypeError("censordata_dict must be dict")
+        raise TypeError("required argument censordata_dict must be dict")
    
     # set analysis_dir
     if isinstance(analysis_dir, str):
         # make input string a path
         analysis_dir = Path(analysis_dir)
     else: 
-        raise TypeError("analysis_dir must be string")
+        raise TypeError("required argument analysis_dir must be string")
 
     # check overwrite
     if not isinstance(overwrite, bool):
-        raise TypeError("overwrite must be boolean (True or False)")
+        raise TypeError("argument overwrite must be boolean (True or False)")
    
     # check fd_thresh input
     if isinstance(fd_thresh, int) or isinstance(fd_thresh, float):
             fd_thresh = float(fd_thresh)
     else:
-        raise TypeError("fd_thresh must be integer or float")
+        raise TypeError("argument fd_thresh must be integer or float")
     
     ##########################################################################
     ### Make commerical and image block TR onset dicts (across conditions) ###
     ##########################################################################
     
+    # define TR in seconds
     TR = 2
 
     # initialize dict to store commerical block
@@ -172,7 +173,7 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
     ### Export ###
     ##############
 
-    # define subject analysis
+    # define subject analysis directory
     sub_analysis_dir = os.path.join(analysis_dir, 'level_1/sub-' + str(sub))
 
     # set censor string 
@@ -181,6 +182,7 @@ def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_di
     # define output file name
     file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-foodview_censor-summary_' + str(censor_str) + '.tsv'))
 
+    # if file doesnt exist or overwrite = True
     if not file_name.exists() or overwrite:
         print(f"Exporting censor summary for sub {str(sub)}")
         summary_dataframe.to_csv(str(file_name), sep = '\t', encoding='utf-8-sig', index = False)
