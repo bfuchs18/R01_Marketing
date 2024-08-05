@@ -20,7 +20,7 @@ subID="sub-$ID" # add sub- prefix
 
 # set fmriprep_dir from arg 2
 if [ ! -d "$2" ]; then # check arg 2 is an existing directory
-     echo "ERROR: arg 2 supplied to afni_blue_scale.sh (fmriprep_dir) does not reflect an existing directory"
+     echo "ERROR: arg 2 supplied to afni_proc.sh (fmriprep_dir) does not reflect an existing directory"
      exit
 else
 	# set fmriprep_dir
@@ -53,7 +53,7 @@ echo ""
 onset_dir="$sub_analysis_dir/onsets_uncensored/"
 
 # make outdir if it doesnt exist
-outdir=${sub_analysis_dir}/afniproc_censored_trs
+outdir=${sub_analysis_dir}/afniproc
 
 if [ ! -d "$outdir" ]; then
     mkdir -p "$outdir"
