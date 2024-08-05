@@ -86,8 +86,6 @@ else
 
     # Run afniproc
     singularity exec $singularity_dir/afni-24.2.01.simg bash $code_dir/proc_functions/afni_proc.sh $sub $fmriprep_dir $analysis_dir
-    singularity exec $singularity_dir/afni-24.2.01.simg bash $code_dir/proc_functions/afni_proc_2.sh $sub $fmriprep_dir $analysis_dir
-
 
 fi
 
