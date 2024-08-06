@@ -93,7 +93,6 @@ run_count = summary_df.groupby('sub').agg(
     runs_p_image_8=('p_uncensored_image_trs', lambda x: (x > 0.8).sum()),
     runs_p_image_7=('p_uncensored_image_trs', lambda x: (x > 0.7).sum()),
     runs_p_image_6=('p_uncensored_image_trs', lambda x: (x > 0.6).sum()),
-    runs_p_image_5=('p_uncensored_image_trs', lambda x: (x > 0.5).sum()),
     runs_p_all_8=('p_uncensored_trs', lambda x: (x > 0.8).sum()),
     runs_p_all_7=('p_uncensored_trs', lambda x: (x > 0.7).sum()),
     runs_p_all_6=('p_uncensored_trs', lambda x: (x > 0.6).sum()),
@@ -105,7 +104,7 @@ run_count = summary_df.groupby('sub').agg(
 ).reset_index()
 
 # get list of subs with CRITERIA
-sub_nums = run_count[run_count['runs_p_all_7'] > 2]['sub'].tolist()
+sub_nums = run_count[run_count['runs_p_image_7'] > 2]['sub'].tolist()
 
 # format sub IDs
 data_subs = ['sub-' + str(sub).zfill(3) for sub in sub_nums]
@@ -115,4 +114,12 @@ data_subs = ['sub-' + str(sub).zfill(3) for sub in sub_nums]
 # convert stats_subs to set and take intersection with other lists 
 subs = set(stats_subs).intersection(cov_subs, data_subs)
 
-# export
+# export ----
+
+# set file name
+out_file = os.path.join(bids_path, 'derivatives', 'analyses', 'foodview', 'level_2', 'id_list.tsv')
+
+# write ids to file
+with open(out_file, 'w') as file:
+    joined_list = "  ".join(subs)
+    print(joined_list , file = file)
