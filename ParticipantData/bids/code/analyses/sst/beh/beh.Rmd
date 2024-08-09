@@ -34,7 +34,7 @@ Data was processed by dataREACHr functions util_task_sst.R (called by proc_task.
 # Histograms - task completion
 ```{r run completion}
 
-fmri_beh <- beh_byrun[beh_byrun$type == "fMRI",]
+fmri_beh <- beh_byrun[beh_byrun$type == "fMRI",] ## sub-012 data was NOT collected in scanner -- remove their data; remove children with technical issues?
 
 # count number of children with N runs completed
 run_count_by_sub <- fmri_beh %>% group_by(sub) %>% summarise(
@@ -71,9 +71,25 @@ ggplot(rbind(long_table_A, long_table_B), aes(fill=metric, y=n_subs, x=n_runs)) 
 
 Histograms are produced for metrics derived by run of the Stop Signal Task.
 
-## Metric 1
+Before assesssing perforamnce, remove children with known technical issues which would prevent the SST titration from being successful -- should these be removed before counting subs??
+```{r list techincal issues}
 
+technical_issues = list(
+  "sub-003" = "trigger interference",
+  "sub-006" = "trigger interference",
+  "sub-009" = "stuck button",
+  "sub-013" = "stuck button",
+  "sub-075" = "responses not collecting"
+)
+
+beh_byrun_cleaned <- beh_byrun[!beh_byrun$sub %in% names(technical_issues),]
+
+```
+
+## Stop failure rate
+
+Did the titration work?
 ```{r }
-
+hist(beh_byrun_cleaned$prop_stop_fail)
 
 ```
