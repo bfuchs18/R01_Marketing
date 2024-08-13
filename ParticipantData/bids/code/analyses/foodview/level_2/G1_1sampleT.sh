@@ -32,9 +32,6 @@ set lev1_dir =  $analysis_dir/level_1
 #set level2 directory
 set lev2_dir =  $analysis_dir/level_2
 
-# set index dir
-set lev2_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
-
 # set test_dir 
 set test_dir = $lev2_dir/1sampleT
 
