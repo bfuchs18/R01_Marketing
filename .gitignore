@@ -5,7 +5,9 @@ ParticipantData/untouchedRaw
 ParticipantData/bids/rawdata
 ParticipantData/bids/phenotype
 ParticipantData/bids/participants*
-ParticipantData/bids/derivatives* 
+ParticipantData/bids/derivatives*
 *html
 .Rhistory
 *__pycache__*
+.bash_profile
+.RData
