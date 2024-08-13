@@ -90,12 +90,10 @@ def gen_covariate_table():
     # covar_df['height_avg'] = covar_df['height_avg'].astype(str).astype(float) #convert to string, then float
     # covar_df['fmi'] = (covar_df['dxa_total_fat_mass'].div(1000)) / ((covar_df["height_avg"] * .01)**2)
 
-    # replace missing values with -999: AFNI cannot handle missing values and the entire table must be filled 
-    covar_df.fillna(-999, inplace=True)
-
     #########################
     #### Export dataframe ###
     #########################
 
-    # write dataframe with covariates
-    covar_df.to_csv(str(Path(database_path).joinpath('covariates.txt')), sep = '\t', encoding='ascii', index = False)
+    # write dataframe with covariates -- replace missing values with -999: AFNI cannot handle missing values and the entire table must be filled 
+
+    covar_df.to_csv(str(Path(database_path).joinpath('covariates.txt')), sep = '\t', encoding='ascii', index = False, na_rep='-999')
