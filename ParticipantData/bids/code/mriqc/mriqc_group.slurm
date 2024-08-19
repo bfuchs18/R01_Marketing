@@ -23,7 +23,7 @@ echo "Running MRIQC on group"
 echo ""
 
 unset PYTHONPATH; singularity run --cleanenv $singularity_dir/mriqc-24.0.0.simg \
-    $rawdata_dir $bids_root_dir/derivatives/mriqc/ participant \
+    $rawdata_dir $bids_root_dir/derivatives/mriqc/ group \
     --float32 \
     --mem_gb 20 \
     --n_procs 10 \
