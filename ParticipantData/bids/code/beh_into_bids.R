@@ -10,19 +10,17 @@
 # load packages -----
 
 # load dataREACHr (load_all() from devtools package)
-#load_all("/Users/baf44/projects/dataREACHr")
 library(devtools)
-load_all("/Users/bari/projects/dataREACHr")
+load_all("/Users/baf44/projects/dataREACHr")
 
 # user setup (modify variables here) -----
 
 # define path to the ParticipantData directory on the local machine (synced with OneDrive)
-#base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
-base_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
+base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
 # define names of redcap files to process
-visit_file_name =  "FoodMarketingResilie_DATA_2024-07-29_1212.csv"
-double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
+visit_file_name =  "FoodMarketingResilie_DATA_2024-08-14_1522.csv"
+double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-08-14_1521.csv"
 
 # define Penn State user ID
 ## needed for syncing data between OneDrive and Roar Collab
