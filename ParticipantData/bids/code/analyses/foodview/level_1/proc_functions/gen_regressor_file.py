@@ -19,11 +19,11 @@ from pathlib import Path
 
 # for debugging
 sub = 1
-fmriprep_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/preprocefmriprep_v2320"
-analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/foodview"
+fmriprep_dir = "/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/preprocessed/fmriprep_v2320"
+analysis_dir = "/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/foodview"
 overwrite = True
 
-def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, return_dataframe = False):
+def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, return_regressordata_dict = False):
     """
     This function will creates a CSV file with nuisance regressors for first-level analyses in AFNI based on fmriprep confound files for a given subject
     The following variables will be included: trans_x, trans_y, trans_z, rot_x, rot_y, rot_z, csf, white_matter, trans_x_derivative1, trans_y_derivative1, trans_z_derivative1, rot_x_derivative1, rot_y_derivative1, rot_z_derivative1
@@ -33,7 +33,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
         fmriprep_dir (str) - path to fmriprep/ directory. Confound files will be loaded from bids/derivatives/preprocessed/{fmriprep_path}/sub-{sub}/ses-1/func/
         analysis_dir (str) - path to output directory in bids/derivatives/analyses. Censor files will be exported into bids/derivatives/analyses/{analysis_dir}/level_1/sub-{sub}/
         overwrite (boolean) - specify if output files should be overwritten (default = False)
-        return_dataframe (boolean) - specify if nuisance regressors should be returned in a dataframe
+        return_regressordata_dict (boolean) - specify if nuisance regressor dataframes should be returned in a dictionary (keys per run and overall)
     """
 
     #######################
@@ -66,8 +66,8 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
         raise TypeError("overwrite must be boolean (True or False)")
 
     # check return_dataframe
-    if not isinstance(return_dataframe, bool):
-        raise TypeError("return_dataframe must be boolean (True or False)")
+    if not isinstance(return_regressordata_dict, bool):
+        raise TypeError("return_regressordata_dict must be boolean (True or False)")
     
     ##############
     ### Set up ###
@@ -91,23 +91,36 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     # Make list of nuisance regressors
     nui_regs =['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z', 'csf', 'white_matter', 'trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
     
-    # create dataframe to save regressor data to for each run
-    all_runs_regressors_data = pd.DataFrame(np.zeros((0, len(nui_regs))))
-    all_runs_regressors_data.columns = nui_regs
+    # create dictionary to store data in -- dataframes for each run will be appended to 'all-runs' list, and added in their own key-value pair
+    regressor_data_dict = {'all-runs': []}
 
     confound_files.sort()
     for file in confound_files: #loop through runs (each run has its own confoundfile)
 
+        # get file name
+        file_name = file.name
+
+        # get run (e.g., 'run-01')
+        run = file_name.split('_')[3]
+
         #load data
         confound_data = pd.read_csv(str(file), sep = '\t', encoding = 'ascii', engine='python')
 
-        # add run-specific regressor data to overall regressor file
+        # subset regressor data for run
         run_regressors_data = confound_data[nui_regs].copy()
-        all_runs_regressors_data = pd.concat([all_runs_regressors_data, run_regressors_data])
 
-    # for first row [0] of motion derivative variables in regress_Pardat, replace NA with 0. This will allow deriv variables to be entered into AFNI's 3ddeconvolve
-    deriv_vars = ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
-    all_runs_regressors_data.loc[0, deriv_vars] = all_runs_regressors_data.loc[0, deriv_vars].fillna(value=0)
+        # for first row [0] of motion derivative variables in run_regressors_data, replace NA with 0. This will allow deriv variables to be entered into AFNI's 3ddeconvolve
+        deriv_vars = ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
+        run_regressors_data.loc[0, deriv_vars] = run_regressors_data.loc[0, deriv_vars].fillna(value=0)
+
+        # add run-specific regressor data to dictionary in new key-value pair
+        regressor_data_dict[run] = run_regressors_data
+
+        # extend censordata_dict['all_runs'] with run_censordata
+        regressor_data_dict['all-runs'].append(run_regressors_data)
+
+    # Concatenate the dataframes in 'all-runs' list into 1 dataframe
+    regressor_data_dict['all-runs'] = pd.concat(regressor_data_dict['all-runs'], ignore_index=True)
 
     ##############################
     ### Export regressor files ###
@@ -119,15 +132,24 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     # Make directory for export 
     Path(sub_analysis_dir).mkdir(parents=True, exist_ok=True)
     
-    # define output file path
-    file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-foodview_all-runs_nuisance-regressors.tsv'))
+    for key in regressor_data_dict:
 
-    # issue message if the file already exists and overwrite is False, otherwise export
-    if file_name.exists() and not overwrite:
-        print('Nuisance regressor file already exist for sub-' + str(sub) + '. Use overwrite = True to overwrite')
-    else:
-        all_runs_regressors_data.to_csv(str(file_name), sep = '\t', encoding='ascii', index = False, header=False)
+        # define output file name
+        file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + "_ses-1_task-foodview_" + key + '_nuisance-regressors.tsv'))
 
-    # return dataframe
-    if return_dataframe is True:
-        return(all_runs_regressors_data)
+        # if file doesnt exist or overwrite is True
+        if not file_name.exists() or overwrite:
+            print('Exporting ' + key + ' regressor file for sub ' + str(sub))
+
+            # open the file in write mode
+            with open(file_name, 'w') as file:
+                for item in regressor_data_dict[key]:
+                    file.write(f"{item}\n") #write each censor value to a new line
+            
+        else:
+            print(key + ' regressor file already exist for sub ' + str(sub) + '. Use overwrite = True to overwrite')
+
+
+    # return dictionary
+    if return_regressordata_dict is True:
+        return(regressor_data_dict)
