@@ -80,8 +80,7 @@ cumulative_visit_counter <- function(data, var) {
     end_val = max(dates_long$date, na.rm = TRUE),
     interval = "day"
   ) %>% fill_by_value(counts, value = 0) %>%
-  mutate(cumulative_count = cumsum(counts)) %>%
-  rename_with(~paste0(var, "_cumcount"), cumulative_count) %>%
+  mutate("{var}_cumcount" := cumsum(counts)) %>%
   select(-counts)
   
   return(count_data)
