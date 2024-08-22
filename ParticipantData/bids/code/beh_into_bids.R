@@ -48,7 +48,7 @@ task_data <-
   proc_task(
     base_wd = base_dir,
     overwrite_sourcedata = FALSE,
-    overwrite_rawdata = TRUE,
+    overwrite_rawdata = FALSE,
     overwrite_jsons = TRUE,
     return_data = TRUE
   )
@@ -165,16 +165,17 @@ write(sst_byblock_json, paste0(beh_sum_dir, "sst_long_by_block.json"))
 # syncing data between OneDrive and Roar Collab requires having access to Roar Collab and Kathleen Keller's group folder
 
 # define source and destination directories for rsync command
-## source: untouchedRaw/ and bids/ One OneDrive
-source_dir <- paste0(base_dir,"{untouchedRaw,bids}")
+## source: untouchedRaw/ and bids/rawdata, bids/sourcedata, bids/derivatives/beh_summary_databases One OneDrive
+source_dir <- paste0(base_dir,"{untouchedRaw,bids/rawdata,bids/sourcedata,bids/derivatives/beh_summary_databases}")
+
 ## destination: R01_Marketing on Roar Collab (submit.hpc.psu.edu)
 destination_dir = paste0(user_id, "@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing")
 
-# Build rsync command 
-rsync_cmd <- paste("rsync -av --update", source_dir, destination_dir)
+# Build rsync command -- open permissions for all (for now, until can figure out setting group with rsync)
+rsync_cmd <- paste("rsync -av --update --perms --chmod=a+rwx", source_dir, destination_dir)
 
 # Execute rsync command - running this will prompt the user to enter their password
-# system(rsync_cmd) ## commented out until permissions issue is resolved
+# system(rsync_cmd)
 
-# TO DO: figure a way to specify group (klk37)/permissions of files during or after syncing 
-# until then, ssh in and use chgrp -R klk37 *
+# TO DO: figure a way to specify group (klk37_collab)/permissions of files during or after syncing 
+# until then, ssh in and use chgrp -R klk37_collab *
