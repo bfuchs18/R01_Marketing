@@ -27,7 +27,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     """
     This function exports 
     (1) a CSV file with nuisance regressors for first-level analyses in AFNI based on fmriprep confound files for a given subject
-    (2) a CSV file with average framewise displacement, for inclusion as a group-level covariate
+    (2) a TSV file with average framewise displacement, for inclusion as a group-level covariate
 
     The following variables are nuisance regressors: trans_x, trans_y, trans_z, rot_x, rot_y, rot_z, csf, white_matter, trans_x_derivative1, trans_y_derivative1, trans_z_derivative1, rot_x_derivative1, rot_y_derivative1, rot_z_derivative1
 
@@ -153,12 +153,8 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
         # if file doesnt exist or overwrite is True
         if not file_name.exists() or overwrite:
             print('Exporting ' + key + ' regressor file for sub ' + str(sub))
+            regressor_data_dict[key].to_csv(str(file_name), sep = '\t', encoding='ascii', index = False, header=False)
 
-            # open the file in write mode
-            with open(file_name, 'w') as file:
-                for item in regressor_data_dict[key]:
-                    file.write(f"{item}\n") #write each censor value to a new line
-            
         else:
             print(key + ' regressor file already exist for sub ' + str(sub) + '. Use overwrite = True to overwrite')
 
@@ -167,7 +163,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
 
     if not fd_file_name.exists() or overwrite:
         print('Exporting average framewise displacement file for sub ' + str(sub))
-        avg_fd_df.to_csv(fd_file_name, index=False) 
+        avg_fd_df.to_csv(fd_file_name, index=False, sep ='\t') 
 
     # return dictionary
     if return_regressordata_dict is True:
