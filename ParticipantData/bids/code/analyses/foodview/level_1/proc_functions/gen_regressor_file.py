@@ -133,6 +133,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     # Compute average fd for each key
     avg_fd_dict = {key: [np.nanmean(value)] for key, value in fd_dict.items()}
     avg_fd_df = pd.DataFrame.from_dict(avg_fd_dict)
+    avg_fd_df['participant_id'] = 'sub-' + str(sub)
 
     ####################
     ### Export files ###
@@ -158,7 +159,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
         else:
             print(key + ' regressor file already exist for sub ' + str(sub) + '. Use overwrite = True to overwrite')
 
-    # Export 1 file with average displacement values
+    # Export 1 file with average displacement values 
     fd_file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-foodview_avg-fd.tsv'))
 
     if not fd_file_name.exists() or overwrite:
