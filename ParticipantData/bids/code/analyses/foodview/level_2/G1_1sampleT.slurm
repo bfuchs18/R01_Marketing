@@ -37,5 +37,4 @@ echo "## G1_1sampleT was run on ${today}"
 echo "## Job started: `date`"
 
 #Load afni singularity and run afniscript
-cd $bidsdir/code/afni/groupanalyses_paper1
-singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT.sh run afniproc
+singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT.sh

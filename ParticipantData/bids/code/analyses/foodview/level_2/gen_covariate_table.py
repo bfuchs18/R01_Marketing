@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This function creates a TXT file with imaging covariates for group-level analyses in AFNI. 
-
 @author: baf44
 """
 
@@ -23,12 +21,32 @@ bids_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/"
 overwrite = True
 
 def gen_covariate_table(bids_dir, overwrite = False):
-    """Function to generate txt file with 1 row per subject and 1 column per covariate for use with 3dttest++ in AFNI. 
-        Covariates to include in analyses can be specified via AFNI using column indexing.
-    
-    Rows in COVAR_FILE whose first column don't match a dataset label (e.g., in AFNI's gen_group_command.py for 3dttest++) are ignored (silently). 
-        Thus, all subjects can be included in the covariate dataframe, even if they will not be included in analyses
+    """Function to generate covariate file for use in group-level analyses in AFNI
+
+    Inputs:
+        bids_dir (str) - path to bids directory (e.g., "/Users/storage/group/klk37/default/R01_Marketing/bids/")
+        overwrite (boolean) - specify if output file should be overwritten (default = False)
+
+    Exports:
+        level_2/covariates.txt: tab-separated file with covariate values for each participant that exists in bids/phenotype/mri_visit.tsv
+
+        Note, rows in covariates.txt whose first column don't match a dataset label (e.g., in AFNI's gen_group_command.py for 3dttest++) are ignored (silently). 
+        Thus, all subjects can be included in the covariate file, even if they will not be included in analyses
     """
+
+    #######################
+    ### Check arguments ###
+    #######################
+
+    if not isinstance(bids_dir, str):
+        raise TypeError("required argument bids_dir must be a str")
+   
+    if not isinstance(overwrite, bool):
+        raise TypeError("argument overwrite must be boolean (True or False)")
+   
+    #####################################
+    #### Import and subset input data ###
+    #####################################
 
     #set paths
     phenotype_path = Path(bids_dir).joinpath('phenotype/')
@@ -46,10 +64,6 @@ def gen_covariate_table(bids_dir, overwrite = False):
     shutil.copyfile(Path(phenotype_path).joinpath(anthro_file), Path(database_path).joinpath(anthro_file))
     shutil.copyfile(Path(phenotype_path).joinpath(mri_file), Path(database_path).joinpath(mri_file))
 
-    ##########################################
-    #### Import and subset input databases ###
-    ##########################################
-
     # anthro database
     anthro_df = pd.read_csv(Path(database_path).joinpath(anthro_file), sep='\t') # import as dataframe
 #    anthro_df = anthro_df[anthro_df['session_id'] == "ses-1"][['participant_id', 'sex', 'child_age', 'child_bmi_z', 'maternal_bmi', 'risk_status_maternal']] # subset to columns of interest for ses-1 only
@@ -60,7 +74,7 @@ def gen_covariate_table(bids_dir, overwrite = False):
     mri_df = mri_df[['participant_id', 'pre_cams_score', 'pre_mri_freddy_score']] # subset to columns of interest
 
     # average fd data
-    fd_df = pd.read_csv(Path(lev2_path).joinpath('fd-avgs.tsv'), sep='\t')  # import as dataframe
+    fd_df = pd.read_csv(Path(lev2_path).joinpath('compiled_avg-fd.tsv'), sep='\t') # import as dataframe
     fd_df = fd_df[['participant_id', 'all-runs']] # subset to columns of interest
     fd_df = fd_df.rename(columns={'all-runs': 'avg_fd_all_runs'}) # rename fd column
 
@@ -85,6 +99,9 @@ def gen_covariate_table(bids_dir, overwrite = False):
     # covar_df['dxa_total_fat_mass'] = covar_df['dxa_total_fat_mass'].astype(str).astype(float) #convert to string, then float
     # covar_df['height_avg'] = covar_df['height_avg'].astype(str).astype(float) #convert to string, then float
     # covar_df['fmi'] = (covar_df['dxa_total_fat_mass'].div(1000)) / ((covar_df["height_avg"] * .01)**2)
+
+    # format IDs for AFNI
+    covar_df['participant_id'] = covar_df['participant_id'].str.replace('sub-', '')
 
     #########################
     #### Export dataframe ###

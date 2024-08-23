@@ -22,25 +22,43 @@ import glob
 bids_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/"
 overwrite = True
 
-def gen_id_list(bids_dir, run_criteria):
+## TO DO:
+# add arg to specify covariates required -- right now ['participant_id', 'pre_cams_score', 'pre_mri_freddy_score' ,'sex', 'child_age', 'avg_fd_all_runs'] is hardcoded 
+# add arg to specify run criteria 
+# include run censor summary in process and label outfile based on requirement
+# include QC results in process
+# make separate lists for high and low risk
 
-    """Function to generate list of subjects to included in group level-analyses. 
+def gen_id_list(bids_dir, overwrite = False):
+    """Function to generate file with list of subjects to included in group level-analyses in AFNI
 
-    List of subs is exported as a tab-separated TXT file that can be pointed to in AFNI scripts.
+    Inputs:
+        bids_dir (str) - path to bids directory (e.g., "/Users/storage/group/klk37/default/R01_Marketing/bids/")
+        overwrite (boolean) - specify if output file should be overwritten (default = False)
 
+    Exports:
+        level_2/id_list.tsv: tab-separated list of subjects
     """
 
-    #set paths
-    lev2_path = Path(bids_dir).joinpath('derivatives/analyses/foodview/level_2/')
+    #######################
+    ### Check arguments ###
+    #######################
 
-    #################################
-    #### Determine who to include ###
-    #################################
+    if not isinstance(bids_dir, str):
+        raise TypeError("required argument bids_dir must be a str")
+   
+    if not isinstance(overwrite, bool):
+        raise TypeError("argument overwrite must be boolean (True or False)")
+   
+
+    #############################################
+    #### Determine IDs that meet requirements ###
+    #############################################
 
     # requirements
     # 1. has data for all covariates in given analysis
     # 2. has stats file for given analysis 
-    # 3. has X number of good runs censor summary motion file
+    # (future goal) 3. has X number of good runs censor summary motion file
     # (future goal) 4. has X number of good runs based on visual QC 
 
     # ----  make list of subs with stats files ----
@@ -48,38 +66,42 @@ def gen_id_list(bids_dir, run_criteria):
     # inittialize list
     stats_subs = []
 
-    # define string with wildcard to get stats files
-    results_folder_str = os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview', 'level_1', 'sub-*', 'afniproc', '*results', '*stats.HEAD')
+    # get list of files that match pattern (.../level_1/sub*/afniproc/*results/stats*.HEAD)
+    stats_files = glob.glob(os.path.join(bids_dir, 'derivatives', 'analyses', 'foodview', 'level_1', 'sub-*', 'afniproc', '*results', 'stats*.HEAD'))
 
-    for file_path in glob.glob(results_folder_str):
+    for file_path in stats_files:
 
         stats_file = os.path.basename(file_path)
         sub = stats_file[6:13] # extract 'sub-???' from stats file name
 
         # append subID to list
-        stats_subs.append()
+        stats_subs.append(sub)
+
 
     # ----  make list of subs with covariate data ----
+
+    # set path to level_2/, where covariates.txt exists
+    lev2_path = Path(bids_dir).joinpath('derivatives/analyses/foodview/level_2/')
 
     # load covariate data in dataframe
     covar_df = pd.read_csv(Path(lev2_path).joinpath('covariates.txt'), sep='\t', na_values=-999) # import as dataframe
 
     # make list of covariates needed for analyses
-    covariates = ['participant_id', 'sex', 'child_age', 'avg_fd_all_runs']
+    covariates = ['participant_id', 'pre_cams_score', 'pre_mri_freddy_score' ,'sex', 'child_age', 'avg_fd_all_runs']
 
     # subset dataframe to covariates for analyses and participant_id
     analysis_covar_df = covar_df[covariates]
 
     # get list of subjects in dataframe after removing rows with missing values
-    cov_subs = analysis_covar_df.dropna()['participant_id'].tolist()
+    cov_sub_nums = analysis_covar_df.dropna()['participant_id'].tolist()
+
+    cov_subs = ['sub-' + str(sub).zfill(3) for sub in cov_sub_nums]
 
     # ---- make list of subs with at least 2 good runs  ----
 
     # import group censor summary data
-    summary_file = os.path.join(lev2_path, 'group_censor_summary.tsv')
+    summary_file = os.path.join(lev2_path, 'compiled_censor-summary.tsv')
     summary_df = pd.read_csv(summary_file, sep='\t')
-
-    sub = str(sub).zfill(3)
 
     # summarize run counts ... need to decide on criitera that will be used
     run_count = summary_df.groupby('sub').agg(
@@ -107,15 +129,31 @@ def gen_id_list(bids_dir, run_criteria):
 
     # convert stats_subs to set and take intersection with other lists 
     subs = set(stats_subs).intersection(cov_subs)
-
+    
 #    subs = set(stats_subs).intersection(cov_subs, data_subs)
+
+    # format IDs for AFNI
+    ## remove "sub-" prefix, convert to int
+    ids = {int(sub.replace('sub-', '')) for sub in subs}
+    
+    ## get max digits 
+    max_digits = len(str(max(ids)))
+
+    ## pad IDs with zeros til length of max_digits
+    ids = [str(id).zfill(max_digits) for id in ids]
 
     # export ----
 
     # set file name
-    out_file = os.path.join(lev2_path, 'id_list.tsv')
+    out_file = os.path.join(lev2_path, 'id_list.txt')
 
-    # write ids to file
-    with open(out_file, 'w') as file:
-        joined_list = "  ".join(subs)
-        print(joined_list , file = file)
+    # export if doesnt exist or overwrite is True
+    if not Path(out_file).exists() or overwrite:
+        print('Exporting level_2/id_list.txt')
+        
+        # write ids to file
+        with open(out_file, 'w') as file:
+            joined_list = "  ".join(ids)
+            print(joined_list , file = file)
+    else:
+        print('level_2/id_list.txt exists. Use overwrite = True to overwrite')

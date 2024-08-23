@@ -50,7 +50,7 @@ def compile_lev1_tsv(analysis_dir, tsv_identifier, overwrite = False):
 
     # quit if no files sub_files
     if not sub_files:
-        print('No files matching pattern ' + analysis_dir + r_glob_str + '. Check analysis_dir and tsv_identifier arguments')
+        print('No files matching pattern ' + analysis_dir + '/' + r_glob_str + '. Check analysis_dir and tsv_identifier arguments')
         raise Exception()
 
     # initialize list to save subject dataframes to
