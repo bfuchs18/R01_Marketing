@@ -164,11 +164,7 @@ write(sst_byblock_json, paste0(beh_sum_dir, "sst_long_by_block.json"))
 # to keep raw and processed phenotype/task data on Roar Collab up-to-date with OneDrive, it is recommended to update RoarCollab with rsync after re-processing.
 # syncing data between OneDrive and Roar Collab requires having access to Roar Collab and Kathleen Keller's group folder
 
-# define source and destination directories for rsync command
-## source: untouchedRaw/ and bids/rawdata, bids/sourcedata, bids/derivatives/beh_summary_databases One OneDrive
-source_dir <- paste0(base_dir,"{untouchedRaw,bids/rawdata,bids/sourcedata,bids/derivatives/beh_summary_databases}")
-
-## destination: R01_Marketing on Roar Collab (submit.hpc.psu.edu)
+# define destination directory for rsync command
 destination_dir = paste0(user_id, "@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing")
 
 # Build rsync command 
