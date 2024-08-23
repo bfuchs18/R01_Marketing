@@ -171,11 +171,17 @@ source_dir <- paste0(base_dir,"{untouchedRaw,bids/rawdata,bids/sourcedata,bids/d
 ## destination: R01_Marketing on Roar Collab (submit.hpc.psu.edu)
 destination_dir = paste0(user_id, "@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing")
 
-# Build rsync command -- open permissions for all (for now, until can figure out setting group with rsync)
-rsync_cmd <- paste("rsync -av --update --perms --chmod=a+rwx", source_dir, destination_dir)
-
-# Execute rsync command - running this will prompt the user to enter their password
-# system(rsync_cmd)
+# Build rsync command 
+rsync_cmd <-
+  paste(
+    "rsync -av --relative --update --perms --chmod=a+rX,ug+w", # set permissions to 775
+    paste0(base_dir, "/./untouchedRaw"), # /./ is used with --relative, only the part after the dot is copied into destination_dir 
+    paste0(base_dir, "/./bids/rawdata"),
+    paste0(base_dir, "/./bids/phenotype"),
+    paste0(base_dir, "/./bids/sourcedata"),
+    paste0(base_dir, "/./bids/derivatives/beh_summary_databases"),
+    destination_dir
+  )
 
 # TO DO: figure a way to specify group (klk37_collab)/permissions of files during or after syncing 
 # until then, ssh in and use chgrp -R klk37_collab *
