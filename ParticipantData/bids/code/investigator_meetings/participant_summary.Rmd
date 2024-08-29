@@ -15,7 +15,6 @@ library(tidyverse)
 library(lubridate)
 library(ggplot2)
 library(tidyr)
-library(kableExtra)
 library(table1)
 
 load_all("/Users/baf44/projects/dataREACHr")
@@ -99,22 +98,21 @@ This summary was generated on `r Sys.Date()` using data downloaded from Redcap o
 date = Sys.Date()
 week_start_date = Sys.Date() - 7
 
+# subset data from the past week
 week_visits_long <- visits_long[visits_long$child_protocol_date > week_start_date,]
 
-# make dataframe of counts by risk and protocol for the past week
-
-label(visits_long$child_protocol_number) <- "Child Visit Protocol"
-
-risk_by_visit_week_table <- table1(~ child_protocol_number | risk_status_maternal, data=visits_long[visits_long$child_protocol_date > week_start_date,])
+# make table of counts by risk and protocol for the past week
+label(week_visits_long$child_protocol_number) <- "Child Visit Protocol" #update label for table
+risk_by_visit_week_table <- table1(~ child_protocol_number | risk_status_maternal, data=week_visits_long)
 
 
 ```
 
 Dates: `r week_start_date` to `r date`
 
-**Total visits: `r sum(risk_by_visit_counts$Freq)`**
+**Total visits: `r nrow(week_visits_long)`**
 
-Table 1. Week visit count by protocol and risk status `r risk_by_visit_week_table`
+Table 1. This week's visit count by protocol and risk status `r risk_by_visit_week_table`
 
 ## Overall study progress
 
