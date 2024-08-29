@@ -1,8 +1,10 @@
 ---
-title: "sample summary"
+title: "REACH Data Collection"
 author: "baf44"
-output: html_document
-editor_options: 
+output:
+  html_document: default
+  pdf_document: default
+editor_options:
   chunk_output_type: console
 ---
 
@@ -13,6 +15,7 @@ library(tidyverse)
 library(lubridate)
 library(ggplot2)
 library(tidyr)
+library(kableExtra)
 
 load_all("/Users/baf44/projects/dataREACHr")
 
@@ -20,7 +23,7 @@ load_all("/Users/baf44/projects/dataREACHr")
 base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
 # define names of redcap files to process
-visit_file_name =  "FoodMarketingResilie_DATA_2024-08-14_1522.csv"
+visit_file_name =  "FoodMarketingResilie_DATA_2024-08-28_1130.csv"
 double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-08-14_1521.csv"
 
 #### process redcap data ####
@@ -46,28 +49,77 @@ task_data <-
     return_data = TRUE
   )
 
-#extract participants data
-participants_data <- redcap_data$phenotype_data$participants
-
-# make lists of high-risk and low-risk subject IDs
-high_risk_subs <- participants_data[participants_data$risk_status_maternal == "high-risk", "participant_id"]
-low_risk_subs <- participants_data[participants_data$risk_status_maternal == "low-risk", "participant_id"]
 
 ```
 
+```{r format processed redcap data, include=FALSE}
 
-```{r data collection over time plot}
+#extract participants data
+participants_data <- redcap_data$phenotype_data$participants
 
-dates_long <- participants_data %>% 
-  pivot_longer(
-    cols = c("child_protocol_1_date", "child_protocol_2_date", "child_protocol_3_date", "child_protocol_4_date", "child_protocol_5_date"), 
-    names_to = "visit",
-    values_to = "date"
-)
+# add bmi values used in screening to participants_data
+anthro_data <- redcap_data$phenotype_data$anthropometrics
+participants_data <- merge(participants_data, anthro_data[anthro_data$session_id == "ses-1", c("participant_id", "child_bmi_p", "maternal_bmi")], by = "participant_id", all = TRUE)
+colnames(participants_data)[colnames(participants_data) == "child_bmi_p"] <- "child_bmi_p_v1"
+colnames(participants_data)[colnames(participants_data) == "maternal_bmi"] <- "maternal_bmi_v1"
+
+# remove rows without visits
+participants_data <- participants_data[!participants_data$visit_protocol_order == "",]
+
+# make column eligibility_status based on V1 assessments of child BMI and maternal risk status
+participants_data <- participants_data %>% mutate(
+  eligibility_status = case_when(
+    !is.na(risk_status_maternal) & child_bmi_p_v1 <= 90 ~ "elligible",
+    is.na(risk_status_maternal) & child_bmi_p_v1 <= 90 ~ "bmi_not_risk",
+    !is.na(risk_status_maternal) & child_bmi_p_v1 > 90 ~ "risk_not_bmi",
+    TRUE ~ NA
+  ),
+  eligibility_status = factor(eligibility_status, levels=c("bmi_not_risk", "risk_not_bmi", "elligible"))
+  )
+
+# make long dataframe of visit dates
+visits_long <- participants_data %>%
+  pivot_longer(cols = child_protocol_1_date:child_protocol_5_date, names_to = "child_protocol_number", values_to = "child_protocol_date") %>%
+  filter(!is.na(child_protocol_date))
+
+# extract redcap download date from visit_file_name
+visit_download_date = strsplit(visit_file_name, split = "_")[[1]][[3]]
+```
+
+# Visit progress
+
+This summary was generated on `r Sys.Date()` using data downloaded from Redcap on `r visit_download_date`
+
+## Weekly visit summary
+
+```{r weekly update, echo = FALSE}
+date = Sys.Date()
+week_start_date = Sys.Date() - 7
+
+week_visits_long <- visits_long[visits_long$child_protocol_date > week_start_date,]
+
+# make dataframe of counts by risk and protocol for the past week
+risk_by_visit_counts <- as.data.frame(xtabs(data = week_visits_long, subset = child_protocol_date > week_start_date, formula = ~ child_protocol_number + risk_status_maternal))
+
+# format dataframe into table
+risk_by_visit_counts$child_protocol_number <- gsub("child_protocol_|_date", "", risk_by_visit_counts$child_protocol_number)
+
+table <- risk_by_visit_counts %>% kbl(booktabs = T, col.names = c("Child visit protocol", "Risk status", "Count"))  %>% kable_classic() 
+```
+
+Dates: `r week_start_date` to `r date`
+
+**Total visits: `r sum(risk_by_visit_counts$Freq)`**
+
+Table 1. Visit count by protocol and risk status `r table`
+
+## Overall study progress
+
+```{r time series plot, echo = FALSE}
 
 # get start and latest dates
-start_date <- min(dates_long$date, na.rm = TRUE)
-latest_date <- max(dates_long$date, na.rm = TRUE)
+start_date <- min(visits_long$child_protocol_date, na.rm = TRUE)
+latest_date <- max(visits_long$child_protocol_date, na.rm = TRUE)
 
 # define function to get cumulative count of visits by date
 cumulative_visit_counter <- function(data, var) {
@@ -76,8 +128,8 @@ cumulative_visit_counter <- function(data, var) {
 
   count_data <- data %>% count(.data[[var]], name = "counts") %>%
   filter(!is.na(.data[[var]])) %>% pad(
-    start_val = min(dates_long$date, na.rm = TRUE),
-    end_val = max(dates_long$date, na.rm = TRUE),
+    start_val = start_date,
+    end_val = latest_date,
     interval = "day"
   ) %>% fill_by_value(counts, value = 0) %>%
   mutate("{var}_cumcount" := cumsum(counts)) %>%
@@ -89,7 +141,7 @@ cumulative_visit_counter <- function(data, var) {
 # Create a sequence of dates between the start and end dates
 date_sequence <- data.frame(date = seq.Date(from = start_date, to = latest_date, by = "day"))
 
-# apply function for each variable and add data to date_sequence
+# apply cumulative_visit_counter for each child_protocol_date and add data to date_sequence
 for (var in c("child_protocol_1_date", "child_protocol_2_date", "child_protocol_3_date", "child_protocol_4_date", "child_protocol_5_date") ) {
 
   counts <- cumulative_visit_counter(participants_data, var)
@@ -98,6 +150,7 @@ for (var in c("child_protocol_1_date", "child_protocol_2_date", "child_protocol_
     left_join(counts, by = c("date" = var))
 }
 
+# make cumulative_long from date_sequence
 cumulative_long <- date_sequence %>% 
   pivot_longer(
     cols = c("child_protocol_1_date_cumcount", "child_protocol_2_date_cumcount", "child_protocol_3_date_cumcount", "child_protocol_4_date_cumcount", "child_protocol_5_date_cumcount"), 
@@ -106,38 +159,79 @@ cumulative_long <- date_sequence %>%
 )
 
 # plot cumulative count over time by visit
-ggplot(cumulative_long, aes(x = date, y = count)) + 
-  geom_line(aes(color = visit), size = 1) +
+ggplot(cumulative_long, aes(x = date, y = count)) +
+  geom_line(aes(color = visit), linewidth = 1) +
+  theme_minimal() +
+  scale_y_continuous(breaks = seq(0, 100, len = 11)) +
+  ggtitle("Cumulative number of visits attended over time") +
+  labs(color = "Child Visit Protocol") +
+  scale_color_discrete(
+    labels = c(
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+    )
+  ) +
   theme_minimal()
 
 ```
 
-To do: figure out which children have BMI's outside of range
+```{r barplot: visits by eligibility status, echo = FALSE}
 
-# Visits by risk
+# stacked bar chart 
+ggplot(visits_long,
+       aes(x = child_protocol_number, fill = eligibility_status)) +
+  geom_bar() +
+  scale_fill_manual(
+    values = c("tomato","deepskyblue","chartreuse3"),
+    labels = c(
+      'Does not meet risk criteria',
+      'Meets risk criteria, bmi_p > 90%',
+      'Meets risk criteria, bmi_p <= 90%'
+    )
+  ) +
+  ggtitle("Number of visits attended by elligibilty status") +
+  xlab("Child Visit Protocol") +
+  labs(fill = "Elligibility after V1") +
+  scale_x_discrete(labels = c("1", "2", "3", "4", "5")) +
+  scale_y_continuous(breaks = seq(0, 100, len = 11)) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank()) # remove the vertical grid lines
 
-```{r visit counts by risk counts}
 
-# make long dataframe of visit dates
-visits_long <- participants_data %>%
-  pivot_longer(cols = child_protocol_1_date:child_protocol_5_date, names_to = "child_protocol_number", values_to = "child_protocol_date") %>%
-  filter(!is.na(child_protocol_date))
+# # side by side 
+# ggplot(visits_long, aes(x = child_protocol_number, y = after_stat(count), fill = eligibility_status)) +
+#   geom_bar(position = "dodge", stat = "count") +
+#   theme_minimal()
 
+
+```
+
+```{r barplot: visits by risk, echo=FALSE}
 
 # Plot: visit protocol counts by risk status
-ggplot(visits_long, aes(x = child_protocol_number, fill = risk_status_maternal.y)) +
-  geom_bar(position = "dodge", stat = "count") +
-  geom_text(data = counts, aes(x = Column, y = Count, label = Count, group = risk_status_maternal.y),
-            position = position_dodge(width = 0.9), vjust = -0.5) +
-  labs(title = "Number of Visits per Visit Protocol by Risk", x = "Visit protocol", y = "Count") +
+ggplot(visits_long, aes(x = child_protocol_number, y = after_stat(count), fill = risk_status_maternal)) +
+  geom_bar(position = position_dodge(preserve = "single"), stat = "count") +
+  labs(title = "Number of visits attended by risk status", x = "Visit protocol", y = "Count") +
+  labs(fill = "Maternal risk status") +
+  xlab("Child Visit Protocol") +
+  scale_x_discrete(labels = c("1", "2", "3", "4", "5")) +
   theme_minimal()
-
 
 ```
 
-# Task data by risk 
 
-```{r PIT }
+```{r barplot: visits by risk and sex, echo=FALSE}
+## add this
+```
+
+# Task progress
+
+coming soon...
+
+```{r PIT,include=FALSE  }
 
 # baseline and followup
 ses1_pit_subs <- names(task_data$pit_data[['ses-1']])
@@ -150,13 +244,13 @@ setdiff(ses2_pit_subs, ses1_pit_subs) # list subs in ses-2 but not ses-1
 
 ```
 
-```{r Space Game }
+```{r Space Game, include=FALSE }
 
 # baseline only 
 
 ```
 
-```{r NIH toolbox }
+```{r NIH toolbox,include=FALSE  }
 
 # baseline and followup
 ses1_toolbox_subs <- names(task_data$toolbox_data[['ses-1']])
@@ -168,13 +262,13 @@ setdiff(ses2_toolbox_subs, ses1_toolbox_subs) # list subs in ses-2 but not ses-1
 
 ```
 
-```{r RRV }
+```{r RRV,include=FALSE  }
 # rrv is at baseline only
-
-rrv_subs <- names(task_data$rrv_data)
-
-# count by risk group
-length(intersect(ses1_rrv_subs,high_risk_subs))
-length(intersect(ses1_rrv_subs,low_risk_subs))
-
+# 
+# rrv_subs <- names(task_data$rrv_data)
+# 
+# # count by risk group
+# length(intersect(ses1_rrv_subs,high_risk_subs))
+# length(intersect(ses1_rrv_subs,low_risk_subs))
+# 
 ```
