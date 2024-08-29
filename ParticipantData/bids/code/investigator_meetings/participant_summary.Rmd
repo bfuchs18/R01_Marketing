@@ -16,6 +16,7 @@ library(lubridate)
 library(ggplot2)
 library(tidyr)
 library(kableExtra)
+library(table1)
 
 load_all("/Users/baf44/projects/dataREACHr")
 
@@ -80,7 +81,9 @@ participants_data <- participants_data %>% mutate(
 # make long dataframe of visit dates
 visits_long <- participants_data %>%
   pivot_longer(cols = child_protocol_1_date:child_protocol_5_date, names_to = "child_protocol_number", values_to = "child_protocol_date") %>%
-  filter(!is.na(child_protocol_date))
+  filter(!is.na(child_protocol_date)) %>% mutate(
+    child_protocol_number = gsub("child_protocol_|_date", "", child_protocol_number)
+  )
 
 # extract redcap download date from visit_file_name
 visit_download_date = strsplit(visit_file_name, split = "_")[[1]][[3]]
@@ -99,21 +102,37 @@ week_start_date = Sys.Date() - 7
 week_visits_long <- visits_long[visits_long$child_protocol_date > week_start_date,]
 
 # make dataframe of counts by risk and protocol for the past week
-risk_by_visit_counts <- as.data.frame(xtabs(data = week_visits_long, subset = child_protocol_date > week_start_date, formula = ~ child_protocol_number + risk_status_maternal))
 
-# format dataframe into table
-risk_by_visit_counts$child_protocol_number <- gsub("child_protocol_|_date", "", risk_by_visit_counts$child_protocol_number)
+label(visits_long$child_protocol_number) <- "Child Visit Protocol"
 
-table <- risk_by_visit_counts %>% kbl(booktabs = T, col.names = c("Child visit protocol", "Risk status", "Count"))  %>% kable_classic() 
+risk_by_visit_week_table <- table1(~ child_protocol_number | risk_status_maternal, data=visits_long[visits_long$child_protocol_date > week_start_date,])
+
+
 ```
 
 Dates: `r week_start_date` to `r date`
 
 **Total visits: `r sum(risk_by_visit_counts$Freq)`**
 
-Table 1. Visit count by protocol and risk status `r table`
+Table 1. Week visit count by protocol and risk status `r risk_by_visit_week_table`
 
 ## Overall study progress
+
+```{r enrollement by race/ethnicity, echo = FALSE}
+
+# add factor labels
+visits_long <- visits_long %>%
+  mutate(ethnicity = recode(ethnicity, `0` = "NOT Hispanic or Latino", `1` = "Hispanic or Latino"),
+         race = recode(race, `0` = "American Indian/Alaskan Native", `1` = "Asian", `2` = "Black or African American", `3` = "White", `4` = "Hawaiian/Pacific Islander", `5` = "Other")
+         )
+
+# race ethnicity enrollment
+
+enrollement_table <- table1(~ race + ethnicity | sex, data=visits_long[visits_long$child_protocol_number == 1,])
+
+```
+
+Table 2. Enrollment table `r enrollement_table`
 
 ```{r time series plot, echo = FALSE}
 
@@ -195,7 +214,6 @@ ggplot(visits_long,
   ggtitle("Number of visits attended by elligibilty status") +
   xlab("Child Visit Protocol") +
   labs(fill = "Elligibility after V1") +
-  scale_x_discrete(labels = c("1", "2", "3", "4", "5")) +
   scale_y_continuous(breaks = seq(0, 100, len = 11)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) # remove the vertical grid lines
@@ -217,14 +235,35 @@ ggplot(visits_long, aes(x = child_protocol_number, y = after_stat(count), fill =
   labs(title = "Number of visits attended by risk status", x = "Visit protocol", y = "Count") +
   labs(fill = "Maternal risk status") +
   xlab("Child Visit Protocol") +
-  scale_x_discrete(labels = c("1", "2", "3", "4", "5")) +
+  theme_minimal()
+
+```
+
+
+```{r barplot: visits by sex, echo=FALSE}
+
+# Plot: visit protocol counts by sex
+ggplot(visits_long, aes(x = child_protocol_number, y = after_stat(count), fill = sex)) +
+  geom_bar(position = position_dodge(preserve = "single"), stat = "count") +
+  labs(title = "Number of visits attended by child sex", x = "Visit protocol", y = "Count") +
+  labs(fill = "Sex") +
+  xlab("Child Visit Protocol") +
   theme_minimal()
 
 ```
 
 
 ```{r barplot: visits by risk and sex, echo=FALSE}
-## add this
+
+# Plot: visit protocol counts by risk sex
+ggplot(visits_long, aes(x = child_protocol_number, y = after_stat(count), fill = sex)) +
+  geom_bar(position = position_dodge(preserve = "single"), stat = "count") +
+  labs(title = "Number of visits attended by child risk and sex", x = "Visit protocol", y = "Count") +
+  labs(fill = "Sex") +
+  xlab("Child Visit Protocol") +
+  theme_minimal() + 
+  facet_wrap(~risk_status_maternal)
+
 ```
 
 # Task progress
