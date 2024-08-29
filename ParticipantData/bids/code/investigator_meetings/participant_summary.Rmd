@@ -233,6 +233,8 @@ ggplot(visits_long, aes(x = child_protocol_number, y = after_stat(count), fill =
   labs(title = "Number of visits attended by risk status", x = "Visit protocol", y = "Count") +
   labs(fill = "Maternal risk status") +
   xlab("Child Visit Protocol") +
+  scale_fill_manual(
+    values = c("blue4","skyblue")) +
   theme_minimal()
 
 ```
