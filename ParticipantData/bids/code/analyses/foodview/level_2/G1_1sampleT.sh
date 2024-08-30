@@ -103,16 +103,14 @@ endif
 ###################### generate t-test scripts  ########################
 
 # gen_group_command.py settings:
-	# add -Clustsim option to run 3dClustSim
-
-# Note: the following line should?? take stats foldefiles from deconvolve_dir if $2 is provide as input, if not $2 will be blank and files will come from afniproc/results
+	# uncomment -Clustsim and -mask option to run cluster simulations
 
 set maps = ( comm_FvT_GLT image_FvT_GLT )
 
 foreach map ( $maps )
 	set output_name = $map
 
-	# generate ttest script
+	# generate ttest script -- include covariates
 	gen_group_command.py -command 3dttest++                                             \
 		-write_script $map_dir/WG_1sampleT++_${output_name}         \
 		-prefix  WG_1sampleT++_${output_name}                    \
@@ -121,20 +119,20 @@ foreach map ( $maps )
 		-dset_sid_list $index 					\
      	-subs_betas "${map}"'#'0_Coef                          \
 		-options                                                   \
-            -mask $map_dir/WG_mask0.8+tlrc.HEAD	\
-#			-covariates $map_dir/covariates.txt"'[0..4,7]'" ## not working because covariates have 3 leading zeros and AFNI IDs do not 
+			-covariates $map_dir/covariates.txt"'[0..4,7]'" \ ## not working because covariates have 3 leading zeros and AFNI IDs do not                                              \
+    #        -mask $map_dir/WG_mask0.8+tlrc.HEAD	\
+	#		 -Clustsim    
 
-	# # generate ttest script --- include mask and Clustsim
-	# gen_group_command.py -command 3dttest++                                             \
-	# 	-write_script $map_dir/WG_1sampleT++_${output_name}         \
-	# 	-prefix  WG_1sampleT++_${output_name}                    \
-	# 	-dsets ${lev1_dir}/*/${afniproc_folder}/*results/${deconvolve_folder}/stats.sub-???+tlrc.HEAD       \
-    # 	-dset_sid_list $index 					\
-	#  	-set_labels $map                                                 \
-    #  	-subs_betas "${map}"'#'0_Coef                                    \
-	# 	-options    -Clustsim                                                 \
-    #         -mask $map_dir/WG_mask0.8+tlrc.HEAD	\
-	# 		-covariates $map_dir/covariates.txt"'[0..4,7]'"
+	# generate ttest script --- no covariates or mask
+	gen_group_command.py -command 3dttest++                                             \
+		-write_script $map_dir/WG_1sampleT++_${output_name}_nocov         \
+		-prefix  WG_1sampleT++_${output_name}_nocov                   \
+		-dsets ${lev1_dir}/*/${afniproc_folder}/*results/${deconvolve_folder}/stats.sub-???+tlrc.HEAD       \
+    	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+     	-subs_betas "${map}"'#'0_Coef                                    \
+#		-options    -Clustsim                                                 \
+#            -mask $map_dir/WG_mask0.8+tlrc.HEAD	\
 
 	# set permissions of map folder
     chmod 775 -R $map_dir
@@ -142,6 +140,7 @@ foreach map ( $maps )
 	# Execute
     cd $map_dir
     tcsh WG_1sampleT++_${output_name}
+	tcsh WG_1sampleT++_${output_name}_nocov
 
 end
 
