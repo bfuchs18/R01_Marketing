@@ -1,0 +1,136 @@
+---
+title: "Assess Food View Task block counterbalance"
+author: "baf44"
+date: ""
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Question: was randomization/counterbalancing of image blocks across toy/food conditions successful?
+
+#### Set up
+
+Import libraries
+```{r imports, include=TRUE, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+library(dplyr)
+library(stringr) # for substring()
+library(ggplot2)
+library(purrr) # for map_chr()
+```
+
+Import events.tsv files
+```{r load data, include=TRUE}
+# set base directory (contains bids/)
+base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
+
+# get list of events files
+events_files <- Sys.glob(file.path(base_dir, "bids", "rawdata",  "sub*", "ses-1", "func", "*foodview*events.tsv"))
+
+# read events files into list of dataframes
+events_data_list <- lapply(events_files, read.delim, sep = "\t", na.strings = "n/a")
+
+# make 1 dataframe with all events data
+events_data <- do.call(rbind, events_data_list)
+
+# data1 <- lapply(events_files[1], read.delim, sep = "\t", na.strings = "n/a")[[1]]
+```
+
+Subset events data to '.jpeg' events. Only these rows are needed to determine whether image blocks were effectively counterbalanced
+```{r prep jpeg_data, include=TRUE}
+
+# subset jpeg rows
+jpeg_data <- events_data[grepl(".jpeg", events_data$stim_file_name), ]
+
+# make new column for image set based on first 4 characters of stim_file_name
+jpeg_data$image_set <- substring(jpeg_data$stim_file_name, first=1, last=4)
+
+# make new column for image block based on stim_file_name (exclude last 6 characters)
+jpeg_data$image_block <- gsub('.{6}$', '', jpeg_data$stim_file_name)
+
+```
+
+```{r assess task completion by sub, include=TRUE}
+image_counts_by_sub <- jpeg_data %>% group_by(sub) %>% summarise(n_blocks = n()) 
+incomplete_subs <- as.list(image_counts_by_sub$sub[image_counts_by_sub$n_blocks < 80])
+
+jpeg_data_completed_task <- jpeg_data[!jpeg_data$sub %in% incomplete_subs,]
+```
+
+#### Assess administration of block types by condition
+
+Task design: Food images were grouped within blocks characterized by (1) set (A-D), (2) energy density (ED; high/low), and (3) taste (sweet/savory), leading to a total of 4*2*2 = 16 unique image_blocks (e.g., 'setA_high_savory'), divided across 4 runs. This means that across all participants, image_block 'setA_high_savory' contained the same 5 high-ED/savory food items. All blocks in a run were of the same set. The task was design so each participant saw each image_block once, after either food or toy commercial (i.e., food/toy commercial_cond). 
+
+Set order across runs were counter balanced across the options: ADCB, BADC, CBAD, DCBA.
+Within each set (A-D), the order of food and commercial conditions was (pseudorandomized?)
+How was the order of image_block in a run determined?? 
+
+Set and commerical block orders were pre-determined based on subject ID.
+
+First, lets verify then number of unique image_blocks and that each participant saw each image_block a maximum of 1 time.
+```{r count image_block by sub, include=TRUE, message=FALSE}
+
+# count number of times an image_block was shown for each sub (1 block = 5 jpeg events)
+block_counts_by_sub <- jpeg_data %>% group_by(sub, commercial_cond, image_block) %>% summarise(n_blocks = n()/5) 
+
+# number of unique blocks
+print(paste0("number of unique image_blocks: ", length(unique(block_counts_by_sub$image_block))))
+print(paste0("Unique image_blocks: ", paste(unique(block_counts_by_sub$image_block), collapse = ", ")))
+
+# confirm subjects never got the same image_block > 1x
+print(paste0("number of subjects with repeated image blocks: ", sum(block_counts_by_sub$n_blocks > 1)))
+```
+
+To assess whether image_blocks were counterbalanced across condition, the following chunk will plot the number of times each image_block occurred by condition.
+```{r summarize jpeg_data, include=TRUE, message=FALSE}
+
+# get number of each image_block by commercial_cond
+block_counts_by_cond <- jpeg_data %>% group_by(commercial_cond, image_block) %>% summarise(n_blocks = n()/5) 
+
+# plot number of blocks by condition, separately for each image_block
+ggplot(block_counts_by_cond,
+       aes(x = commercial_cond,
+           y = n_blocks, fill = commercial_cond)) + 
+  geom_bar(stat = "identity",
+           position = "dodge") + 
+  facet_wrap(~image_block)
+
+# plot number of blocks/person by condition, separately for each image_block -- akin to % of time the image_block/condition combination occurs across the sample
+ggplot(block_counts_by_cond,
+       aes(x = commercial_cond,
+           y = n_blocks/length(unique(jpeg_data$sub)), fill = commercial_cond)) + 
+  geom_bar(stat = "identity",
+           position = "dodge") + 
+  facet_wrap(~image_block)
+
+# get number of set+ED blocks by commercial_cond
+ed_block_counts_by_cond <- block_counts_by_cond %>% mutate(
+  image_set = map_chr(strsplit(image_block, '_'), 1),
+  image_ed = map_chr(strsplit(image_block, '_'), 2),
+) %>% group_by(commercial_cond, image_set, image_ed) %>% summarise(n_blocks = sum(n_blocks)) %>% mutate(image_set_ed = str_c(image_set, image_ed, sep = "_"))
+
+# plot number of blocks by condition, separately for each set/ED combo
+ggplot(ed_block_counts_by_cond,
+       aes(x = commercial_cond,
+           y = n_blocks, fill = commercial_cond)) + 
+  geom_bar(stat = "identity",
+           position = "dodge") + 
+  facet_wrap(~image_set_ed, ncol = 2)
+
+# get number of set+taste blocks by commercial_cond
+taste_block_counts_by_cond <- block_counts_by_cond %>% mutate(
+  image_set = map_chr(strsplit(image_block, '_'), 1),
+  image_taste = map_chr(strsplit(image_block, '_'), 3)
+) %>% group_by(commercial_cond, image_set, image_taste) %>% summarise(n_blocks = sum(n_blocks)) %>% mutate(image_set_taste = str_c(image_set, image_taste, sep = "_"))
+
+# plot number of blocks by condition, separately for each set/taste combo
+ggplot(taste_block_counts_by_cond,
+       aes(x = commercial_cond,
+           y = n_blocks, fill = commercial_cond)) + 
+  geom_bar(stat = "identity",
+           position = "dodge") + 
+  facet_wrap(~image_set_taste, ncol = 2)
+
+
+```
+
