@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=10
+#SBATCH --ntasks-per-node=1
 #SBATCH --mem-per-cpu=20GB
-#SBATCH --time=48:00:00
+#SBATCH --time=2:00:00
 #SBATCH --partition=open
 #SBATCH --output=%x.%j
 #
@@ -38,3 +38,4 @@ echo "## Job started: `date`"
 
 #Load afni singularity and run afniscript
 singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT.sh
+singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT_reml.sh
