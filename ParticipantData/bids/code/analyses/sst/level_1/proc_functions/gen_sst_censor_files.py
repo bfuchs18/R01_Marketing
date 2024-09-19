@@ -60,7 +60,7 @@ fmriprep_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUn
 analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/analyses/sst"
 overwrite = True
 
-def gen_censor_files(sub, fmriprep_dir, analysis_dir, fd_thresh=0.9, overwrite = False, return_censordata_dict = False):
+def gen_sst_censor_files(sub, fmriprep_dir, analysis_dir, fd_thresh=0.9, overwrite = False, return_censordata_dict = False):
     """
     This function will generate 1D censor files from sst*-desc-confounds_timeseries.tsv files (output from fmriprep) for given participant (sub). 
     1D censor files will be formatted so they can be used in first-level analyses with Analysis of Functional Neuroimages (AFNI):

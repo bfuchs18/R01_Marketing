@@ -18,11 +18,11 @@ import os
 import argparse
 
 # import data processing functions
-import gen_uncensored_onsets
-import gen_censor_files
-#import gen_regressor_file
-#import gen_censor_summary
-#import gen_censored_onsets
+import gen_sst_uncensored_onsets
+import gen_sst_censor_files
+import gen_sst_regressor_file
+#import gen_sst_censor_summary
+#import gen_sst_censored_onsets
 
 
 # process command line arguments
@@ -51,16 +51,16 @@ print(f"**** Starting SST python processing for sub-{sub} ****")
 print("*****************************************************************")
 
 print("\n*** Running function to generate uncensored onset files ***")
-uncensored_onsets_dict = gen_uncensored_onsets.gen_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False, return_onset_dict = True)
+uncensored_onsets_dict = gen_sst_uncensored_onsets.gen_sst_uncensored_onsets(sub = sub, rawdata_dir = rawdata_dir, analysis_dir = analysis_dir, overwrite=False, return_onset_dict = True)
 
-#print("\n*** Running function to generate nuissance regressor file ***")
-#gen_regressor_file.gen_regressor_file(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
+print("\n*** Running function to generate nuissance regressor file ***")
+gen_sst_regressor_file.gen_sst_regressor_file(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False)
 
 print("\n*** Running function to generate censor files ***")
-censordata_dict = gen_censor_files.gen_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False, return_censordata_dict = True) # use default fd_thresh (.9)
+censordata_dict = gen_sst_censor_files.gen_sst_censor_files(sub = sub, fmriprep_dir = fmriprep_dir, analysis_dir = analysis_dir, overwrite = False, return_censordata_dict = True) # use default fd_thresh (.9)
 
 #print("\n*** Running function to generate censor summary file ***")
-#censor_summary_dataframe = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censordata_dict = censordata_dict, analysis_dir = analysis_dir, overwrite = False, return_summary_dataframe = True) # use default fd_thresh (.9)
+#censor_summary_dataframe = gen_sst_censor_summary.gen_sst_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censordata_dict = censordata_dict, analysis_dir = analysis_dir, overwrite = False, return_summary_dataframe = True) # use default fd_thresh (.9)
 
 #print("\n*** Running function to generate censored onset file ***")
-#gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir, overwrite=False) # use default fd_thresh (.9)
+#gen_sst_censored_onsets.gen_sst_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir, overwrite=False) # use default fd_thresh (.9)
