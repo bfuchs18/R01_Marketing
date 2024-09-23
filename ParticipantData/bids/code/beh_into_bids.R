@@ -19,8 +19,7 @@ load_all("/Users/baf44/projects/dataREACHr")
 base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
 # define names of redcap files to process
-visit_file_name =  "FoodMarketingResilie_DATA_2024-08-14_1522.csv"
-double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-08-14_1521.csv"
+source("config_redcap_sourcedata.R")
 
 # define Penn State user ID
 ## needed for syncing data between OneDrive and Roar Collab
@@ -29,8 +28,8 @@ user_id = "baf44"
 # process redcap data -----
 
 # assign paths to data downloaded from redcap
-visit_data_path = paste0(base_dir, "/bids/sourcedata/phenotype/", visit_file_name)
-data_de_path = paste0(base_dir, "/bids/sourcedata/phenotype/", double_entry_file_name)
+visit_data_path = file.path(base_dir, "bids", "sourcedata", "phenotype", visit_file_name)
+data_de_path = file.path(base_dir, "bids", "sourcedata", "phenotype", double_entry_file_name)
 
 # process redcap data and export into bids/phenotype
 redcap_data <-
@@ -179,5 +178,6 @@ rsync_cmd <-
     destination_dir
   )
 
+# system(rsync_cmd)
 # TO DO: figure a way to specify group (klk37_collab)/permissions of files during or after syncing 
 # until then, ssh in and use chgrp -R klk37_collab *
