@@ -32,6 +32,10 @@
     - [Functional scans - Food View Task](#functional-scans---food-view-task)
       - [Data and meta-data:](#data-and-meta-data)
     - [Functional Scans - Stop Signal Task ("Plate Sorting Game")](#functional-scans---stop-signal-task-plate-sorting-game)
+      - [Child instructions](#child-instructions)
+      - [SST Blocks](#sst-blocks)
+        - [Practice Runs](#practice-runs)
+        - [Beh and Task Runs](#beh-and-task-runs)
     - [Field maps](#field-maps)
     - [Post-scan fMRI behavioral assessment](#post-scan-fmri-behavioral-assessment)
   - [NIH toolbox](#nih-toolbox)
@@ -422,15 +426,36 @@ The SST was adapted from the implementation in (Verbruggen, Logan, & Stevens, 20
 
 The SST was administered using [Matlab2018b and Psychtoolbox3]. 
 
-SST blocks were administered under practice, behavioral, and fmri contexts. Each block included 36 event trials (10 stop trials and 26 go trials).
+SST runs were administered under practice, behavioral, and fmri contexts. Practices runs contained an explanation of the task followed by 1 SST block. Behavioral and fMRI runs contained commerical and SST blocks presented in alternating order, always starting with a commercial block.
 
-During each trial, a plate of food was presented with a triangle-folded napkin on either the left or right side of the plate (go stimulus; see Figure 1) [for 1500 ms with an inter-stimulus-interval of 50 ms (i.e., fixation) ??]. Children were asked to sort the plates according to which side of the plate the napkin was on and to press the left or right arrow keys when the napkin appeared on the left or right side of the plate, respectively. They were encouraged to respond as quickly as possible. On stop trials, the plate would get covered with a warmer dome (i.e., stop-signal; see Figure 1). Children were instructed not to respond when the dome appeared.  The warmer dome (i.e., stop-signal) was presented after a variable stop-signal delay (SSD) determined by a step-wise adaptive procedure which increased the SSD 50ms after each successful stop trial and reduced the SSD by 50 ms after each unsuccessful stop trial with the first SSD = 250 ms. This adaptive procedure maintained ~0.50 probability of successful response inhibition. The task parameters were based on specifications articulated by Verbruggen and colleagues (2019) for best practices in measuring stop-signal reaction time according to the theoretical racehorse model.
+![MRI Visit protocol](./images/Reach_v2.png)
 
-The practice context included an explanation of the task followed by 1 SST block. During the practice block, children recieved feedback after each trial [explanation]. 
+#### Child instructions
+Children were asked to sort the plates according to which side of the plate the napkin was on and to press the left or right arrow keys when the napkin appeared on the left or right side of the plate, respectively. They were encouraged to respond as quickly as possible. Children were instructed not to respond when the dome (i.e., stop signal) appeared.
 
-During behavioral and fmri contexts, children completed runs which included 2 commerical and 2 SST blocks each. There were 2 behavioral runs and 6 fmri runs. Within a run, commercial and SST blocks were presented in alternating order, always starting with a commercial block. Within a run, commercials blocks were either all food or all toy commericals. Each commerical block contained 1 commerical (~15 seconds). During behavioral blocks only, the message ‘Faster’ was presented after SST trials when children responded slower than 1.5 standard deviations below their mean reaction time in practice (to prevent children from slowing throughout the task). Between behavioral runs, children were given the opportunity to take a break and were shown their average response time (e.g., ‘How Fast Were You?’), given encouragement for how quickly the were responding (e.g., ‘Wow, that is faster than a second’), and were reminded not to press the arrow keys if the dome covered the plate.  
+#### SST Blocks
+Each SST block included 36 event trials (10 stop trials and 26 go trials). 
 
-Stim images...
+During each trial, a plate of food was presented with a triangle-folded napkin on either the left or right side of the plate (go stimulus; see Figure 1). On stop trials, the plate would get covered with a warmer dome (i.e., stop-signal; see Figure 1). The warmer dome (i.e., stop-signal) was presented after a variable stop-signal delay (SSD) determined by a step-wise adaptive procedure which increased the SSD 50ms after each successful stop trial and reduced the SSD by 50 ms after each unsuccessful stop trial with the first SSD on all runs = 250 ms. This adaptive procedure maintained ~0.50 probability of successful response inhibition. The task parameters were based on specifications articulated by Verbruggen and colleagues (2019) for best practices in measuring stop-signal reaction time according to the theoretical racehorse model.
+
+Go trials were defined as the go stimulus plus a post-go fixation, which in total were 1000ms in duration. Stop trials were defined as the go stimulus plus the stop signal, which in total were 1000ms in duration. In practice runs, trials were followed by immediate feedback (750ms) and 500ms fixation. During fMRI runs, go and stop trials were followed by a variables fixation (1s - 5s).
+
+##### Practice Runs
+
+Children completed 2 separate practice runs: 1 before the behavioral runs and 1 before the fMRI in the mock scanner. 
+
+Each practice run included an explanation of the task followed by 1 SST block. During the SST block, immediate feedback was presented for 750ms after each trial: "correct": presented for correct go or stop response; "incorrect": presented for incorrect go response (i.e., left vs. right response); "do not respond": presented for failed stop trial; "faster": presented if no response made on go trial (omission). 
+
+
+##### Beh and Task Runs 
+
+Each Beh and fMRI run included 2 commerical and 2 SST blocks presented in alternating order, always starting with a commercial block. Children completed 2 Beh runs and 6 fMRI runs.
+Each commerical block contained 1 commerical (~15 seconds). The interblock fixation in Beh runs was 2 seconds, while it was 10 seconds in fMRI runs.
+
+
+Immediate feedback was presented during behavioral blocks to prevent children from slowing throughout the task: the message ‘Faster’ was presented for 500ms after SST trials when children responded slower than 1.5 standard deviations below their mean reaction time in practice. Between behavioral runs, children were given the opportunity to take a break and were shown their average response time (e.g., ‘How Fast Were You?’), given encouragement for how quickly the were responding (e.g., ‘Wow, that is faster than a second’), and were reminded not to press the arrow keys if the dome covered the plate.  
+
+No immediate feedback was presented furing fMRI runs. Between fMRI runs, children were reminded not to press the arrow keys if the dome covered the plate (via text on screen or verbal reminder if many mistakes) and to stay as still as possible. 
 
 <!-- omit in toc -->
 #### Outcomes of Interest
