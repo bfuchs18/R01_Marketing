@@ -11,3 +11,5 @@ ParticipantData/bids/derivatives*
 *__pycache__*
 .bash_profile
 .RData
+*log
+*tex
