@@ -37,5 +37,5 @@ echo "## G1_1sampleT was run on ${today}"
 echo "## Job started: `date`"
 
 #Load afni singularity and run afniscript
-singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT.sh
-singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT_reml.sh
+singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT_FvT.sh
+singularity exec $singularity_dir/afni-24.2.01.simg tcsh $code_dir/G1_1sampleT_reml_FvT.sh
