@@ -2,7 +2,7 @@
 #usage: ./afni_proc.sh $1 $2 $3
 # 
 # $1 : sub (int) -- e.g., 1 
-# $2 : fmriprep_dir (string) -- e.g., "/storage/group/klk37/default/R01_Marketing/bids/derivatives/preprocessed/fmriprep_v2320"
+# $2 : fmriprep_dir (string) -- e.g., "/storage/group/klk37/default/R01_Marketing/bids/derivatives/preprocessed/fmriprep_v2401"
 # $3 : analysis_dir (string) -- e.g., "/storage/group/klk37/default/R01_Marketing/bids/derivatives/analyses/foodview"	
 
 ########## Check args ##########
@@ -61,6 +61,22 @@ fi
 
 # move to output directory
 cd $outdir
+
+# get string with names of foodview scans that have at least 125 TRs 
+afni_runs=""
+for run in $func_fmriprep_dir/${subID}*foodview*-preproc_bold.nii.gz; 
+do
+    # get number of trs 
+    ntr=$(3dinfo -nt $run)
+    # if number of TRs is greater that 125
+    if [ "$ntr" -gt 125 ]; then
+        afni_runs+="$run "  # Add file to string with space
+    fi
+done
+
+echo "$afni_runs"
+
+# to do: try running afniproc with afni_runs -- adjust censor and regressor input to only include data for runs in afni_runs
 
 # run afni_proc.py to create a single subject processing script
 afni_proc.py -subj_id $subID                                 \
