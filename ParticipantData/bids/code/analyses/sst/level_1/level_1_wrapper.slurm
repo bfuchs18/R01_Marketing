@@ -86,8 +86,8 @@ else
     conda activate pandas
     python3 $code_dir/proc_functions/wrapper-python.py -s $sub -d $bids_dir 
 
-    # # Run afniproc
-    # singularity exec $singularity_dir/afni-24.2.01.simg bash $code_dir/proc_functions/afni_proc.sh $sub $fmriprep_dir $analysis_dir
+    # Run afniproc
+    singularity exec $singularity_dir/afni-24.2.01.simg bash $code_dir/proc_functions/${task}_afni_proc.sh $sub $fmriprep_dir $analysis_dir
 
 fi
 
