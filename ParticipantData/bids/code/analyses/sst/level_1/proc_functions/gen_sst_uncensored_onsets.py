@@ -7,7 +7,6 @@
 #set up packages    
 from pickle import TRUE
 import pandas as pd
-import numpy as np
 import os
 from pathlib import Path
 
@@ -24,7 +23,7 @@ analysis_dir = "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUn
 overwrite = True
 return_onset_dict = True
 
-def gen_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, return_onset_dict = True):
+def gen_sst_uncensored_onsets(sub, rawdata_dir, analysis_dir, overwrite = False, return_onset_dict = True):
     """
     This function creates uncensored onset files (AFNI format) for the SST for a given subject
     One onset file is generated for each of the following trial types: 

@@ -20,10 +20,10 @@ from pathlib import Path
 # for debugging
 sub = 1
 fmriprep_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/preprocessed/fmriprep_v2320"
-analysis_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/analyses/foodview"
+analysis_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/analyses/sst"
 overwrite = True
 
-def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, return_regressordata_dict = False):
+def gen_sst_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, return_regressordata_dict = False):
     """
     This function exports 
     (1) a CSV file with nuisance regressors for first-level analyses in AFNI based on fmriprep confound files for a given subject
@@ -80,11 +80,11 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     sub_fmriprep_dir = os.path.join(fmriprep_dir, 'sub-' + str(sub) + '/ses-1/func/')
 
     # get list of fmriprep confound files
-    confound_files = list(Path(sub_fmriprep_dir).rglob('*foodview*confounds_timeseries.tsv'))
+    confound_files = list(Path(sub_fmriprep_dir).rglob('*sst*confounds_timeseries.tsv'))
 
     # abort of no events files
     if len(confound_files) < 1:
-        print('No foodview confound files found for sub ' + str(sub))
+        print('No sst confound files found for sub ' + str(sub))
         raise Exception()
 
     #########################################
@@ -149,7 +149,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
     for key in regressor_data_dict:
 
         # define output file name
-        file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + "_ses-1_task-foodview_" + key + '_nuisance-regressors.tsv'))
+        file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + "_ses-1_task-sst_" + key + '_nuisance-regressors.tsv'))
 
         # if file doesnt exist or overwrite is True
         if not file_name.exists() or overwrite:
@@ -160,7 +160,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
             print(key + ' regressor file already exist for sub ' + str(sub) + '. Use overwrite = True to overwrite')
 
     # Export 1 file with average displacement values 
-    fd_file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-foodview_avg-fd.tsv'))
+    fd_file_name = Path(os.path.join(sub_analysis_dir, 'sub-' + sub + '_ses-1_task-sst_avg-fd.tsv'))
 
     if not fd_file_name.exists() or overwrite:
         print('Exporting average framewise displacement file for sub ' + str(sub))
