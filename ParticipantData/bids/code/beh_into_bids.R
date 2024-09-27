@@ -19,7 +19,7 @@ load_all("/Users/baf44/projects/dataREACHr")
 base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
 
 # define names of redcap files to process
-source("config_redcap_sourcedata.R")
+source("ParticipantData/bids/code/config_redcap_sourcedata.R")
 
 # define Penn State user ID
 ## needed for syncing data between OneDrive and Roar Collab
@@ -40,6 +40,10 @@ redcap_data <-
 
 ## run quality checks on redcap data -----
 qc_redcap(redcap_data)
+
+# assess double-entry discrepancies
+de_discrepancies <- redcap_data$double_entry_data$discrepancies
+print(de_discrepancies)
 
 # process task data -----
 
