@@ -92,7 +92,7 @@ afni_proc.py -subj_id $subID                                 \
         -regress_motion_per_run                                  \
         -regress_opts_3dD                                        \
             -jobs 10                                              \
-            -censor $sub_analysis_dir/${subID}_ses-1_task-foodview_all-runs_censor_fd-0.9.1D    \
+            -censor $sub_analysis_dir/${subID}_ses-1_task-sst_all-runs_censor_fd-0.9.1D    \
             -gltsym 'SYM: +ad_food -ad_toy ' -glt_label 1 comm_FvT           \
             -gltsym 'SYM: +fail_stop_food +fail_stop_toy -succ_go_food -succ_go_toy' -glt_label 2 overall_failstop_succgo           \
             -gltsym 'SYM: +succ_stop_food +succ_stop_toy -succ_go_food -succ_go_toy' -glt_label 3 overall_succstop_succgo           \
