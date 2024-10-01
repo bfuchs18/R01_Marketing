@@ -1,8 +1,6 @@
 <!-- omit in toc -->
 # Data Manual - Study REACH
 
-- [Introduction](#introduction)
-  - [Overview of Study](#overview-of-study)
 - [Study Design](#study-design)
   - [Baseline visits (session 1)](#baseline-visits-session-1)
     - [Child Visit Protocol 1 (visit 1)](#child-visit-protocol-1-visit-1)
@@ -79,11 +77,6 @@
     - [US Household Food Security Survey Module: Three Stage (HFSSM)](#us-household-food-security-survey-module-three-stage-hfssm)
 
 
-# Introduction
-
-## Overview of Study
-
-  
 # Study Design
 
 Study REACH involves a total of 5 visits for parent-child dyads (Figure 1). The first 4 visits occur ~1 week apart; these are referred to as baseline or session 1 ('ses-1') visits; the 5th visit occurs ~1 year after baseline; this visit is referred to as follow-up or session 2 ('ses-2').
