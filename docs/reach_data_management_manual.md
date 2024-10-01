@@ -24,15 +24,13 @@
     - [3. Sync processed survey and task data to Roar Collab](#3-sync-processed-survey-and-task-data-to-roar-collab)
     - [4. Process MRI data on Roar Collab](#4-process-mri-data-on-roar-collab)
 - [Data Quality Control](#data-quality-control)
-    - [Survey data](#survey-data)
-    - [MRI data](#mri-data)
 - [Using the data](#using-the-data)
-    - [General usage notes](#general-usage-notes)
-    - [Using phenotype data](#using-phenotype-data)
-      - [Combining datasets](#combining-datasets)
-    - [Using rawdata](#using-rawdata)
-    - [Using derivative data](#using-derivative-data)
-  - [Correcting data entry/collection errors](#correcting-data-entrycollection-errors)
+  - [General usage notes](#general-usage-notes)
+  - [Combining datasets](#combining-datasets)
+- [Correcting data entry/collection errors](#correcting-data-entrycollection-errors)
+  - [Errors in survey data](#errors-in-survey-data)
+  - [Errors in task data](#errors-in-task-data)
+  - [Errors in MRI data](#errors-in-mri-data)
 
 
 # Introduction
@@ -43,7 +41,7 @@ If you have questions, reach out to Bari Fuchs at baf44@psu.edu.
 
 # Data servers
 
-Managing and processing REACH data requires connecting to several servers. 
+Managing and processing REACH data requires connecting to several servers.
 
 ## OneDrive
 
@@ -111,8 +109,7 @@ Because they are the same, files in untouchedRaw/ and bids/ can easily be synced
 
 Survey and task data always begin on OneDrive and are then synced to Roar Collab. MRI data exists on Roar Collab only due to the size of the files and need for more computational resources when processing. 
 
-Via data processing, data flows from (a) data source to (b) untouchedRaw/ to (c) bids/sourcedata/ to (d) bids/phenotype/ for survey data and bids/rawdata/ for task/beh and MRI data to (e) bids/derivatives (Figure 1). The contents of these folders are summarized in Table 1 and detailed in subsections below.
-
+Via data processing, survey data flows from its source (REDCap) to bids/sourcedata/phenotype to bids/phenotype/. Task and MRI data flow from their sources (task-specific computers or Hoth, respectively) to untouchedRaw/ to bids/sourcedata/ to bids/rawdata/ (Figure 1). The contents of these folders are summarized in Table 1 and detailed in subsections below.
 
 <img src="./images/REACH_data_flow.png" alt="drawing" width="600"/> \
 Figure 1. Data Flow
@@ -121,7 +118,7 @@ Figure 1. Data Flow
 Table 1. Directories and descriptions
 | Directory    | Description |
 | -------- | ------- |
-| untouchedRaw  |  Contains task data in its rawest form. Data in this folder serves as a backup and should never be directly worked from.  |
+| untouchedRaw  |  Contains task and MRI data in their original form. Data in this folder serves as a backup and should never be directly worked from.  |
 | bids | Contains survey*, task, and neuroimaging data across differnt stages of processing, organized according to BIDS standards   |
 | bids/sourcedata    | Contains copies of task and neuroimaging data from untouchedRaw and survey data downloaded from redcap. Data in this folder will be organized into bids/rawdata and bids/phenotype 
 | bids/rawdata    | Contains task and neuroimaging data organized according to BIDS standards|
@@ -250,11 +247,11 @@ The steps are:
    1. Download survey data from REDCap to OneDrive
    2. Copy task data from administration computer to OneDrive
    3. Copy MRI data from Hoth to Roar Collab
-2. Process survey and task data on OneDrive
+2. Process survey and task data locally with OneDrive sync
    1. Get data into BIDS
    2. Generate derivative databases with summary metrics
 3. Sync survey and task data to Roar Collab
-4. Get MRI data into BIDS
+4. Organize MRI data into BIDS
    1. Copy data into sourcedata/
    2. Label "extra scans"
    3. Add field map desciription to fmap_descriptions.csv
@@ -586,38 +583,38 @@ conda activate dcm2bids
 
 # Data Quality Control
 
-### Survey data
-To increase quality of survey data:
+The data pipeline contains several steps to increase the quality of data.
 
-1. Merged double-entered records are processed for the following measures: DEXA, intake (pre and post weights), WASI, fullness ratings, CAMS
-   1. Data-double entry process: (1) 2 researchers enter the data into REDCap, (2) discrepencies between double-entered records are resolved by a reviwer, (3) records are merged when they match
-2. The function dataREACHr::qc_redcap() checks for:
+1. DEXA and intake (pre and post weights) are double-entered by 2 separate researchers into REDCap. Any descrepancies in entered values are resolved by a reviewer. When the double-entry data is processed by dataREACHr::proc_redcap() in beh_to_bids.R, only data without discrepancies are included in the resulting .tsv files; discrepancies are returned in a list by proc_redcap() to prompt the manager to fix them. 
+
+2. Automated checking of survey data with the function dataREACHr::qc_redcap() in beh_to_bids.R. This checks for
    1. Duplicate data (e.g., multiple rows for a given subject/session combination) in processed phenotype databases
    2. Child visit 1 ages out of expected range (7-9)
       1. This would suggest a mis-entry of child birthdate (by parent in [V1 demographics form](#visit-1-demographics)) or visit 1 protocol date (by researcher)
          1. If a parent mis-entered their child's birthdate in the V1 demographics form (e.g., entered the year of the study visit rather than child birth), the child birthdate in the V1 demographics form was updated by a researcher with the child birthdate provided by the parent during screening
    3. Negative consumption amounts??
 
-### MRI data
+3. Visual inspect of MRI data for artifacts using a two-step protocol based on [Provins et al. 2023](https://www.frontiersin.org/journals/neuroimaging/articles/10.3389/fnimg.2022.1073734/full). This protocol involves:
+   1. Inspecting MRIQC output for artifacts in unprocessed MRI data 
+   2. Inspecting fMRIprep output for errors or issues with pre-processed MRI data
+
 
 
 
 
 # Using the data
 
-### General usage notes
+## General usage notes
 
 
 1. Never manually edit datasets in bids/rawdata, bids/phenotype, and bids/derivatives. 
-   - This is because: (1) data are organized and processed using scripts found in bids/code. When datasets are re-processed or updated using these scripts, manual edits will be overwritten; and (2) these data are shared. Someone else using the datasets may be unaware of changes you made.
+   - This is because: (1) data are organized and processed using scripts found in bids/code. When datasets are re-processed or updated using these scripts, manual edits will be overwritten; and (2) these data are shared. Someone else using the datasets may be unaware of changes you made. If you notice errors, follow the steps outlined in [Correcting data entry/collection errors](#correcting-data-entrycollection-errors).
 2. Reference .json files to understand the datasets.
    - JSON files (i.e., files with .json extension) contain metadata for corresponding .tsv files. Meta-data includes information such as variable descriptions and citations.
    - Within bids/phenotypes/, each TSV file is accompanied by a corresponding JSON file with the same basename 
    - Within bids/rawdata/, meta-data for task TSV files in subject/session sub-folders are stored directly in bids/rawdata.
      - E.g., metadata for /bids/rawdata/sub-001/ses-1/beh/sub-001_ses-1_task-sst_beh.tsv can be found within /bids/rawdata/task-sst_beh.json 
-3. ??? Reference notes to understand the data ??? 
-   1. To do: add something about where qualitative notes will be kept?? in specific databases or a notes database?? 
-4. Specify 'n/a' as the value for missing data
+3. Specify 'n/a' as the value for missing data
   - In compliance with BIDS, 'n/a' is used to indicate missing data in rawdata and derivatives datasetes. To prevent software from interpreting 'n/a' as a string rather than missing data, it can be helpful to specify 'n/a' as the value to set as missing.
 
 In R missing values can be specified at import:
@@ -632,9 +629,7 @@ data <- read.delim(path_to_file, na.strings = "n/a")
 In SPSS missing values can be specified using the MISSING VALUES command. 
 
 
-### Using phenotype data
-
-#### Combining datasets
+## Combining datasets
 All datasets in bids/phenotype/ contain participant_id and session_id columns that indicate the subject identifier (e.g., sub-001) and when data were collected (i.e., ses-1/baseline or ses-2/follow-up), respectively. Data collected across multiple visits are stored in long format, meaning that within a dataset, a subject has a separate row for each session. Therefore, datasets can be merged by both participant_id and session_id columns.
 
 Example: merge data in R, matching on participant_id and session_id
@@ -671,24 +666,34 @@ merged_data <- merge(demo_data, cebq_data, by=c("participant_id","session_id"))
 
 ```
 
-Example: merge data in SPSS
-```
-
-```
-
-### Using rawdata
-
-To do: recommendations for creating derivative datasets from rawdata? 
-
-### Using derivative data
 
 
-## Correcting data entry/collection errors
+# Correcting data entry/collection errors
 
-Data in bids/ are organized and processed using scripts found in bids/code. When datasets are re-processed or updated using these scripts, manual edits will be overwritten. Therefore data entry errors need to be fixed where data are stored prior to processing:
-- For errors in phenotype/survey data, data need to be updated in REDCap. Then, REDCap data can be re-downloaded and reprocessed using dataREACHr
-  - Example error in REDCap data: Values that were incorrectly transferred from paper to REDCap (e.g., anthropometrics, intake measurements)
-- For errors in task data, data need to be updated in untouchedRaw. Then, they can be reprocessed into bids using dataREACHr
-  - Example error in task data: data was improperly exported from task software  
+Because data in bids/ are organized and processed using scripts, when datasets are re-processed or updated using these scripts, manual edits will be overwritten. Therefore, data errors need to be fixed before data is organized into BIDS: 
+
+## Errors in survey data
+
+Errors in survey data (i.e., data downloaded from REDCap) are the most likely. These errors need to be fixed in REDCap. Then, survey data can be re-downloaded and reprocessed into bids/ using dataREACHr.
+
+Examples of survey data errors include:
+- Incorrect birthdates provided by the parent (e.g., they specified an implausible birth year)
+  - In this case, assess the birthdate provided during screening or consent to find the correct value
+- Values incorrectly transferred from paper to REDCap
+  - While the double-entry process should mitigate these errors, if they are found, they must be fixed. 
+- Incorrect visit dates 
+
+
+## Errors in task data
+
+Errors in task data need to be fixed in untouchedRaw/. Then, they can be reprocessed into bids/ using dataREACHr.
+
+Task data typically should not have errors, as it is automatically generated from the task programs. However, an example that would need to be addressed is:
+-  data was improperly exported from the task software. If this happens, see if the data can be re-exported with the correct settings and copied into untouchedRaw/. If this is not possible, you may need a modified protocol to process the data. 
+
+## Errors in MRI data
+
+If something about the MRI data seems incorrect (e.g., missing files, corrupted header information), check to see if these concerns exist in the data on Hoth, or if they occured when transfering the data between Hoth and Roar Collab. If you have concerns about the data on Hoth, reach out to SLEIC to see if they have suggestions or can re-upload the data. Then, re-sync the data to untouchedRaw/ on Roar Collab and re-start the processing pipeline. 
+
 
 
