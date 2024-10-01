@@ -6,7 +6,7 @@
   - [OneDrive](#onedrive)
   - [Roar Collab](#roar-collab)
   - [Hoth](#hoth)
-- [Data Storage and Organization](#data-storage-and-organization)
+- [Data Organization on OneDrive and Roar Collab](#data-organization-on-onedrive-and-roar-collab)
   - [untouchedRaw](#untouchedraw)
   - [bids](#bids)
     - [bids/sourcedata](#bidssourcedata)
@@ -47,23 +47,24 @@ Managing and processing REACH data requires connecting to several servers.
 
 ## OneDrive
 
-OneDrive is the cloud storage service used by Penn State. Survey and task data are stored on OneDrive and processed locally (i.e., on your computer)using OneDrive Sync. With OneDrive Sync, files on OneDrive are synced to your computer, where they can be processed (e.g., with R); processed files are then synced to OneDrive.
+OneDrive is the cloud storage service used by Penn State. Survey and task data are stored on OneDrive and processed locally (i.e., on your computer) using OneDrive Sync. With OneDrive Sync, files on OneDrive are synced to your computer, where they can be processed (e.g., with R); processed files are then synced to OneDrive.
 
 [Setting up OneDrive Sync](https://support.microsoft.com/en-us/office/sync-files-with-onedrive-in-windows-615391c4-2bd3-4aae-a42a-858262e42a49)
 
 ## Roar Collab
 
-Roar Collab is Penn State's Linux-based High Performance Computing Cluster. This is where MRI data are stored, processed, and analyzed. Survey and behavioral dat are synced to Roar Collab after processing so they can be used in MRI analyses. 
+Roar Collab is Penn State's Linux-based High Performance Computing Cluster. This is where MRI data are stored, processed, and analyzed. Survey and behavioral data are synced to Roar Collab after being processed locally so they can be used in MRI analyses. 
 
-Processing data on Roar Collab involves using a command-line interface to navigate to directories and run shell scripts. Thus, familiarity with basic [linux commands](https://www.hostinger.com/tutorials/linux-commands) is recommended. 
+Processing data on Roar Collab involves using a command-line interface to navigate directories and run scripts. Thus, familiarity with basic [linux commands](https://www.hostinger.com/tutorials/linux-commands) is required. 
 
-Roar Collab can be accessed via SSH and through an interactive deskop. 
+Roar Collab can be accessed via an SSH connection with submit.hpc.psu.edu and through an interactive deskop. 
 
 <!-- omit in toc -->
 ### Connecting via SSH
 To connect via SSH, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing <userid> with your Penn State user ID (e.g., baf44):
 
 ```bash
+# SSH into Roar Collab (replace <userid> with your Penn State user ID))
 ssh <userid>@submit.hpc.psu.edu
 ```
 This will prompt you to enter your password.
@@ -80,21 +81,15 @@ For more details on using Roar Collab, see the Roar Collab User Guide [here](htt
 
 Hoth is the server where SLEIC uploads MRI data, which we then copy to Roar Collab.  
 
-Hoth can also be connected to via an SSH connnection with linux.imaging.psu.edu. To connect via SSH, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing <userid> with your Penn State user ID (e.g., baf44):
+Hoth can be connected to via an SSH connnection with linux.imaging.psu.edu. To do this, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing <userid> with your Penn State user ID (e.g., baf44):
 
 ```bash
-# SSH into Hoth
+# SSH into Hoth (replace <userid> with your Penn State user ID)
 ssh <userid>@linux.imaging.psu.edu
 ```
+This will prompt you to enter your password.
 
-# Data Storage and Organization
-
-Data are stored on 2 servers:
-
-1. OneDrive (The cloud storage service used by Penn State)
-2. Roar Collab (Penn State's High Performance Computing Cluster)
-
-Survey and behavioral task data are stored on both servers, while MRI data is stored on Roar Collab only (due to file size).
+# Data Organization on OneDrive and Roar Collab
 
 Data on [OneDrive](#onedrive) are stored in the folder: 
 b-childfoodlab_Shared > Active_Studies > MarketingResilienceRO1_8242020 > ParticipantData
@@ -102,34 +97,19 @@ b-childfoodlab_Shared > Active_Studies > MarketingResilienceRO1_8242020 > Partic
 Data on [Roar Collab](#roar-collab) are stored in the folder:
 storage > group > klk37 > default > R01_Marketing
 
-On OneDrive, the directory structure looks like:
-- b-childfoodlab_Shared
-  - Active_Studies
-    - MarketingResilienceRO1_8242020
-      - ParticipantData
-         - **untouchedRaw**
-         - **bids**
-           - **sourcedata**
-           - **rawdata**
-           - **phenotype**
-           - **derivatives**
-           - **code**
-  
-On Roar Collab, the directory structure looks like:
-- storage
-  - group
-    - klk37
-      - default
-        - R01_Marketing 
-           - **untouchedRaw**
-           - **bids**
-             - **sourcedata**
-             - **rawdata**
-             - **phenotype**
-             - **derivatives**
-             - **code**
+The sub-directories within ParticipantData/ (on OneDrive) and R01_Marketing/ (on Roar Collab) are the same and look like:
 
-Notice that the sub-directories within ParticipantData/ (on OneDrive) and R01_Marketing/ (on Roar Collab) are the same. This enables syncing files in untouchedRaw/ and bids/ between the servers. 
+- (ParticipantData or R01_Marketing)
+  - **untouchedRaw**
+  - **bids**
+    - **sourcedata**
+    - **rawdata**
+    - **derivatives**
+    - **code**
+  
+Because they are the same, files in untouchedRaw/ and bids/ can easily be synced between the servers. 
+
+Survey and task data always begin on OneDrive and are then synced to Roar Collab. MRI data exists on Roar Collab only due to the size of the files and need for more computational resources when processing. 
 
 Via data processing, data flows from (a) data source to (b) untouchedRaw/ to (c) bids/sourcedata/ to (d) bids/phenotype/ for survey data and bids/rawdata/ for task/beh and MRI data to (e) bids/derivatives (Figure 1). The contents of these folders are summarized in Table 1 and detailed in subsections below.
 
