@@ -1,8 +1,11 @@
-#<!-- omit in toc -->
+<!-- omit in toc -->
 # Data Management and Processing Manual for Study REACH
 
-- [Data Management and Processing Manual for Study REACH](#data-management-and-processing-manual-for-study-reach)
 - [Introduction](#introduction)
+- [Data servers](#data-servers)
+  - [OneDrive](#onedrive)
+  - [Roar Collab](#roar-collab)
+  - [Hoth](#hoth)
 - [Data Storage and Organization](#data-storage-and-organization)
   - [untouchedRaw](#untouchedraw)
   - [bids](#bids)
@@ -36,6 +39,54 @@
 
 Welcome! This manual outlines the data management and processing protocol for project REACH.
 
+If you have questions, reach out to Bari Fuchs at baf44@psu.edu.
+
+# Data servers
+
+Managing and processing REACH data requires connecting to several servers. 
+
+## OneDrive
+
+OneDrive is the cloud storage service used by Penn State. Survey and task data are stored on OneDrive and processed locally (i.e., on your computer)using OneDrive Sync. With OneDrive Sync, files on OneDrive are synced to your computer, where they can be processed (e.g., with R); processed files are then synced to OneDrive.
+
+[Setting up OneDrive Sync](https://support.microsoft.com/en-us/office/sync-files-with-onedrive-in-windows-615391c4-2bd3-4aae-a42a-858262e42a49)
+
+## Roar Collab
+
+Roar Collab is Penn State's Linux-based High Performance Computing Cluster. This is where MRI data are stored, processed, and analyzed. Survey and behavioral dat are synced to Roar Collab after processing so they can be used in MRI analyses. 
+
+Processing data on Roar Collab involves using a command-line interface to navigate to directories and run shell scripts. Thus, familiarity with basic [linux commands](https://www.hostinger.com/tutorials/linux-commands) is recommended. 
+
+Roar Collab can be accessed via SSH and through an interactive deskop. 
+
+<!-- omit in toc -->
+### Connecting via SSH
+To connect via SSH, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing <userid> with your Penn State user ID (e.g., baf44):
+
+```bash
+ssh <userid>@submit.hpc.psu.edu
+```
+This will prompt you to enter your password.
+
+<!-- omit in toc -->
+### Using interactive desktop
+
+To start an interactive desktop, sign into the Penn State Roar Collab Portal at [https://rcportal.hpc.psu.edu/pun/sys/dashboard](https://rcportal.hpc.psu.edu/pun/sys/dashboard) and launch a new Interactive Desktop.
+
+
+For more details on using Roar Collab, see the Roar Collab User Guide [here](https://www.icds.psu.edu/roar-collab-high-performance-computing-overview/).
+
+## Hoth
+
+Hoth is the server where SLEIC uploads MRI data, which we then copy to Roar Collab.  
+
+Hoth can also be connected to via an SSH connnection with linux.imaging.psu.edu. To connect via SSH, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing <userid> with your Penn State user ID (e.g., baf44):
+
+```bash
+# SSH into Hoth
+ssh <userid>@linux.imaging.psu.edu
+```
+
 # Data Storage and Organization
 
 Data are stored on 2 servers:
@@ -45,10 +96,10 @@ Data are stored on 2 servers:
 
 Survey and behavioral task data are stored on both servers, while MRI data is stored on Roar Collab only (due to file size).
 
-Data on OneDrive are stored in the folder: 
+Data on [OneDrive](#onedrive) are stored in the folder: 
 b-childfoodlab_Shared > Active_Studies > MarketingResilienceRO1_8242020 > ParticipantData
 
-Data on Roar Collab are stored in the folder:
+Data on [Roar Collab](#roar-collab) are stored in the folder:
 storage > group > klk37 > default > R01_Marketing
 
 On OneDrive, the directory structure looks like:
@@ -211,22 +262,25 @@ This folder contains code to organize and process data within bids/.
 
 ## Overview
 
-Data processing involves getting data from its source into [bids/phenotype](#bidsphenotype) and [bids/rawdata](#bidsrawdata), as well as generation of derivatives from rawdata that will be useful for analyses. 
+The data processing pipeline encapsulates steps to get data from its source into analysis-ready formats. 
 
-Broadly, the steps are:
+The steps are:
 
 1. Transfer data to servers for processing
    1. Download survey data from REDCap to OneDrive
    2. Copy task data from administration computer to OneDrive
    3. Copy MRI data from Hoth to Roar Collab
 2. Process survey and task data on OneDrive
-   1. Get data into bids
+   1. Get data into BIDS
    2. Generate derivative databases with summary metrics
 3. Sync survey and task data to Roar Collab
-4. Process MRI data on Roar Collab 
-   1. Get data into bids
-   2. Generate QC metrics with MRIQC
-   3. Pre-process data with fMRIprep
+4. Get MRI data into BIDS
+   1. Copy data into sourcedata/
+   2. Label "extra scans"
+   3. Add field map desciription to fmap_descriptions.csv
+   4. Convert MRI data to BIDS in rawdata/
+5. Generate QC metrics with MRIQC
+6. Pre-process data with fMRIprep
 
 
 <img src="./images/REACH_processing_steps.png" alt="drawing" width="600"/> \
@@ -242,15 +296,15 @@ Implementing the described pipeline will require access to projects/folders in:
 - Hoth (server where SLEIC uploads imaging data)
 - Roar Collab (Penn State's High Performance Computing Cluster)
 
-Steps to aquire access are outlined in Table X.
+Steps to aquire access are outlined in Table 2.
 
-Table X. Access required for data processing
+Table 2. Access required for data processing
 <div style="font-size: 12px;">
 
 | Server | Project/Folder | Getting Server Access | Getting project/folder access | Required To... |
 | -------- | ------- | ------- | ------- | ------- |
 | REDCap | 'Food Marketing Resilience/Project REACH' and 'REACH Data Double Entry' projects | Go to https://ctsi.psu.edu/research-support/redcap/ and select "REQUEST REDCAP ACCESS (NEW USERS"; Requires REDCap training | ask Kathleen Keller (klk37@psu.edu) to grant access | download Survey data from REDCap |
-| OneDrive |  b-childfoodlab_Shared/ | ?? | ask Kathleen Keller (klk37@psu.edu) to grant access | transfer and access task (beh) and survey data on OneDrive |
+| OneDrive |  b-childfoodlab_Shared/ | Students and staff with @psu.edu emails automatically get access | ask Kathleen Keller (klk37@psu.edu) to grant access | transfer and access task (beh) and survey data on OneDrive |
 | Hoth |  /nfs/imaging-data/3Tusers/klk37/mrkt/ | email	l-sleic-helpdesk@lists.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu)  | email	l-sleic-helpdesk@lists.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu) | retrieve MRI data after SLEIC uploads it to Hoth |
 | Roar Collab |  storage/group/klk37/ | follow instructions at https://www.icds.psu.edu/account-setup/  | email iask@ics.psu.edu and request access, cc Kathleen Keller (klk37@psu.edu) | copy MRI data to Roar Collab; access and process MRI data on Roar Collab; sync task and survey data from OneDrive to Roar Collab|
 
@@ -259,20 +313,28 @@ Table X. Access required for data processing
 
 ## Required software 
 
-The pipeline below uses the following software
+Implementing the processing pipeline requires the following software to be available either locally (for processing survey and task data that are available on your computer with OneDrive Sync) or on Roar Collab (for processing MRI data).
 
 <!-- omit in toc -->
 ### R01_Marketing
 * [https://github.com/bfuchs18/R01_Marketing](https://github.com/bfuchs18/R01_Marketing)
-* This github repository contains scripts developed to processess and analyze REACH data. These are located in ParticipantData/bids/code. The scripts in this repositiory use the software outlined below. 
+* This github repository contains R, Python, and shell scripts to organize, processess, and analyze REACH data. These are located in ParticipantData/bids/code.
+* The scripts in this repositiory call the software outlined below. 
+* Scripts in this repo are need locally and on Roar Collab.
+
+<!-- omit in toc -->
+### R
+* [https://www.r-project.org/](https://www.r-project.org/)
+* This software is needed locally
+* R is a software environment for statistical computing and graphics and is required to process task and survey data using [dataREACHr](#datareachr) and [dataprepr](#dataprepr)
+
 
 <!-- omit in toc -->
 ### dataREACHr
 * [https://github.com/bfuchs18/dataREACHr](https://github.com/bfuchs18/dataREACHr)
+* This software is needed locally
 * This is an R package that contains functions to process and organize survey and task data into bids/phenotype and bids/rawdata, respectively.
-    * Use of this package requires the directory structure described [here](#directory-organization)
-
-  * dataREACHr can be installed from github in R using the devtools package:
+* dataREACHr can be installed from github in R using the devtools package:
 ```r
 devtools::install_github("bfuchs18/datareachr")
 ```
@@ -280,9 +342,10 @@ devtools::install_github("bfuchs18/datareachr")
 ### dataprepr
 
 * [https://github.com/alainapearce/dataprepr](https://github.com/alainapearce/dataprepr)
+*  This software is needed locally
 * This is an R package that contains functions to score a variety of validated questionnaires
-  * This is a dependecy of [dataREACHr](#datareachr) -- loading dataREACHr will prompt installation of dataprepr if it is not installed. 
-  * Dataprepr can also be installed from github in R using the devtools package:
+* This is a dependecy of [dataREACHr](#datareachr) -- loading dataREACHr will prompt installation of dataprepr if it is not installed. 
+* Dataprepr can also be installed from github in R using the devtools package:
 
 ```r
 devtools::install_github("alainapearce/dataprepr")
@@ -291,6 +354,7 @@ devtools::install_github("alainapearce/dataprepr")
 <!-- omit in toc -->
 ### dcm2bids
 *  [https://unfmontreal.github.io/Dcm2Bids/3.1.1/](https://unfmontreal.github.io/Dcm2Bids/3.1.1/)
+*  This software is needed on Roar Collab
 *  This is a program that reorganises NIfTI files into the Brain Imaging Data Structure (BIDS).
 *  Data processing scripts expect dcm2bids to be loaded via a conda environment described in [/bids/code/dcm2bids/dcm2bids.yml](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/dcm2bids/dcm2bids.yml). 
 *  
@@ -318,6 +382,7 @@ conda activate dcm2bids
 <!-- omit in toc -->
 ### pydeface
 *  [https://github.com/poldracklab/pydeface](https://github.com/poldracklab/pydeface)
+*  This software is needed on Roar Collab
 *  This is a tool to remove facial structure from (i.e., "deface") MRI images. 
 *  Data processing scripts expect pydeface to be loaded via a conda environment described in /bids/code/dcm2bids/dcm2bids.yml. See the [dcm2bids](#dcm2bids) section for details on how to create the conda environment.
 
@@ -334,6 +399,7 @@ singularity build /storage/group/klk37/default/sw/mriqc-24.0.0.simg  docker://ni
 <!-- omit in toc -->
 ### fmriprep
 * [https://fmriprep.org/en/stable/outputs.html](https://fmriprep.org/en/stable/outputs.html)
+* This software is needed on Roar Collab
 * fMRIprep is a preprocessing software for MRI data
 * On Roar Collab, fMRIprep version 24.0.1 is available in a Singularity Container within /storage/group/klk37/default/sw/fmriprep-23.2.0.simg. By using this singularity container, we can use a version of fMRIprep that is not presently available to all users of Roar Collab.
 
@@ -346,6 +412,8 @@ singularity build /storage/group/klk37/default/sw/fmriprep-24.0.1.simg docker://
 
 <!-- omit in toc -->
 ### afni
+* [https://afni.nimh.nih.gov/](https://afni.nimh.nih.gov/)
+* This software is needed on Roar Collab
 * On Roar Collab, AFNI version 24.2.01 is available in a Singularity Container within /storage/group/klk37/default/sw/afni-24.2.01.simg. By using this singularity container, we can use a version of AFNI that is not presently available to all users of Roar Collab.
 
 The container was created by running the following command in a Bash terminal on Roar Collab
@@ -361,12 +429,12 @@ singularity pull afni-24.2.01.simg docker://afni/afni_make_build:AFNI_24.2.01
 ## Processing steps
 ### 1. Transfer data to servers for processing
 
-Before we can run any processing scripts, we need to move data from their source to the server in which they will be processed. For survey and task data, this is OneDrive. For MRI data, this is Roar Collab. 
+Before we can begin processing any data, we need to copy data from their source to the server in which they will be processed. For survey and task data, this is OneDrive. For MRI data, this is Roar Collab. 
 
 <!-- omit in toc -->
 #### 1.1. Transfer survey data from REDCap to OneDrive
 
-   1. Log in to redcap (#https://redcap.ctsi.psu.edu/)
+   1. Log in to redcap at [https://redcap.ctsi.psu.edu/](https://redcap.ctsi.psu.edu/)
    2. Download visit data
       1. Navigate to the REDCap project: Food Marketing Resilience/Project REACH
       2. Select 'Data Exports, Reports, and Stats'
@@ -386,14 +454,14 @@ Before we can run any processing scripts, we need to move data from their source
 #### 1.2. Copy task data from its source to OneDrive
 
    1. Locate task data at the source
-      1. This location is task-specfic; it is typically on the computer used to administer the task (Table X)
+      1. This location is task-specfic; it is typically on the computer used to administer the task (Table 3)
    2. Copy data onto OneDrive into the task-specific folder in [untouchedRaw/](#untouchedraw) (i.e., b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/untouchedRaw/)
       1. This should happen as soon as possible after data is collected. 
          1. Unlike OneDrive, the computers used for task data collection are not permanent storage locations and are not backed up. 
          2. Do not delete the data from the source. It can remain in that location as a backup until computer resources require files to be removed.
    3. If needed, rename the file in untouchedRaw to adhere to the expected file naming convention (Table X),
   
-Table X. Copying Task Data to untouchedRaw/ on OneDrive
+Table 3. Copying Task Data to untouchedRaw/ on OneDrive
 <div style="font-size: 12px;">
 
 | Task    | Data to tranfer | Where data is initially exported | Folder in untouchedRaw | untouchedRaw Naming Convenction |
@@ -408,11 +476,42 @@ Table X. Copying Task Data to untouchedRaw/ on OneDrive
 <div style="font-size: 16px;">
 
 <!-- omit in toc -->
-#### 1.3. Sync MRI data from Hoth to Roar Collab
+#### 1.3. Copy MRI data from Hoth to Roar Collab
 
-To copy MRI data from its source (Hoth) to Roar Collab:
+Hoth is the server that SLIEC uploads MRI data to. Roar Collab is the server where the Keller Lab stores and processes MRI data. Data needs to be securely copied (scp) from Hoth to Roar Collab 
 
-[Add these details]
+    Below is an example of copying data for subject 001; You will need to replace 'user' with your PSU username (e.g., baf44) \
+
+<!-- omit in toc --> 
+#### From a terminal, log into Hoth
+```bash
+# SSH into Hoth
+ssh user@submit.hpc.psu.edu
+
+# navigate to where SLEIC uploads data
+cd /nfs/imaging-data/3Tusers/klk37/mrkt
+
+# list contents of mrkt directory
+ls
+
+# rename subject's data directory to follow formatting mrkt_000
+mv mrkt_1 mrkt_001
+```
+<!-- omit in toc --> 
+#### From a separate terminal, log into Roar Collab
+```bash
+# SSH into Roar Collab
+ssh user@submit.hpc.psu.edu
+
+# navigate to where data will be copied to
+cd /storage/group/klk37/default/R01_Marketing/untouchedRaw/DICOMS
+
+# copy data from Hoth into current directory (on Roar Collab -- signaled with '.')
+scp -r user@linux.imaging.psu.edu:/nfs/imaging-data/3Tusers/klk37/mrkt/mrkt_001 ./
+
+# list contents of directory to confirm all files were transferred
+ls 
+```
 
 ### 2: Process Survey and Task Data
 
