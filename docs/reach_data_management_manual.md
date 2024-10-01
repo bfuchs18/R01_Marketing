@@ -20,9 +20,19 @@
   - [Required software](#required-software)
   - [Processing steps](#processing-steps)
     - [1. Transfer data to servers for processing](#1-transfer-data-to-servers-for-processing)
+      - [1.1. Transfer survey data from REDCap to OneDrive](#11-transfer-survey-data-from-redcap-to-onedrive)
+      - [1.2. Copy task data from its source to OneDrive](#12-copy-task-data-from-its-source-to-onedrive)
+      - [1.3. Copy MRI data from Hoth to Roar Collab](#13-copy-mri-data-from-hoth-to-roar-collab)
     - [2: Process Survey and Task Data](#2-process-survey-and-task-data)
     - [3. Sync processed survey and task data to Roar Collab](#3-sync-processed-survey-and-task-data-to-roar-collab)
-    - [4. Process MRI data on Roar Collab](#4-process-mri-data-on-roar-collab)
+    - [4. Organize MRI data into BIDS](#4-organize-mri-data-into-bids)
+      - [4.1. Copy data into bids/sourcedata/](#41-copy-data-into-bidssourcedata)
+      - [4.2. Label "extra scans" in bids/sourcedata/](#42-label-extra-scans-in-bidssourcedata)
+      - [4.3. Add field map SeriesDescription to fmap\_descriptions.csv](#43-add-field-map-seriesdescription-to-fmap_descriptionscsv)
+      - [4.4. Convert MRI data to BIDS in rawdata/](#44-convert-mri-data-to-bids-in-rawdata)
+    - [5. Check BIDS compliance](#5-check-bids-compliance)
+    - [6. Run MRIQC](#6-run-mriqc)
+    - [7. Run fmriprep](#7-run-fmriprep)
 - [Data Quality Control](#data-quality-control)
 - [Using the data](#using-the-data)
   - [General usage notes](#general-usage-notes)
@@ -35,13 +45,13 @@
 
 # Introduction
 
-Welcome! This manual outlines the data management and processing protocol for project REACH.
+Welcome! This manual outlines the data management and processing protocol for project REACH. It is being continuously updated by Bari Fuchs as the data processing pipeline is refined. 
 
 If you have questions, reach out to Bari Fuchs at baf44@psu.edu.
 
 # Data servers
 
-Managing and processing REACH data requires connecting to several servers.
+Managing and processing REACH data requires connecting to several servers and data-storage systems.
 
 ## OneDrive
 
@@ -59,11 +69,11 @@ Roar Collab can be accessed via an SSH connection with submit.hpc.psu.edu and th
 
 <!-- omit in toc -->
 ### Connecting via SSH
-To connect via SSH, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing <userid> with your Penn State user ID (e.g., baf44):
+To connect via SSH, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing userid with your Penn State user ID (e.g., baf44):
 
 ```bash
-# SSH into Roar Collab (replace <userid> with your Penn State user ID))
-ssh <userid>@submit.hpc.psu.edu
+# SSH into Roar Collab (replace userid with your Penn State user ID))
+ssh userid@submit.hpc.psu.edu
 ```
 This will prompt you to enter your password.
 
@@ -79,11 +89,11 @@ For more details on using Roar Collab, see the Roar Collab User Guide [here](htt
 
 Hoth is the server where SLEIC uploads MRI data, which we then copy to Roar Collab.  
 
-Hoth can be connected to via an SSH connnection with linux.imaging.psu.edu. To do this, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing <userid> with your Penn State user ID (e.g., baf44):
+Hoth can be connected to via an SSH connnection with linux.imaging.psu.edu. To do this, open a terminal on macOS or Linux or the command prompt on Windows and enter the following command, replacing userid with your Penn State user ID (e.g., baf44):
 
 ```bash
-# SSH into Hoth (replace <userid> with your Penn State user ID)
-ssh <userid>@linux.imaging.psu.edu
+# SSH into Hoth (replace userid with your Penn State user ID)
+ssh userid@linux.imaging.psu.edu
 ```
 This will prompt you to enter your password.
 
@@ -175,7 +185,7 @@ This looks like:
 
 ### bids/rawdata
 
-This folder contains "raw" task and MRI data that has been minimally processed from [bids/sourcedata/](#bidssourcedata) to comply with BIDS standards. When publically sharing task and MRI data, this is the data that gets shared. Similar to bids/sourcedata/, bids/rawdata/ is organized by subject and session. However, subdirectories will differ by modality: MRI data is stored in fmap/, func/, and anat/. Task data is stored in func/ if it was collected alongside fMRI data and beh/ if it was not.
+This folder contains "raw" task and MRI data that has been minimally processed from [bids/sourcedata/](#bidssourcedata) to comply with BIDS standards and be suitable for sharing (e.g., MRI data is de-identified). When publically sharing task and MRI data, this is the data that gets shared. Similar to bids/sourcedata/, bids/rawdata/ is organized by subject and session. However, subdirectories will differ by modality: MRI data is stored in fmap/, func/, and anat/. Task data is stored in func/ if it was collected alongside fMRI data and beh/ if it was not.
 
 Meta-data for files in bids/rawdata are stored in corresponding JSON files. For MRI data (i.e., nii.gz files), JSONS are subject specific, so they are stored in subject folders alongside the MRI data. For task data (i.e., TSV files), JSONS are stored directly in rawdata/ and apply to all corresponding files in subject and session directories.
 
@@ -256,8 +266,9 @@ The steps are:
    2. Label "extra scans"
    3. Add field map desciription to fmap_descriptions.csv
    4. Convert MRI data to BIDS in rawdata/
-5. Generate QC metrics with MRIQC
-6. Pre-process data with fMRIprep
+5. Check BIDS compliance
+6. Generate QC metrics with MRIQC
+7. Pre-process data with fMRIprep
 
 
 <img src="./images/REACH_processing_steps.png" alt="drawing" width="600"/> \
@@ -298,6 +309,7 @@ Implementing the processing pipeline requires the following software to be avail
 * This github repository contains R, Python, and shell scripts to organize, processess, and analyze REACH data. These are located in ParticipantData/bids/code.
 * The scripts in this repositiory call the software outlined below. 
 * Scripts in this repo are need locally and on Roar Collab.
+* I recommend downloading the entire repository onto your computer
 
 <!-- omit in toc -->
 ### R
@@ -408,7 +420,7 @@ singularity pull afni-24.2.01.simg docker://afni/afni_make_build:AFNI_24.2.01
 
 Before we can begin processing any data, we need to copy data from their source to the server in which they will be processed. For survey and task data, this is OneDrive. For MRI data, this is Roar Collab. 
 
-<!-- omit in toc -->
+
 #### 1.1. Transfer survey data from REDCap to OneDrive
 
    1. Log in to redcap at [https://redcap.ctsi.psu.edu/](https://redcap.ctsi.psu.edu/)
@@ -427,7 +439,7 @@ Before we can begin processing any data, we need to copy data from their source 
       5. Select export then click icon to download
       6. Transfer file to OneDrive Folder: b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/sourcedata/phenotype
 
-<!-- omit in toc -->
+
 #### 1.2. Copy task data from its source to OneDrive
 
    1. Locate task data at the source
@@ -452,72 +464,59 @@ Table 3. Copying Task Data to untouchedRaw/ on OneDrive
 
 <div style="font-size: 16px;">
 
-<!-- omit in toc -->
 #### 1.3. Copy MRI data from Hoth to Roar Collab
 
-Hoth is the server that SLIEC uploads MRI data to. Roar Collab is the server where the Keller Lab stores and processes MRI data. Data needs to be securely copied (scp) from Hoth to Roar Collab 
+MRI data needs to be securely copied (scp) from [Hoth](#hoth) to [Roar Collab](#roar-collab). This is done via SSH connections.
 
-    Below is an example of copying data for subject 001; You will need to replace 'user' with your PSU username (e.g., baf44) \
+<!-- omit in toc -->
+##### 1.3.1 Connect to Hoth via SSH
+See instructions [here](#hoth).
 
-<!-- omit in toc --> 
-#### From a terminal, log into Hoth
+<!-- omit in toc -->
+##### 1.3.1 Rename directory in Hoth for transfer
+
+Before transferring the data, we want to update the folder name on Hoth so it follows the naming convention mrkt_XXX (where XXX is a 3-digit ID). To do this, [connect to Hoth with SSH](#hoth). While connected to Hoth, enter the following commands (example for subject 001):
+
 ```bash
-# SSH into Hoth
-ssh user@submit.hpc.psu.edu
-
 # navigate to where SLEIC uploads data
 cd /nfs/imaging-data/3Tusers/klk37/mrkt
 
 # list contents of mrkt directory
 ls
 
-# rename subject's data directory to follow formatting mrkt_000
-mv mrkt_1 mrkt_001
+# rename subject's data directory to follow formatting mrkt_XXX
+mv mrkt_1 mrkt_001 ## for a subject other than 001, replace mrkt_1 with the present folder name and mrkt_001 with the desired folder name
 ```
-<!-- omit in toc --> 
-#### From a separate terminal, log into Roar Collab
-```bash
-# SSH into Roar Collab
-ssh user@submit.hpc.psu.edu
+<!-- omit in toc -->
+##### 1.3.2 Run SCP command from Roar Collab
 
+Once the folder name is updated in Hoth, it is ready for to be transfered to Roar Collab with scp. To do this, [connect to Roar Collab with SSH](#roar-collab). While connected to Roar Collab, enter the following commands (example for subject 001):
+
+```bash
 # navigate to where data will be copied to
 cd /storage/group/klk37/default/R01_Marketing/untouchedRaw/DICOMS
 
 # copy data from Hoth into current directory (on Roar Collab -- signaled with '.')
-scp -r user@linux.imaging.psu.edu:/nfs/imaging-data/3Tusers/klk37/mrkt/mrkt_001 ./
+### replace userid with your user ID (e.g., baf44) and mrkt_001 with folder to copy
+### running this command will prompt you for a password 
+scp -r userid@linux.imaging.psu.edu:/nfs/imaging-data/3Tusers/klk37/mrkt/mrkt_001 ./
 
 # list contents of directory to confirm all files were transferred
-ls 
+ls
 ```
 
 ### 2: Process Survey and Task Data
 
-Once survey and task data exist on OneDrive (steps 1.1-1.2), we can begin processing them. The recommendation is to process data locally (i.e., with OneDrive files synced to computer) and then sync processed files to Roar Collab for use with MRI analyses. 
+Once survey and task data exist on OneDrive (steps 1.1-1.2), we can organizing them into BIDS (step 2.1) and generating derivative databases (step 2.2). The recommendation is to do both steps locally (i.e., with OneDrive files synced to computer) and then sync processed files to Roar Collab for use with MRI analyses. 
 
-Survey and task data are processed and organized into BIDS using the script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) which is shared in the [R01_Marketing GitHub Repository](##r01_marketing).
+Organization of survey and task data into BIDS (step 2.1) and generation of derivative databases (step 2.2) can be done using the script [beh_into_bids.R](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/beh_into_bids.R) which is shared in the [R01_Marketing GitHub Repository](##r01_marketing). beh_into_bids.R sources a [configuration file](https://github.com/bfuchs18/R01_Marketing/blob/master/ParticipantData/bids/code/config_redcap_sourcedata.R) that specifies the names of REDCap files to be processed. 
 
-beh_into_bids.R was written to process files stored in OneDrive, provided they are synced to a local computer and the script is run locally. After processing data locally, beh_into_bids.R syncs data to Roar Collab.
+To process data locally with beh_into_bids.R:
+- [R](#r), [dataREACHr](#datareachr), and dataREACHr dependencies, including [dataprepr](#dataprepr), must be installed on your computer
+-  OneDrive files must be synced to your computer 
+-  beh_into_bids.R and config_redcap_sourcedata.R must exist in ParticipantData/bids/code/
+-  config_redcap_sourcedata.R must be updated with the file names you want to process
 
-Therefore, running beh_into_bids.R requires:
-1. That [R](#r) is installed
-2. That the R package [dataREACHr](#datareachr) its dependencies, including [dataprepr](#dataprepr), are installed. Details about installing dataREACHr and dataprepr can be found [here](#data-processing-software).
-3. That the user has OneDrive files synced to their computer
-4. That the script correctly specifies (1) the path to ParticipantData on OneDrive, (2) the names of REDCap files in sourcedata, and (3) the PSU user ID. To specify this information, modify the following lines of code in beh_into_bids.R:
-```r
-#### user setup (modify variables here) ####
-
-# set path to ParticipantData directory on OneDrive (contains bids/ and untouchedRaw/)
-base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
-
-# set redcap file names
-visit_file_name =  "FoodMarketingResilie_DATA_2024-05-03_1132.csv"
-double_entry_file_name = "REACHDataDoubleEntry_DATA_2024-04-08_1306.csv"
-
-# Penn State user ID
-## needed for syncing data between OneDrive and Roar Collab
-user_id = "baf44"
-
-```
 
 Overview of beh_into_bids.R:
 
@@ -537,49 +536,318 @@ Overview of beh_into_bids.R:
 - Survey and Task data in untouchedRaw/ and bids/ on OneDrive (local) are synced to Roar Collab using rsync
 
 ### 3. Sync processed survey and task data to Roar Collab
-### 4. Process MRI data on Roar Collab 
 
-Once MRI data is on Roar Collab (step 1.3), we can being processing it. Organization of MRI data into bids/rawdata/ can without survey and task data being synced to Roar Collab. However, subsequent processing steps (MRIQC, fMRIprep) will require that task data (*_events.tsv files) have been synced to Roar Collab, 
 
-1. SSH into Roar Collab
+
+### 4. Organize MRI data into BIDS
+
+Once MRI data is on Roar Collab ([step 1.3](#13-copy-mri-data-from-hoth-to-roar-collab)), we can organize it into BIDS. To do this, [connect to Roar Collab with SSH](#roar-collab) and:
+
+#### 4.1. Copy data into bids/sourcedata/
+
+```bash
+# naviagate to directory with 1_pre-dcm2bids.tsch script
+cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
+
+# run shell script to copy data from untouchedRaw/ into bids/sourcedata/for sub 001 (replace 001 with ID to process)
+./1_pre-dcm2bids.tsch 001
 ```
-ssh
+
+#### 4.2. Label "extra scans" in bids/sourcedata/
+
+"Extra" scans refer to T1 or T2* scans that should NOT be organized into BIDS and preprocessed. An extra T1 will exist if multiple T1 scans were collected (e.g., if the first one had excessive motion so another was collected). Extra functional scans can exist if a run was aborted early and restarted. To prevent these repeated scans from being organized into BIDS, we will append the directories with "_extra".
+
+<!-- omit in toc --> 
+##### 4.2.1 Determining if there are extra scans
+To determine if a subject has extra scans, examine the contents of their dicom/nii directory. In this folder, you will see a .nii file for each scan collected, as well as a corresponding json file. If there are > 1 nii files that contain 'T1_MPRage_Sagittal' (e.g., 3_T1_MPRage_Sagittal.nii, 4_T1_MPRage_Sagittal.nii), this indicates multiple T1 scans were collected. IF there are > 1 nii files for the same functional run (e.g., 5_foodview-1.nii, 6_foodview-1.nii) this indicates this run was repeated. 
+
+```bash
+# navigate to subject sourcedata dicoms (replace $ID with 3-digit subject ID)
+cd /storage/group/klk37/default/R01_Marketing/bids/sourcedata/sub-$ID/ses-1/dicom/nii
+
+# list contents
+ls 
 ```
 
-2. From Roar Collab, run data processing shell scripts
+<!-- omit in toc --> 
+##### 4.2.2 Determining which anatomical scan is "extra"
+The "extra" anatomical scan will be the one of lesser quality. This is determined by visual inspection of the anatomical scans. Scans can be visualized using the interactive desktop in the Penn State Roar Collab Portal accessed at [https://rcportal.hpc.psu.edu/pun/sys/dashboard](https://rcportal.hpc.psu.edu/pun/sys/dashboard)
 
-Process and organize MRI task data locally in R (requires having OneDrive synced):\
-Note: events.tsv files are required for fmriprep, so this must be done before running fmriprep
-- dataREACHr::proc_task()
-- generate bids/rawdata/*/func/*events.tsv files 
+1. Sign into the portal and launch a new Interactive Desktop.
+2. From the interactive desktop, open a terminal from "Applications"
+3. Use terminal to open up anatomical scans in AFNI:
+
+```bash
+# Navigate to location of extra scans (replace $ID with 3-digit subject ID)
+cd /storage/group/klk37/default/R01_Marketing/bids/sourcedata/sub-$ID/ses-1/dicom/nii
+
+# load afni
+module load afni
+
+# open AFNI gui
+afni
+```
+Opening AFNI will launch a set of windows labeled [A]. To visualize multiple scans at a time for easy comparison, click "New" in the AFNI GUI (Figure 1). This will launch a second set of window labeled [B].
+
+To view the anatomical scans, select "Underlay" from the settings menu and then choose the MPRage (Figure 1). Select one anatomical scan in menu [A] and the other in menu [B]. View the brain in the axial/sagitall/coronal orientations by selecting "Image" next to each option. The coordinates for [A] and [B] are locked so that when you click around in one image, it will change the location in the other. 
+
+<img src="./images/afni_gui.png" alt="drawing" width="400"/> \
+Figure 1. AFNI GUI settings menu with "New" and "Underlay" circled
+
+Once scans are loaded into the GUI, visually compare the images to determine which is better quality (Figure 2). Better quality scans will show less movement artifacts, such as blurring, ringing, and striping (Figure 3).
+
+<img src="./images/afni_lowquality-mprage_comparison.png" alt="drawing" width="800"/> \
+Figure 2. AFNI GUI with 2 MPRages loaded in separate windows. Both show a lot of ringing and are low-quality scans. However, the scan in [B] (right panel) shows slighly less extreme ringing (e.g., in cerebellum). Therefore, the scan loaded in [A] should be labeled as 'extra'.
+
+<img src="./images/anat_artifact_examples.png" alt="drawing" width="800"/> \
+Figure 3. Anatomical scan artifacts
+
+<img src="./images/highquality-mprage.png" alt="drawing" width="400"/> \
+Figure 4. Example of high-quality MPrage. Beautiful!
+
+<!-- omit in toc --> 
+##### 4.2.3 Determining which functional scan is "extra"
+Typically, an "extra" functional scan will occur when a run was aborted early on and re-run. Therefore, the "extra" scan will be the first scan collected, and it should have less TRs collected. To confirm this, we will assess the number of volumes collected for each of the runs by counting the number of .dcm files in the corresponding ser directory. The corresponding ser directory includes the number that the file in /dicom/nii starts with. For example, the file /dicom/nii/5_foodview-1.nii corresponds to /dicom/ser5.
+
+```bash
+# navigate into ser directory that corresponds to the functional run at hand (example with ser5)
+cd /storage/group/klk37/default/R01_Marketing/bids/sourcedata/sub-$ID/ses-1/dicom/ser5
+
+# count the number of files (1 file = 1 volume/TR)
+ls | wc -l #pipes output of ls into wc -l
+```
+
+A complete foodview run = 131 dicoms \
+A complete sst run = 148 dicoms 
+
+If only a few dcms are in the ser directory (i.e., only a few volumes were collected), this is the "extra" functional scan. 
+
+<!-- omit in toc --> 
+##### 4.2.4 Labeling extra scans
+Extra scans are labeled by renaming the corresponding dicom/ser directory with "_extra". The ser directory will include the number that the file in /dicom/nii starts with. For example, the file /dicom/nii/3_T1_MPRage_Sagittal.nii corresponds to /dicom/ser3 while /dicom/nii/4_T1_MPRage_Sagittal.nii corresponds to /dicom/ser4.
+
+```bash
+# navigate to subject sourcedata dicoms
+cd /storage/group/klk37/default/R01_Marketing/bids/sourcedata/sub-$ID/ses-1/dicom/
+
+# rename the ser directory that corresponds to the extra scan with mv
+# Example: rename ser6 to ser6_extra
+mv ser6 ser6_extra
+
+```
 
 
-To process and organize MRI data on Roar Collab, enter the following commands into a Bash or tcsh terminal:
+#### 4.3. Add field map SeriesDescription to fmap_descriptions.csv
+
+fmap_descriptions.csv is a comma separated file that contains foodview and SST fieldmap SeriesDescription's for each subject (Figure 6). ‘SeriesDescription' is the description of a fieldmap according to its json file. For every fieldmap collected, there will be 3 images (magnitude1, magnitude2, phasediff) that use the same 'SeriesDescription'. For most subjects, there will be separate fieldmaps for the SST and FV tasks. Fieldmap SeriesDescription's will differ across subjects due to how fieldmaps were named during scanning (eventually, names were standardized in the MRI protocol, but we want to check for each subject anyway).
+
+2_dcm2bids.tcsh will reference fmap_descriptions.csv when generating config files to assign the correct fieldmap 'SeriesDescription' for each subject. dcm2bids is case sensitive, so the SeriesDescriptions gre_field_mapping_sst and gre_field_mapping_SST are *not* the same. 
+
+<!-- omit in toc --> 
+#### 4.3.1 Assess jsons to determine the SeriesDescription (Figure 5)
+```bash
+# Navigate to /nii (where .nii and jsons are stored)
+cd /storage/group/klk37/default/R01_Marketing/bids/sourcedata/sub-$ID/ses-1/dicom/nii
+
+# open jsons with vim (replace variables with names of json files) -- inspect to identify SeriesDescription
+vi $sst_json_filename #e.g., 28_gre_field_mapping_sst.json
+vi $foodview_json_filename #e.g., 14_gre_field_mapping_fv.json
+
+# To close vim, type :q enter
+```
+<img src="./images/fmap_json.png" alt="drawing" width="400"/> \
+Figure 5. Example SST fieldmap json opened with vim. This fieldmap has the SeriesDescription "gre_field_mapping_sst"
+
+<!-- omit in toc --> 
+#### 4.3.2 Add SeriesDescription to fmap_descriptions.csv (Figure 6)
+```bash 
+# Navigate to code/dcm2bids directory
+cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
+
+# open fmap_descriptions.csv using vim
+vi fmap_descriptions.csv
+
+# in vim:     
+## enter 'insert mode' by typing :i
+## add new row with subject ID and SeriesDescritions for food view and sst (in that order and comma-separeted)
+## when done making changes, press esc to exit 'insert mode'
+## write (save) changes and quit vim by typing :wq
+```
+
+#### 4.4. Convert MRI data to BIDS in rawdata/
+
+MRI data in sourcedata is converted to BIDS format using the script 2_dcm2bids.tcsh. This script can be used in two ways: (A) called directly to process data for 1 subject at a time, (B) called indirectly via batch_dcm2bids.slurm to process data for all subjects with data in bids/sourcedata.
+
+2_dcm2bids.tcsh will:
+
+  1) Use [template_dcm2bids_config.json](#create-dcm2bids-configuration-file-template) and [fmap_descriptions.csv](#5-add-fieldmap-seriesdescriptions-to-fmap_descriptionscsv) to generate a subject-specific [configuration file](#https://unfmontreal.github.io/Dcm2Bids/3.1.1/how-to/create-config-file/) that specifies how to configure the BIDS directories
+  2) Create a temporary sourcedata directory [without the “_extra” ser/ directories](#3-label-extra-scans-in-bidssourcedata)
+  3) Run dcm2bids_helper on the temporary sourcedata directory to convert the DICOMs files to NIfTI files
+  4) Run dcm2bids to convert data into BIDS
+  5) De-face T1 images using [pydeface](#pydeface) (requires fsl)
+  6) Clean up folders by deleting temporary directories
+  7) Add “IntendedFor” and “TaskName” fields to the fmap jsons
+
+<!-- omit in toc --> 
+##### Option A: run 2_dcm2bids.tcsh for 1 subject at a time
+```bash
+# Navigate to code/dcm2bids directory
+cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
+
+# Activate dcm2bids environment (if not activated)
+module load anaconda
+source activate dcm2bids
+
+# Load fsl (if not loaded)
+module load fsl 
+
+# Run dcm2bids script (replace $ID with 3 digit subject ID)
+./2_dcm2bids.tcsh $ID
+
+```
+<!-- omit in toc --> 
+##### Option B: process a batch of subjects via SLURM (submit job)
+
+You do not have to specify the subjects to run via the batch script-- 2_dcm2bids.tcsh will be run for all subjects with data in bids/sourcedata. If dcm2bids has already been run for a subject, 2_dcm2bids.tcsh will skip processing them 
 ```bash
 
-### copy data from untouchedRaw/ into bids/sourcedata/ ###
-
-# naviagate to directory with script
+# Navigate to code/dcm2bids directory
 cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
 
-# run shell script for sub 001
-./1_pre-dcm2bids.tsch 001
+# Submit job
+sbatch batch_dcm2bids.slurm
 
-### Manual inspection and labeling of extra scans in sourcedata ###
+# Check job progress (replace userid with your user ID (e.g., baf44))
+squeue -u userid
 
-### Organize MRI data into BIDS (bids/rawdata/) ###
-
-# naviagate to directory with script
-cd /storage/group/klk37/default/R01_Marketing/bids/code/dcm2bids
-
-# activate dcm2bids conda env
-conda activate dcm2bids
-
-# run shell script for sub 001
-./2_dcm2bids.tsch 001
+# Open file with vim to review output (replace $jobid with job ID)
+vi batch_dcm2bids.slurm.$jobid
 
 ```
 
+Notes:
+- If dcm2bids needs to be re-run for a subject (e.g., you forget to label extra scans first), the prior output of dcm2bids will need to be manually deleted. This can be done with the following steps:
+```bash
+# navigate to subject's raw data directory (replace $ID with 2 digit ID)
+cd /storage/group/klk37/default/R01_Marketing/bids/raw_data/sub-$ID
+
+# delete bids directories (rm) and their contents (-r)
+rm -r func
+rm -r fmap
+rm -r anat
+```  
+
+### 5. Check BIDS compliance
+
+Before creating MRI derivatives, it is valuable to check BIDS compliance. Data that is not BIDS-compliant can result in errors running MRIQC and fMRIprep. 
+
+BIDS compliance can be checked using the online BIDS validator:
+
+  1) Log in to the Penn State Roar Collab Portal at [https://rcportal.hpc.psu.edu/pun/sys/dashboard](https://rcportal.hpc.psu.edu/pun/sys/dashboard)
+  2) Launch a Roar Collab Interactive Desktop
+  3) From the interative desktop, open https://bids-standard.github.io/bids-validator/ in a web browser 
+  4) Upload bids/rawdata into the Validator
+  5) Review errors and warnings
+  6) Resolve all errors, determine if any warnings need to be resolved
+
+
+### 6. Run MRIQC
+
+MRIQC will be used for the first round of visual data quality inspection. The script code/mriqc/mriqc_participant.slurm is used to run participant-level MRIQC via SLURM, which will generate html files for inspection. This script can be used in two ways:
+
+<!-- omit in toc --> 
+#### Participant level Option A: run mriqc_participant.slurm for specified subjects
+```bash
+# Navigate to code/dcm2bids directory
+cd /storage/group/klk37/default/R01_Marketing/bids/code/mriqc
+
+# submit script with 1 or more IDs specified in command line (e.g., 001, 002, 003)
+sbatch mriqc_participant.slurm 001 002 003
+
+```
+
+<!-- omit in toc --> 
+#### Participant level Option B: run mriqc_participant.slurm for all participants in bids/rawdata/
+```bash
+# Navigate to code/dcm2bids directory
+cd /storage/group/klk37/default/R01_Marketing/bids/code/mriqc
+
+# submit script without command line arguments
+sbatch mriqc_participant.slurm
+```
+<!-- omit in toc --> 
+#### Group-level: run mriqc_group.slurm
+
+After MRIQC is run at the participant level, the script code/mriqc/mriqc_group.slurm is used to aggregate quality information across subjects. To run this script:
+```bash
+# Navigate to code/dcm2bids directory
+cd /storage/group/klk37/default/R01_Marketing/bids/code/mriqc
+
+# submit script without command line arguments
+sbatch mriqc_group.slurm
+```
+
+<!-- omit in toc --> 
+#### sync files to OneDrive to prepare for QC
+Examining the html on Roar Collab is slow / causes the browser to crash. To sync the html file and necessary files to OneDrive, do the following locally (requires having OneDrive synced locally):
+
+```bash
+# navigate to derivatives/mriqc folder in OneDrive (update with your own path)
+cd /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/mriqc
+
+# rsync all MRIQC output
+rsync -update -av baf44@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing/bids/derivatives/mriqc/*  .
+```
+
+### 7. Run fmriprep
+
+fMRIprep version 24.0.1 will be used to preprocess MRI data. The html output files of fmriprep will also be used for the second round of visual quality inspection. 
+
+Running fMRIPrep requires that processed, behavioral task data (*_events.tsv files) have been synced to RoarCollab ([step 2](#2-process-survey-and-task-data), [step 3](#3-sync-processed-survey-and-task-data-to-roar-collab)) and that MRI data is organized into BIDS ([step 4](#4-organize-mri-data-into-bids)).
+
+The script code/fmriprep/fmriprep_v2401.slurm is used to run fmriprep via SLURM. This script can be used in two ways:
+
+<!-- omit in toc --> 
+#### Option A: run fmriprep_v2401.slurm for specified subjects
+```bash
+# Navigate to code/dcm2bids directory
+cd /storage/group/klk37/default/R01_Marketing/bids/code/fmriprep
+
+# submit script with 1 or more IDs specified in command line (e.g., 001, 002, 003)
+sbatch fmriprep-v2401.slurm 001 002 003
+
+```
+
+<!-- omit in toc --> 
+#### Option B: run fmriprep_v2401.slurm for all participants in bids/rawdata/
+```bash
+# Navigate to code/dcm2bids directory
+cd /storage/group/klk37/default/R01_Marketing/bids/code/mriqc
+
+# submit script without command line arguments
+sbatch fmriprep_v2401.slurm
+```
+
+Notes:
+- fMRIprep is complete when an html QC file for a subject is generated. This will be located in bids/derivatives/preprocessed/fmriprep_v2401/sub-$ID.html 
+- It is anticipated that fmriprep with freesurfer will take ~5.5 hrs to run. If fmriprep stalls or errored and needs to be re-run but freesurfer completed (output in bids/derivatives/preprocessed/fmriprep_v2401/sourcedata/freesurfer), freesurfer does not need to run again. 
+- To rerun fmriprep, delete the subject's html and folder in bids/derivatives/preprocessed/fmriprep_v2401/ and rerun fmriprep.
+- To rerun fmriprep and freesurfer, also delete subject's folder in bids/derivatives/preprocessed/fmriprep_v2401/sourcedata/freesurfer/
+- If you would like to try processing a subject with different fmriprep settings (e.g., fieldmap-less SDC if fieldmaps are of poor quality), make a copy of fmriprep_v2401.slurm for a given sub (e.g., cp fmriprep_v2401.slurm fmriprep_v2401_sub-$ID.slurm), modify the copied file, and run the copied file for the given sub with Option A. 
+
+<!-- omit in toc --> 
+#### prepare for QC
+Examining the html on Roar Collab is slow / causes the browser to crash. To sync the html file and necessary files to OneDrive, do the following locally (requires having OneDrive synced locally):
+```bash
+# navigate to preprocessed/fmriprep_v2401 folder in OneDrive (update with your own path)
+cd /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/preprocessed/fmriprep_v2401
+
+# rsync figures loaded by html file (update with your user ID)
+rsync --relative -av baf44@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing/bids/derivatives/preprocessed/fmriprep_v2401/./*/figures  .
+
+# rsync html files (update with your user ID)
+rsync --relative -av baf44@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing/bids/derivatives/preprocessed/fmriprep_v2401/./*html  .
+```
 
 # Data Quality Control
 
