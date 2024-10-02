@@ -1,10 +1,12 @@
-# Process and organize data task and phenotype data into bids
+# Script to process and organize data task and phenotype data into bids; create task database derivatives 
 
-# This script was written to process files stored in OneDrive, provided they are synced to a local computer and the script is run locally. 
-# After processing data (which will be synced with OneDrive) locally, beh_into_bids.R syncs data to Roar Collab.
-# This script could be modified to process data on Roar Collab by:
-## (1) specifying the path to R01_Marketing on Roar Collab as base_dir
-## (2) commenting out the section on syncing data (or, reversing source and destination directories to sync the other way)
+# This script was written with the goal of processing data locally (i.e., with OneDrive files synced to your computer). 
+# After processing, this script will print an rsync command into the console, which should be pasted into a terminal and run to sync data with Roar Collab (password will be required)
+
+# Before running this script
+## (1) update config_redcap_sourcedata.R with the names of REDCap files to process (config_redcap_sourcedata.R is sourced by this script)
+## (2) update 'base_dir' (variable in beh_into_bids.R) with the path to ParticipantData/ on the local machine (synced with OneDrive)
+## (3) update 'user_id' (variable in beh_into_bids.R) with your Penn State User ID to get the correct rsync command 
 
 
 # load packages -----
@@ -32,6 +34,8 @@ visit_data_path = file.path(base_dir, "bids", "sourcedata", "phenotype", visit_f
 data_de_path = file.path(base_dir, "bids", "sourcedata", "phenotype", double_entry_file_name)
 
 # process redcap data and export into bids/phenotype
+print("** Processing survey data with proc_redcap() **")
+
 redcap_data <-
   proc_redcap(visit_data_path,
               data_de_path,
@@ -43,9 +47,11 @@ qc_redcap(redcap_data)
 
 # assess double-entry discrepancies
 de_discrepancies <- redcap_data$double_entry_data$discrepancies
+print("** Double-entry Discrepancies **")
 print(de_discrepancies)
 
 # process task data -----
+print("** Processing task data with proc_task() **")
 
 task_data <-
   proc_task(
@@ -57,7 +63,8 @@ task_data <-
   )
 
 # generate derivative task databases -----
-
+print("** Creating derivative databases with proc_task_derivs() **")
+      
 # create directory for summary beh data if it doesn't exist
 beh_sum_dir <- paste0(base_dir, "/bids/derivatives/beh_summary_databases/")
 
@@ -90,3 +97,7 @@ rsync_cmd <-
 # system(rsync_cmd)
 # TO DO: figure a way to specify group (klk37_collab)/permissions of files during or after syncing 
 # until then, ssh in and use chgrp -R klk37_collab *
+
+print("")
+print("**copy and paste the following command into a terminal to sync untouchedRaw and processed data. You will be prompted for a password.**")
+print(rsync_cmd)
