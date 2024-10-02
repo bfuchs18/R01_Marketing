@@ -595,23 +595,23 @@ module load afni
 # open AFNI gui
 afni
 ```
-Opening AFNI will launch a set of windows labeled [A]. To visualize multiple scans at a time for easy comparison, click "New" in the AFNI GUI (Figure 1). This will launch a second set of window labeled [B].
+Opening AFNI will launch a set of windows labeled [A]. To visualize multiple scans at a time for easy comparison, click "New" in the AFNI GUI (Figure 3). This will launch a second set of window labeled [B].
 
 To view the anatomical scans, select "Underlay" from the settings menu and then choose the MPRage (Figure 1). Select one anatomical scan in menu [A] and the other in menu [B]. View the brain in the axial/sagitall/coronal orientations by selecting "Image" next to each option. The coordinates for [A] and [B] are locked so that when you click around in one image, it will change the location in the other. 
 
 <img src="./images/afni_gui.png" alt="drawing" width="400"/> \
-Figure 1. AFNI GUI settings menu with "New" and "Underlay" circled
+Figure 3. AFNI GUI settings menu with "New" and "Underlay" circled
 
-Once scans are loaded into the GUI, visually compare the images to determine which is better quality (Figure 2). Better quality scans will show less movement artifacts, such as blurring, ringing, and striping (Figure 3).
+Once scans are loaded into the GUI, visually compare the images to determine which is better quality (Figure 4). Better quality scans will show less movement artifacts, such as blurring, ringing, and striping (Figure 3).
 
 <img src="./images/afni_lowquality-mprage_comparison.png" alt="drawing" width="800"/> \
-Figure 2. AFNI GUI with 2 MPRages loaded in separate windows. Both show a lot of ringing and are low-quality scans. However, the scan in [B] (right panel) shows slighly less extreme ringing (e.g., in cerebellum). Therefore, the scan loaded in [A] should be labeled as 'extra'.
+Figure 4. AFNI GUI with 2 MPRages loaded in separate windows. Both show a lot of ringing and are low-quality scans. However, the scan in [B] (right panel) shows slighly less extreme ringing (e.g., in cerebellum). Therefore, the scan loaded in [A] should be labeled as 'extra'.
 
 <img src="./images/anat_artifact_examples.png" alt="drawing" width="800"/> \
-Figure 3. Anatomical scan artifacts
+Figure 5. Anatomical scan artifacts
 
 <img src="./images/highquality-mprage.png" alt="drawing" width="400"/> \
-Figure 4. Example of high-quality MPrage. Beautiful!
+Figure 6. Example of high-quality MPrage. Beautiful!
 
 <!-- omit in toc --> 
 ##### 4.2.3 Determining which functional scan is "extra"
@@ -647,7 +647,7 @@ mv ser6 ser6_extra
 
 #### 4.3. Add field map SeriesDescription to fmap_descriptions.csv
 
-fmap_descriptions.csv is a comma separated file that contains foodview and SST fieldmap SeriesDescription's for each subject (Figure 6). ‘SeriesDescription' is the description of a fieldmap according to its json file. For every fieldmap collected, there will be 3 images (magnitude1, magnitude2, phasediff) that use the same 'SeriesDescription'. For most subjects, there will be separate fieldmaps for the SST and FV tasks. Fieldmap SeriesDescription's will differ across subjects due to how fieldmaps were named during scanning (eventually, names were standardized in the MRI protocol, but we want to check for each subject anyway).
+fmap_descriptions.csv is a comma separated file that contains foodview and SST fieldmap SeriesDescription's for each subject (Figure 7). ‘SeriesDescription' is the description of a fieldmap according to its json file. For every fieldmap collected, there will be 3 images (magnitude1, magnitude2, phasediff) that use the same 'SeriesDescription'. For most subjects, there will be separate fieldmaps for the SST and FV tasks. Fieldmap SeriesDescription's will differ across subjects due to how fieldmaps were named during scanning (eventually, names were standardized in the MRI protocol, but we want to check for each subject anyway).
 
 2_dcm2bids.tcsh will reference fmap_descriptions.csv when generating config files to assign the correct fieldmap 'SeriesDescription' for each subject. dcm2bids is case sensitive, so the SeriesDescriptions gre_field_mapping_sst and gre_field_mapping_SST are *not* the same. 
 
@@ -664,7 +664,7 @@ vi $foodview_json_filename #e.g., 14_gre_field_mapping_fv.json
 # To close vim, type :q enter
 ```
 <img src="./images/fmap_json.png" alt="drawing" width="400"/> \
-Figure 5. Example SST fieldmap json opened with vim. This fieldmap has the SeriesDescription "gre_field_mapping_sst"
+Figure 7. Example SST fieldmap json opened with vim. This fieldmap has the SeriesDescription "gre_field_mapping_sst"
 
 <!-- omit in toc --> 
 #### 4.3.2 Add SeriesDescription to fmap_descriptions.csv (Figure 6)
@@ -861,14 +861,14 @@ rsync --relative -av baf44@submit.hpc.psu.edu:/storage/group/klk37/default/R01_M
 
 The data pipeline contains several steps to increase the quality of data.
 
-1. DEXA and intake (pre and post weights) are double-entered by 2 separate researchers into REDCap. Any descrepancies in entered values are resolved by a reviewer. When the double-entry data is processed by dataREACHr::proc_redcap() in beh_to_bids.R, only data without discrepancies are included in the resulting .tsv files; discrepancies are returned in a list by proc_redcap() to prompt the manager to fix them. 
+1. DEXA and intake (pre and post weights) are double-entered by 2 separate researchers into REDCap. Any descrepancies in entered values are resolved by a reviewer. When the double-entry data is processed by dataREACHr::proc_redcap() in [beh_to_bids.R]( #2-process-survey-and-task-data), only data without discrepancies are included in the resulting .tsv files; discrepancies are returned in a list by proc_redcap() to prompt the manager to fix them. 
 
-2. Automated checking of survey data with the function dataREACHr::qc_redcap() in beh_to_bids.R. This checks for
+2. Automated checking of survey data with the function dataREACHr::qc_redcap() in [beh_to_bids.R](#2-process-survey-and-task-data). This checks for
    1. Duplicate data (e.g., multiple rows for a given subject/session combination) in processed phenotype databases
    2. Child visit 1 ages out of expected range (7-9)
-      1. This would suggest a mis-entry of child birthdate (by parent in [V1 demographics form](#visit-1-demographics)) or visit 1 protocol date (by researcher)
+      1. This would suggest a mis-entry of child birthdate by the parent or visit 1 protocol date by researcher
          1. If a parent mis-entered their child's birthdate in the V1 demographics form (e.g., entered the year of the study visit rather than child birth), the child birthdate in the V1 demographics form was updated by a researcher with the child birthdate provided by the parent during screening
-   3. Negative consumption amounts??
+   3. Negative consumption amounts. This would suggest that pre- or post-weights were entered incorrectly.
 
 3. Visual inspect of MRI data for artifacts using a two-step protocol based on [Provins et al. 2023](https://www.frontiersin.org/journals/neuroimaging/articles/10.3389/fnimg.2022.1073734/full). This protocol involves:
    1. Inspecting MRIQC output for artifacts in unprocessed MRI data 
