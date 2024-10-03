@@ -1,0 +1,161 @@
+---
+title: "fMRI food view task summary"
+author: "baf44"
+output:
+  html_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+This document provides a summary of data collection progress, fMRI quality, and task behavior for the Foodview Task including:
+
+1.  Task completion by run
+
+2.  Histograms of fMRI data quality metrics by run
+
+    1.  \% trs with framewise displacement (FD) \> .9
+
+    2.  Average FD
+
+    3.  Signal-to-noise ratio (SNR)
+
+3.  Histograms of of task behavior by commerical condition (food, toy)
+
+    1.  Response rate 
+
+    2.  Reaction time 
+
+    3.  % items with "want" (vs. "not want") ratings
+
+
+
+# Set up
+
+Load packages, import data
+```{r imports, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+# set base_dir 
+base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
+
+# import data from MRIQC
+mriqc_path <- file.path(base_dir, "bids", "derivatives", "mriqc", "group_bold.tsv")
+mri_qc = read.delim(mriqc_path)
+
+# import behavioral data
+beh_path <- file.path(base_dir, "bids", "derivatives", "beh_summary_databases", "foodview_long_by_cond.tsv")
+beh = read.delim(beh_path)
+
+```
+
+Prepare MRIQC output for graphing
+```{r, warning=FALSE, message=FALSE}
+
+# subset foodview runs
+foodview_qc <- mri_qc[grepl("foodview", mri_qc$bids_name),]
+  
+# make run column
+foodview_qc$run <-
+  ifelse(grepl("run-01", foodview_qc$bids_name), "Run 1",
+         ifelse(grepl("run-02", foodview_qc$bids_name), "Run 2",
+           ifelse(grepl("run-03", foodview_qc$bids_name), "Run 3", 
+              ifelse(grepl("run-04", foodview_qc$bids_name), "Run 4", NA))))
+
+# make sub column
+foodview_qc$sub <- substr(foodview_qc$bids_name, 1, 7)
+```
+
+# Data summary
+
+## 1.  Task completion by run
+
+```{r, warning=FALSE, message=FALSE}
+# number of scans by run
+xtabs(~run, data = foodview_qc)
+
+```
+
+
+## 2. Histograms of data quality metrics by run
+
+```{r histograms, include=TRUE, warning=FALSE, message=FALSE}
+# compute summary stats by run and add to foodview_qc
+foodview_qc <- foodview_qc %>% group_by(run) %>%  mutate(mean_fd_perc = mean(fd_perc),
+                                                         mean_fd_mean = mean(fd_mean),
+                                                         mean_snr = mean(snr),
+                                                         med_fd_perc = median(fd_perc),
+                                                         med_fd_mean = median(fd_mean),
+                                                         med_snr = median(snr)
+                                                         )
+
+
+stats <- c("mean"="red", "median"="blue")
+
+ggplot(foodview_qc,aes(fd_perc))+geom_histogram(alpha=0.4, position="identity")+facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_perc), by = 10),1)) +
+  geom_vline(aes(xintercept = mean_fd_perc, group = run, color="mean")) +
+  geom_vline(aes(xintercept = med_fd_perc, group = run, color="median")) +
+  scale_color_manual(name = "statistic", values = c(median = "blue", mean = "red")) + 
+  xlab("Percent of TRs with framewise displacement > .9 (ABCD censoring threshold)") + 
+  ylab("Number of children") + 
+  theme_bw() +
+  theme(axis.line = element_line(color='black'),
+  plot.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank())
+
+ggplot(foodview_qc,aes(fd_mean))+geom_histogram(alpha=0.4, position="identity")+facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_mean), by = .5),1)) +
+  geom_vline(aes(xintercept = mean_fd_mean, group = run, color="mean")) +
+  geom_vline(aes(xintercept = med_fd_mean, group = run, color="median")) +
+  scale_color_manual(name = "statistic", values = c(median = "blue", mean = "red")) + 
+  xlab("Average framewise displacement") + 
+  ylab("Number of children")+
+  theme_bw() +
+  theme(axis.line = element_line(color='black'),
+  plot.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank())
+
+ggplot(foodview_qc,aes(snr))+geom_histogram(alpha=0.4, position="identity")+facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(min(foodview_qc$snr), max(foodview_qc$snr), by = .2),1)) +
+  geom_vline(aes(xintercept = mean_snr, group = run, color="mean")) +
+  geom_vline(aes(xintercept = med_snr, group = run, color="median")) +
+  scale_color_manual(name = "statistic", values = c(median = "blue", mean = "red")) + 
+  xlab("Average SNR") + 
+  ylab("Number of children") +
+  theme_bw() +
+  theme(axis.line = element_line(color='black'),
+  plot.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank())
+
+```
+
+## 3. Histograms of of task behavior by commerical condition
+
+```{r, warning=FALSE, message=FALSE}
+
+ggplot(beh, aes(x=as.numeric(p_resp)*100, fill=commerical_cond)) + 
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() +
+  xlim(0, 100) + 
+  xlab("Response rate (%), across all runs") + 
+  ylab("Number of children")
+
+ggplot(beh, aes(x=as.numeric(avg_rt), fill=commerical_cond)) + 
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() +
+  xlab("Average Reaction Time, across all runs (ms)") + 
+  ylab("Number of children")
+
+ggplot(beh, aes(x=as.numeric(p_want_of_resp)*100, fill=commerical_cond)) + 
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() +
+  xlim(0, 100) + 
+  xlab("% of items wanted out of items responded to, across all runs") + 
+  ylab("Number of children")
+
+```
