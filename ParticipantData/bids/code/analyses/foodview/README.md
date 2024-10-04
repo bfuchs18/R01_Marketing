@@ -5,4 +5,4 @@ These scripts are meant to be run after following the task-general data processi
 Code in level_1/ runs participant-level processing steps and analyses
 Code in level_2/ runs group-level processing steps and analyses using the output of level_1/ functions.
 
-![Overview of data processing and analysis pipeline for the Food View Task ](docs/images/REACH_data_pipeline_with_FV.png)
+![Overview of data processing and analysis pipeline for the Food View Task ](../../../../../docs/images/REACH_data_pipeline_with_FV.png)
