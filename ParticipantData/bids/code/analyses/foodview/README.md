@@ -1,6 +1,6 @@
 This folder contains code to process and analyze behavioral and fMRI data from the Food View Task collected as part of the Resiliency to the Effects of Advertising in Children (REACH) Study at Penn State (PI: Keller).
 
-These scripts are meant to be run after following the task-general data processing pipeline, which includes [organizing data into BIDS](https://github.com/bfuchs18/R01_Marketing/tree/master/ParticipantData/bids/code/dcm2bids) and pre-processing MRI data with [pre-processing MRI data with fMRIprep](https://github.com/bfuchs18/R01_Marketing/tree/master/ParticipantData/bids/code/fmriprep) (Figure 1). Details about the task-general pipeline can be found in the [data processing manual](../../../../../docs/reach_data_management_manual.md).
+These scripts are meant to be run after following the task-general data processing pipeline, which includes [organizing data into BIDS](https://github.com/bfuchs18/R01_Marketing/tree/master/ParticipantData/bids/code/dcm2bids) and [pre-processing MRI data with fMRIprep](https://github.com/bfuchs18/R01_Marketing/tree/master/ParticipantData/bids/code/fmriprep) (Figure 1). Details about the task-general pipeline can be found in the [data processing manual](../../../../../docs/reach_data_management_manual.md).
 
 ![Figure 1. Overview of data processing and analysis pipeline for the Food View Task](../../../../../docs/images/REACH_data_pipeline_with_FV.png)
 
