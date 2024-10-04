@@ -602,7 +602,7 @@ To view the anatomical scans, select "Underlay" from the settings menu and then 
 <img src="./images/afni_gui.png" alt="drawing" width="400"/> \
 Figure 3. AFNI GUI settings menu with "New" and "Underlay" circled
 
-Once scans are loaded into the GUI, visually compare the images to determine which is better quality (Figure 4). Better quality scans will show less movement artifacts, such as blurring, ringing, and striping (Figure 3).
+Once scans are loaded into the GUI, visually compare the images to determine which is better quality (Figure 4). Better quality scans will show less movement artifacts, such as blurring, ringing, and striping (Figure 5). High quality scans will not show these artifacts (Figure 6.)
 
 <img src="./images/afni_lowquality-mprage_comparison.png" alt="drawing" width="800"/> \
 Figure 4. AFNI GUI with 2 MPRages loaded in separate windows. Both show a lot of ringing and are low-quality scans. However, the scan in [B] (right panel) shows slighly less extreme ringing (e.g., in cerebellum). Therefore, the scan loaded in [A] should be labeled as 'extra'.
