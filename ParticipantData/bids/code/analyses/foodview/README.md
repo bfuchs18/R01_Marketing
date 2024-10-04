@@ -8,7 +8,7 @@ These scripts are meant to be run after following the task-general data processi
 
 -   level_1/ contains code to run participant-level fmri data processing and analyses. This code is written to run on Penn State's HCP (Roar Collab).
 
-    -   The primary script to run the level_1 pipeline is level_1_wrapper.slurm. This script calls functions in proc_functions/. With command line arguments, this script will run the level_1 pipeline for specific IDs. Without arguments, this script will run the level_1 pipeline for all subjects with preprocessed fMRI data (fMRIPrep output):
+    -   The primary script to run the level_1 pipeline is level_1_wrapper.slurm. This script calls functions in [level_1/proc_functions/](https://github.com/bfuchs18/R01_Marketing/tree/master/ParticipantData/bids/code/analyses/foodview/level_1/proc_functions). With command line arguments, this script will run the level_1 pipeline for specific IDs. Without arguments, this script will run the level_1 pipeline for all subjects with preprocessed fMRI data (fMRIPrep output):
 
         ``` bash
         # run level_1 pipeline for ids 001 and 002
