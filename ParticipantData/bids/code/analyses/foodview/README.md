@@ -1,4 +1,4 @@
-This folder contains code to process and analyze data Food View Task data for the Resiliency to the Effects of Advertising in Children (REACH) Study at Penn State (PI: Keller).
+This folder contains code to process and analyze behavioral and fMRI data from the Food View Task collected as part of the Resiliency to the Effects of Advertising in Children (REACH) Study at Penn State (PI: Keller).
 
 These scripts are meant to be run after following the task-general data processing pipeline, which includes organizing data into [BIDS](https://bids.neuroimaging.io/) and pre-processing MRI data with [fMRIPrep](https://fmriprep.org/en/stable/index.html) (Figure 1).
 
