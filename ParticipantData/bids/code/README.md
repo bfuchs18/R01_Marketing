@@ -1,15 +1,9 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 This folder contains code to process and analyze survey, behavioral, and
 MRI data for the Resiliency to the Effects of Advertising in Children
 (REACH) Study at Penn State (PI: Keller). An overview of the pipeline
 can be seen in Figure 1. Additional details about pipeline
 implementation can be found in
-[../../../docs/reach_data_management_manual.md](docs/reach_data_management_manual.md).
+[the REACH data management manual](../../../docs/reach_data_management_manual.md).
 
 ![Figure 1. Overview of data processing and analysis pipeline Project
 Reach](../../../docs/images/REACH_processing_steps.png)
