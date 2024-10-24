@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
-#SBATCH --mem-per-cpu=4GB
-#SBATCH --time=6:00:00
+#SBATCH --mem-per-cpu=8GB
+#SBATCH --time=12:00:00
 #SBATCH --partition=open
 #SBATCH --output=slurm_lev1_%A_%a.out
 #SBATCH --array=1-94
