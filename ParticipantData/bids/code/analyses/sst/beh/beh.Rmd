@@ -23,6 +23,8 @@ sst_byrun <- read.delim("~/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUni
 
 sst_bycond <- read.delim("~/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/derivatives/beh_summary_databases/sst_long_by_cond.tsv", na.strings = "n/a")
 
+participants <- read.delim("~/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids/participants.tsv", na.strings = "n/a")
+
 ```
 
 # Data processing
@@ -107,12 +109,52 @@ count_by_run <- fmri_byrun %>% group_by(run_num) %>% summarise(
 ) %>% pivot_longer(!run_num, names_to = "condition", values_to = "count")
 
 
-# grouped barplot 
-ggplot(count_by_run, aes(fill=condition, y=count, x=run_num)) + 
-    geom_bar(position="dodge", stat="identity")
+#  barplot - complete and pass
+ggplot(count_by_run, aes(fill=condition, y=count, x=as.character(run_num))) + 
+    geom_bar(position="dodge", stat="identity") +
+    xlab("SST Run") +
+  ylab("Number of scans") + theme_bw() +
+  theme(axis.text=element_text(size=24, colour = "black"), axis.title =element_text(size=24, face = "bold", colour = "black"),
+        legend.text = element_text(size=24, colour = "black"),
+        legend.title = element_text(size=24, colour = "black"))
+
+# barplot - complete only
+ggplot(count_by_run[count_by_run$condition == "n_complete",], aes(y=count, x=as.character(run_num))) + 
+  geom_bar(position="dodge", stat="identity") + theme_bw() + ylim(0, 65) +
+  xlab("SST Run") +
+  ylab("Number of scans") + 
+  theme(axis.text=element_text(size=24, colour = "black"), axis.title =element_text(size=24, face = "bold", colour = "black"))
+
+```
+
+
+```{r task completion based on beh, warning=FALSE, message=FALSE}
+
+# add risk to mriqc_runs
+fmri_byrun <- fmri_byrun %>% left_join(participants[c("participant_id", "risk_status_maternal")], by = join_by(sub == participant_id))
+
+
+# stacked: by risk 
+ggplot(fmri_byrun, aes(x = run_num, fill = risk_status_maternal)) +
+  geom_bar() + theme_bw() + ylim(0, 70) +
+  xlab("SST Run") +
+  ylab("Number of scans") + 
+  theme(axis.text=element_text(size=20, colour = "black"), 
+        axis.title =element_text(size=20, face = "bold", colour = "black"),
+        legend.text = element_text(size=20),
+        legend.title = element_text(size=20)) +
+  scale_fill_discrete(name = "Risk Status", type=c("coral","skyblue", "grey"))
+
 ```
 
 # Performance Metrics
+
+```{r prep metrics, warning=FALSE, message=FALSE}
+
+
+sst_bycond_cleaned$prop_go_miss <- sst_bycond_cleaned$n_go_miss / sst_bycond_cleaned$n_stop_trials
+  
+```
 
 ## By condition (food vs. toy)
 
@@ -123,31 +165,64 @@ fMRI runs
 fmri_bycond <- sst_bycond_cleaned[sst_bycond_cleaned$type == "fMRI" ,]
 
 ggplot(fmri_bycond, aes(x=ssd_mean, fill=commerical_cond)) + 
-  geom_histogram(alpha=0.4, position="identity") + theme_bw()
+   xlab("Average Stop Signal Delay") + 
+  ylab("Number of children") +
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() + theme(axis.text=element_text(size=24, colour = "black"), axis.title =element_text(size=24, face = "bold", colour = "black"),
+        legend.text = element_text(size=18, colour = "black"),
+        legend.title = element_text(size=18, colour = "black")) +
+  guides(fill=guide_legend(title="Commericial \nCondition"))
 
 ggplot(fmri_bycond, aes(x=ssrt_int, fill=commerical_cond)) + 
   geom_histogram(alpha=0.4, position="identity") + theme_bw()
 
-ggplot(fmri_bycond, aes(x=ssrt_mean, fill=commerical_cond)) + 
-  geom_histogram(alpha=0.4, position="identity") + theme_bw()
+ggplot(fmri_bycond, aes(x = ssrt_mean, fill = commerical_cond)) +
+  geom_histogram(alpha = 0.4, position = "identity") + theme_bw() +
+  xlab("Stop Signal Reaction Time (mean go rt - mean ssd)") +
+  ylab("Number of children") +
+  geom_histogram(alpha = 0.4, position = "identity") + theme_bw() + theme(
+    axis.text = element_text(size = 24, colour = "black"),
+    axis.title = element_text(
+      size = 24,
+      face = "bold",
+      colour = "black"
+    ),
+    legend.text = element_text(size = 18, colour = "black"),
+    legend.title = element_text(size = 18, colour = "black")
+  ) +
+  guides(fill = guide_legend(title = "Commericial \nCondition"))
+
 
 ggplot(fmri_bycond, aes(x=prop_stop_fail, fill=commerical_cond)) + 
-  geom_histogram(alpha=0.4, position="identity") + theme_bw() + xlim(c(0, 1))
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() + xlim(c(0, 1)) +
+     xlab("Proportion stop failure") + 
+  ylab("Number of children") +
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() + theme(axis.text=element_text(size=24, colour = "black"), axis.title =element_text(size=24, face = "bold", colour = "black"),
+        legend.text = element_text(size=18, colour = "black"),
+        legend.title = element_text(size=18, colour = "black")) +
+  guides(fill=guide_legend(title="Commericial \nCondition"))
+
 
 ggplot(fmri_bycond, aes(x=go_correct_rt_mean, fill=commerical_cond)) + 
   geom_histogram(alpha=0.4, position="identity") + theme_bw()
 
-# change this to % ??
+ggplot(fmri_bycond, aes(x=prop_go_miss, fill=commerical_cond)) + 
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() 
+
 ggplot(fmri_bycond, aes(x=n_go_miss, fill=commerical_cond)) + 
-  geom_histogram(alpha=0.4, position="identity") + theme_bw()
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() 
 
 ggplot(fmri_bycond, aes(x=go_error_rt_mean, fill=commerical_cond)) + 
   geom_histogram(alpha=0.4, position="identity") + theme_bw()
 
+```
+
+
+```{r table ofperformance metrics by condition - Beh runs}
 # create table
 table1(~ ssd_mean + ssrt_int + ssrt_mean + prop_stop_fail + go_correct_rt_mean + n_go_miss + go_error_rt_mean | commerical_cond, data=fmri_bycond)
 
 ```
+
 
 Behavioral Runs
 ```{r performance metrics by condition - Beh runs, warning=FALSE, message=FALSE}
@@ -174,14 +249,16 @@ ggplot(beh_bycond, aes(x=n_go_miss, fill=commerical_cond)) +
 ggplot(beh_bycond, aes(x=go_error_rt_mean, fill=commerical_cond)) + 
   geom_histogram(alpha=0.4, position="identity") + theme_bw()
 
+```
+
+```{r table ofperformance metrics by condition - Beh runs}
 # create table
 table1(~ ssd_mean + ssrt_int + ssrt_mean + prop_stop_fail + go_correct_rt_mean + n_go_miss + go_error_rt_mean | commerical_cond, data=beh_bycond)
 
 ```
 
-
 ## By run 
-
+     
 ```{r performance metrics by run -- fmri}
 
 ggplot(fmri_byrun, aes(x=go_error_rt_mean, fill=commerical_cond)) + 

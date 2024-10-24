@@ -1,0 +1,260 @@
+---
+title: "fMRI food view task summary"
+author: "baf44"
+output:
+  html_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+
+# Set up
+
+```{r imports, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+# load data ----
+
+# set base_dir 
+base_dir = "/Users/baf44/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/"
+
+# import data from MRIQC
+bold_qc_path <- file.path(base_dir, "bids", "derivatives", "mriqc", "group_bold.tsv")
+bold_qc = read.delim(bold_qc_path)
+
+anat_path <- file.path(base_dir, "bids", "derivatives", "mriqc", "group_T1w.tsv")
+anat_qc = read.delim(anat_path)
+
+# import participants file 
+participants_path <- file.path(base_dir, "bids", "participants.tsv")
+participants = read.delim(participants_path, na.strings = 'n/a')
+
+# format data ----
+
+# add sub column to bold_qc
+bold_qc$sub <- substr(bold_qc$bids_name, 1, 7)
+
+# add risk to bold_qc
+bold_qc <- bold_qc %>% left_join(participants[c("participant_id", "risk_status_maternal")], by = join_by(sub == participant_id))
+
+# anatomical data
+anat_subs <- data.frame(substr(anat_qc$bids_name, 1, 7))
+colnames(anat_subs) <- c("sub")
+anat_subs$run <- "anat"
+```
+
+Prepare MRIQC output for graphing
+```{r, warning=FALSE, message=FALSE}
+
+## Food View Data
+# subset foodview runs
+foodview_qc <- bold_qc[grepl("foodview", bold_qc$bids_name),]
+
+# make run column
+foodview_qc$run <-
+  ifelse(grepl("run-01", foodview_qc$bids_name), "Run 1",
+         ifelse(grepl("run-02", foodview_qc$bids_name), "Run 2",
+           ifelse(grepl("run-03", foodview_qc$bids_name), "Run 3", 
+              ifelse(grepl("run-04", foodview_qc$bids_name), "Run 4", NA))))
+
+## SST 
+# subset sst runs
+sst_qc <- bold_qc[grepl("sst", bold_qc$bids_name),]
+  
+# make run column
+sst_qc$run <-
+  ifelse(grepl("run-01", sst_qc$bids_name), "Run 1",
+         ifelse(grepl("run-02", sst_qc$bids_name), "Run 2",
+           ifelse(grepl("run-03", sst_qc$bids_name), "Run 3", 
+              ifelse(grepl("run-04", sst_qc$bids_name), "Run 4",
+                     ifelse(grepl("run-05", sst_qc$bids_name), "Run 5",
+                            ifelse(grepl("run-06", sst_qc$bids_name), "Run 6", NA))))))
+
+```
+
+# Data summary
+
+## 1.  Task completion by run
+
+```{r task completion based on mriqc output, warning=FALSE, message=FALSE}
+
+# add anat to foodview_qc
+mriqc_runs <- rbind(anat_subs, foodview_qc[c('sub','run')])
+
+# add risk to mriqc_runs
+mriqc_runs <- mriqc_runs %>% left_join(participants[c("participant_id", "risk_status_maternal")], by = join_by(sub == participant_id))
+
+
+mriqc_runs_clean <- mriqc_runs[!is.na(mriqc_runs$run),]
+
+ggplot(mriqc_runs_clean, aes(x = run)) +
+  geom_bar() + theme_bw() + ylim(0, 80) +
+  theme(axis.text=element_text(size=14, colour = "black"),
+        plot.title = element_text(hjust = 0.5, size=18),
+        axis.title = element_text(size=18))+ 
+  xlab("Food View Task Run") +
+  ylab("Number of scans")
+
+# by risk status
+```
+
+
+## 2. Histograms of data quality metrics by run
+
+### Food View
+Overall
+```{r histograms, include=TRUE, warning=FALSE, message=FALSE}
+# compute summary stats by run and add to foodview_qc
+foodview_qc <- foodview_qc[!is.na(foodview_qc$run),] %>% group_by(run) %>%  mutate(mean_fd_perc = mean(fd_perc),
+                                                         mean_fd_mean = mean(fd_mean),
+                                                         mean_snr = mean(snr),
+                                                         med_fd_perc = median(fd_perc),
+                                                         med_fd_mean = median(fd_mean),
+                                                         med_snr = median(snr)
+                                                         )
+
+
+stats <- c("mean"="red", "median"="blue")
+
+fv_fd_perc_plot <- ggplot(foodview_qc,aes(fd_perc))+geom_histogram(alpha=0.4, position="identity")+facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_perc), by = 10),1)) +
+  geom_vline(aes(xintercept = mean_fd_perc, group = run, color="mean")) +
+  geom_vline(aes(xintercept = med_fd_perc, group = run, color="median")) +
+  scale_color_manual(name = "statistic", values = c(median = "blue", mean = "red")) + 
+  xlab("% of TRs with framewise displacement > .9") + 
+  ylab("Number of children") + 
+  theme_bw() +
+  theme(axis.line = element_line(color='black'),
+  plot.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank())  +
+  theme(axis.text=element_text(size=20, colour = "black"), axis.title =element_text(size=24, face = "bold", colour = "black"),
+        strip.text.x = element_text(size = 24),
+        legend.text = element_text(size=24),
+        legend.title = element_text(size=24)
+        )
+
+fv_fd_perc_plot
+```
+
+By risk status
+
+```{r histograms, include=TRUE, warning=FALSE, message=FALSE}
+
+
+foodview_qc_clean <- foodview_qc %>% filter(!is.na(risk_status_maternal)) %>% filter(!is.na(run))
+
+
+# box plots by risk status 
+ggplot(foodview_qc_clean, aes(fd_perc)) + 
+  geom_boxplot(aes(fill=risk_status_maternal))+ 
+  facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_perc), by = 10),1)) +
+  labs(x = "Percent of TRs with framewise displacement > .9")+
+  theme_bw()+
+  theme(strip.background=element_rect(fill="black"),
+        strip.text=element_text(color="white", face="bold", size = 16),
+        axis.title.x =element_text(size=20, face = "bold", colour = "black"),
+        axis.text.x=element_text(size=20, colour = "black"),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.text = element_text(size=20),
+        legend.title = element_text(size=20)) + 
+  scale_fill_discrete(name = "Risk Status", type=c("coral","skyblue"))
+
+ 
+```
+
+### SST
+
+Histograms by run
+```{r histograms, include=TRUE, warning=FALSE, message=FALSE}
+# compute summary stats by run and add to foodview_qc
+sst_qc <- sst_qc[!is.na(sst_qc$run),] %>% group_by(run) %>%  mutate(mean_fd_perc = mean(fd_perc),
+                                                         mean_fd_mean = mean(fd_mean),
+                                                         mean_snr = mean(snr),
+                                                         med_fd_perc = median(fd_perc),
+                                                         med_fd_mean = median(fd_mean),
+                                                         med_snr = median(snr)
+                                                         )
+
+
+stats <- c("mean"="red", "median"="blue")
+
+sst_fd_perc_plot <- ggplot(sst_qc,aes(fd_perc))+geom_histogram(alpha=0.4, position="identity")+facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_perc), by = 10),1)) +
+  geom_vline(aes(xintercept = mean_fd_perc, group = run, color="mean")) +
+  geom_vline(aes(xintercept = med_fd_perc, group = run, color="median")) +
+  scale_color_manual(name = "statistic", values = c(median = "blue", mean = "red")) + 
+  xlab("% of TRs with framewise displacement > .9") + 
+  ylab("Number of children") + 
+  theme_bw() +
+  theme(axis.line = element_line(color='black'),
+  plot.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank())  +
+  theme(axis.text=element_text(size=20, colour = "black"), 
+        axis.title =element_text(size=24, face = "bold", colour = "black"),
+        strip.text.x = element_text(size = 24),
+        legend.text = element_text(size=24),
+        legend.title = element_text(size=24)
+        )
+
+sst_fd_perc_plot
+```
+
+Boxplots by risk status, by run
+```{r histograms, include=TRUE, warning=FALSE, message=FALSE}
+
+
+sst_qc_clean <- sst_qc %>% filter(!is.na(risk_status_maternal)) %>% filter(!is.na(run))
+
+# box plots by risk status 
+ggplot(sst_qc_clean, aes(fd_perc)) + 
+  geom_boxplot(aes(fill=risk_status_maternal))+ 
+  facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_perc), by = 10),1)) +
+  labs(x = "Percent of TRs with framewise displacement > .9")+
+  theme_bw()+
+  theme(strip.background=element_rect(fill="black"),
+        strip.text=element_text(color="white", face="bold", size = 16),
+        axis.title.x =element_text(size=20, face = "bold", colour = "black"),
+        axis.text.x=element_text(size=20, colour = "black"),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.text = element_text(size=20),
+        legend.title = element_text(size=20)) + 
+  scale_fill_discrete(name = "Risk Status", type=c("coral","skyblue"))
+
+# box plots by risk status 
+ggplot(sst_qc_clean, aes(fd_mean)) + 
+  geom_boxplot(aes(fill=risk_status_maternal))+ 
+  facet_wrap(~as.factor(run),ncol=1) +
+ # scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_mean), by = 10),1)) +
+  labs(x = "Average FD")+
+  theme_bw()+
+  theme(strip.background=element_rect(fill="black"),
+        strip.text=element_text(color="white", face="bold"),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) + 
+  scale_fill_discrete(name = "Risk Status", type=c("coral","skyblue"))
+
+
+# histograms by risk status
+ggplot(sst_qc_clean, aes(x=fd_perc, fill=risk_status_maternal)) + 
+  geom_histogram(alpha=0.4, position="identity") + theme_bw() +
+  facet_wrap(~as.factor(run),ncol=1) +
+  scale_x_continuous(breaks = round(seq(0, max(foodview_qc$fd_perc), by = 10),1)) +
+  labs(x = "fd_perc")+
+  theme_bw()+
+  theme(strip.background=element_rect(fill="black"),
+        strip.text=element_text(color="white", face="bold"),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  scale_fill_discrete(name = "Risk Status")
+```
