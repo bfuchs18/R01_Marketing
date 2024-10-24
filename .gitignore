@@ -13,3 +13,5 @@ ParticipantData/bids/derivatives*
 .RData
 *log
 *tex
+*pdf
+*png
