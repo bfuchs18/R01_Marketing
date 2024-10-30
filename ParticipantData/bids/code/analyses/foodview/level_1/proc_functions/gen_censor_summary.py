@@ -10,6 +10,12 @@ import pandas as pd
 import os
 from pathlib import Path
 
+# for testing locally with code in github repo
+sub = 999
+fmriprep_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/preprocessed/fmriprep_v2401"
+analysis_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/analyses/foodview"
+overwrite = True
+
 def gen_censor_summary(sub, uncensored_onsets_dict, censordata_dict, analysis_dir, fd_thresh = .9, overwrite = False, return_summary_dataframe = False):
     """
     This function will use censor data (output from gen_censor_files) and onset data (output from gen_uncensored_onsets) to quantify by run:

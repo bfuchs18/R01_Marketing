@@ -17,11 +17,10 @@ from pathlib import Path
 ####                                                                      ####
 ##############################################################################
 
-# for debugging
-sub = 1
-fmriprep_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/preprocessed/fmriprep_v2320"
+# for testing locally with code in github repo
+sub = 999
+fmriprep_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/preprocessed/fmriprep_v2401"
 analysis_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/analyses/foodview"
-overwrite = True
 
 def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, return_regressordata_dict = False):
     """
@@ -78,7 +77,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
 
     # define fmriprep dir
     sub_fmriprep_dir = os.path.join(fmriprep_dir, 'sub-' + str(sub) + '/ses-1/func/')
-
+    print(sub_fmriprep_dir)
     # get list of fmriprep confound files
     confound_files = list(Path(sub_fmriprep_dir).rglob('*foodview*confounds_timeseries.tsv'))
 
