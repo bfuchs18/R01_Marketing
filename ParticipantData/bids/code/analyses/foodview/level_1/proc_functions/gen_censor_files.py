@@ -54,6 +54,11 @@ def _gen_run_censorfile(confound_dat, fd_thresh):
 ####                                                                      ####
 ##############################################################################
 
+# for testing locally with data shared in Git Repo (update path as needed)
+sub = 999
+fmriprep_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/preprocessed/fmriprep_v2320"
+analysis_dir = "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids/derivatives/analyses/foodview"
+
 def gen_censor_files(sub, fmriprep_dir, analysis_dir, fd_thresh=0.9, overwrite = False, return_censordata_dict = False):
     """
     This function will generate 1D censor files from foodview*-desc-confounds_timeseries.tsv files (output from fmriprep) for given participant (sub). 

@@ -9,8 +9,9 @@ By taking command line arguments, this script can be run via a SLURM script
 
 @author: baf44
 """
-# for testing locally:
-# -d "/Users/bari/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/b-childfoodlab_Shared/Active_Studies/MarketingResilienceRO1_8242020/ParticipantData/bids"
+# for testing locally with data shared in Git repo and command line arguments:
+# -s 999
+# -d "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids"
 
 #set up packages    
 import sys
