@@ -2,10 +2,9 @@
 .Rproj.user
 ParticipantData/bids/sourcedata
 ParticipantData/untouchedRaw
-ParticipantData/bids/rawdata
 ParticipantData/bids/phenotype
 ParticipantData/bids/participants*
-ParticipantData/bids/derivatives*
+ParticipantData/bids/derivatives/analyses*
 *html
 .Rhistory
 *__pycache__*
