@@ -5,5 +5,5 @@ Changes are made locally and re-synced to Roar Collab.
 
 To sync files from local to Roar Collab:
 
->> cd /Users/bari/projects/Keller_Marketing/ParticipantData/bids/code/analyses/
+>> cd /Users/baf44/projects/Keller_Marketing/ParticipantData/bids/code/analyses/
 >> rsync -av --update foodview baf44@submit.hpc.psu.edu:/storage/group/klk37/default/R01_Marketing/bids/code/analyses/
