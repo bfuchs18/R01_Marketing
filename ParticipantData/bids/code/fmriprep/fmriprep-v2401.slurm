@@ -92,11 +92,18 @@ else
 			participant \
 			--participant_label $subj \
 			--verbose \
-			--output-spaces MNIPediatricAsym:res-1:cohort-3 \
+			--output-spaces MNIPediatricAsym:res-native:cohort-3 \
 			--fs-license-file $FS_LICENSE \
 			--work-dir $bids_root_dir/code/fmriprep/work_v2401/sub-$subj/
     fi
 fi
+
+# delete working directory 
+rm -rf $bids_root_dir/code/fmriprep/work_v2401/sub-$subj/
+
+# set permissions
+chgrp -R klk37_collab $bids_root_dir/derivatives/preprocessed/fmriprep_v2401/
+chmod 775 -R $bids_root_dir/derivatives/preprocessed/fmriprep_v2401/
 
 # Rename the default SLURM output file to custom output file
 output_file="$code_dir/fmriprep-v2401_sub-${subj}_${SLURM_ARRAY_JOB_ID}.out"
