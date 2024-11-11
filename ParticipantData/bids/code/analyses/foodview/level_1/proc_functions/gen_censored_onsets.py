@@ -13,7 +13,6 @@ This function requires that the following exist in derivatives/analyses/foodview
 """
 
 #set up packages    
-import numpy as np
 import pandas as pd
 import os
 from pathlib import Path

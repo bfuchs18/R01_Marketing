@@ -82,7 +82,7 @@ else
 
     # Run python wrapper
     module load anaconda
-    conda activate pandas
+    conda activate py_proc # this env can be created from /bids/code/py_proc.yml
     python3 $code_dir/proc_functions/wrapper-python.py -s $sub -d $bids_dir 
 
     # Run afniproc
@@ -97,7 +97,7 @@ else
     fi
 fi
 
-# Rename the default SLURM output file to custom output file
+# Rename the default SLURM output fil to custom output file
 output_file="$code_dir/sub-${sub}_lev1_${SLURM_ARRAY_JOB_ID}.out"
 mv $code_dir/slurm_lev1_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $output_file
 

@@ -5,7 +5,6 @@
 """
 
 #set up packages    
-from pickle import TRUE
 import pandas as pd
 import numpy as np
 import os
@@ -77,7 +76,7 @@ def gen_regressor_file(sub, fmriprep_dir, analysis_dir, overwrite = False, retur
 
     # define fmriprep dir
     sub_fmriprep_dir = os.path.join(fmriprep_dir, 'sub-' + str(sub) + '/ses-1/func/')
-    print(sub_fmriprep_dir)
+
     # get list of fmriprep confound files
     confound_files = list(Path(sub_fmriprep_dir).rglob('*foodview*confounds_timeseries.tsv'))
 

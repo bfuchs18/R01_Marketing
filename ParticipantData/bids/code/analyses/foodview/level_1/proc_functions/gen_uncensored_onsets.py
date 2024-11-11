@@ -4,10 +4,8 @@
 @author: baf44
 """
 
-#set up packages    
-from pickle import TRUE
+#set up packages
 import pandas as pd
-import numpy as np
 import os
 from pathlib import Path
 

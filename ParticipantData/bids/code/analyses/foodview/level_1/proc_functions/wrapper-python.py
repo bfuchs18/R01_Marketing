@@ -11,8 +11,9 @@ By taking command line arguments, this script can be run via a SLURM script
 """
 
 # for testing locally with data shared in Git repo:
-# -s 999
-# -d "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids"
+# conda activate py_proc ## this env can be created from /bids/code/py_proc.yml
+# cd /Users/baf44/projects/Keller_Marketing/ParticipantData/bids/code/analyses/foodview/level_1/proc_functions
+# python3 wrapper-python.py -s 999 -d "/Users/baf44/projects/Keller_Marketing/ParticipantData/bids"
 
 #set up packages    
 import sys
@@ -65,4 +66,4 @@ print("\n*** Running function to generate censor summary file ***")
 censor_summary_dataframe = gen_censor_summary.gen_censor_summary(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censordata_dict = censordata_dict, analysis_dir = analysis_dir, overwrite = False, return_summary_dataframe = True) # use default fd_thresh (.9)
 
 #print("\n*** Running function to generate censored onset file ***")
-#gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir, overwrite=False) # use default fd_thresh (.9)
+#gen_censored_onsets.gen_censored_onsets(sub = sub, uncensored_onsets_dict = uncensored_onsets_dict, censor_summary_dataframe = censor_summary_dataframe, p_uncensored_trs_thresh = False, p_uncensored_image_trs_thresh = .5, analysis_dir = analysis_dir, overwrite=False)
