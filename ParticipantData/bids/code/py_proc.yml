@@ -1,0 +1,8 @@
+name: py_proc
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - numpy=1.24.3
+  - pandas=2.0.3
+  - python=3.8.18
