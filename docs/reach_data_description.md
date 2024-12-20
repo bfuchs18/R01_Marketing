@@ -310,8 +310,8 @@ General
 
 ### Mock-Scan Protocol
 
-* Video
-* Mock-Scan protocol
+* Video introduction to Mock Scanner on visit 1
+* Mock-Scan protocol on visit 2 - add details
  
 ### State Anxiety Ratings (CAMS)
 
@@ -327,7 +327,7 @@ The Food View Task was developed to characterize the effects of food (vs. toy) c
 <!-- omit in toc -->
 #### Task Design
 
-The Food View Task was administered using [Matlab2018b and Psychtoolbox3]. 
+The Food View Task was administered using Matlab 2021a and Psychtoolbox 3.0.19 
 
 The Food View Task included 4 functional MRI runs (~3.7 min each). Each run included 4 commercial blocks (2 food, 2 toy) and 4 food image blocks (2 high-ED, 2 low-ED). Commercial and food image blocks were presented in alternating order, always starting with a commercial block. Commercial blocks contained 2 commercials (~30 seconds total) and food image blocks contained 5 images (1.5 seconds each with 0.5s fixation following each image). Between blocks, a fixation cross was presented on the screen for 6-8 seconds (jittered). Within a run, toy and food commercial blocks were presented in alternating order. For each subject, 2 runs started with toy commercials and 2 started with food commericals; which runs these were varied by subject (counterbalanced?).
 
@@ -335,7 +335,6 @@ The Food View Task included 4 functional MRI runs (~3.7 min each). Each run incl
 Within each run, 2 food image blocks contained high-ED foods and 2 contained low-ED foods. Therefore a 2 (after toy commercial, after food commercial) x 2 (high-ED foods, low-ED foods) design could be used to explore the effects of commercials on children’s neural processing of food-cues by energy density. 
 
 Instructions…  
-Design...  
 
 Food images were selected from Dr. Jens Blechert's Food Pics database. Images were selected based on .... Categorized into High/Low ED based on ...
 
@@ -365,11 +364,11 @@ The SST was adapted from the implementation in (Verbruggen, Logan, & Stevens, 20
 <!-- omit in toc -->
 #### Task Design
 
-The SST was administered using [Matlab2018b and Psychtoolbox3]. 
+The SST was administered using Matlab 2021a and Psychtoolbox 3.0.19. 
 
 SST runs were administered under practice, behavioral, and fmri contexts. Practices runs contained an explanation of the task followed by 1 SST block. Behavioral and fMRI runs contained commerical and SST blocks presented in alternating order, always starting with a commercial block.
 
-![MRI Visit protocol](./images/Reach_v2.png)
+![MRI Visit protocol](./images/Reach_V2.png)
 
 #### Child instructions
 Children were asked to sort the plates according to which side of the plate the napkin was on and to press the left or right arrow keys when the napkin appeared on the left or right side of the plate, respectively. They were encouraged to respond as quickly as possible. Children were instructed not to respond when the dome (i.e., stop signal) appeared.
