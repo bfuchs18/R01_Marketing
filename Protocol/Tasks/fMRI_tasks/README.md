@@ -4,4 +4,4 @@ screen_calibration.pdf is used when getting child set up in scanner to make sure
 
 MPRAGE_baby-animals.pptx is presented to children during the MPRAGE scan. 
 
-data_example/ contains sample output for FoodView and SST tasks for 1 subject (ID 999). Data in these files gets processed to generate BIDS-compliant events.tsv files, see [here](ParticipantData/bids/rawdata/sub-999/ses-1/func).
+data_example/ contains sample output for FoodView and SST tasks for 1 subject (ID 999). Data in these files gets processed to generate BIDS-compliant events.tsv files, see [here](../../../ParticipantData/bids/rawdata/sub-999/ses-1/func).
