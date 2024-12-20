@@ -4,4 +4,4 @@ screen_calibration.pdf is used when setting up children inside MRI to make sure 
 
 MPRAGE_baby-animals.pptx is presented to children during the MPRAGE scan, which occurs prior to tasks. 
 
-data_example/ contains sample output for FoodView and SST tasks for 1 subject (ID 999). These files get processed using [dataREACHr](https://github.com/bfuchs18/dataREACHr) functions (called by [beh_into_bids.R](../../../ParticipantData/bids/code/beh_to_bids.R)) to generate BIDS-compliant events.tsv files, see [here](../../../ParticipantData/bids/rawdata/sub-999/ses-1/func).
+data_example/ contains sample output for FoodView and SST tasks for 1 subject (ID 999). These files get processed using [dataREACHr](https://github.com/bfuchs18/dataREACHr) functions (called by [beh_into_bids.R](../../../ParticipantData/bids/code/beh_into_bids.R)) to generate BIDS-compliant events.tsv files, see [here](../../../ParticipantData/bids/rawdata/sub-999/ses-1/func).
