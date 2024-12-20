@@ -1,0 +1,91 @@
+OrigImageName,Block,Category,ED,set,paradigm_name
+0004_chocolate chip cookie.png,3,sweet,high,A,setA_hed_sweet1
+0008_snacks and nuts.png,5,savory,high,D,setD_hed_savory1
+0012_deli meat sandwich.png,5,savory,high,D,setD_hed_savory2
+0016_pancakes and syrup.png,3,sweet,high,A,setA_hed_sweet2
+0026_potato chips.png,1,savory,high,B,setB_hed_savory1
+0046_fries.png,1,savory,high,B,setB_hed_savory2
+0053_hot dog.png,1,savory,high,B,setB_hed_savory3
+0057_sandwich and chips.png,6,savory,high,C,setC_hed_savory1
+0061_pepperoni pizza.png,5,savory,high,D,setD_hed_savory3
+0065_cheeseburger.png,2,savory,high,A,setA_hed_savory1
+0085_pizza.png,2,savory,high,A,setA_hed_savory2
+0086_burger and fries.png,6,savory,high,C,setC_hed_savory2
+0097_yellow cake and choc frosting.png,7,sweet,high,C,setC_hed_sweet1
+0103_strawberry mousse cake.png,3,sweet,high,A,setA_hed_sweet3
+0108_pizza.png,6,savory,high,C,setC_hed_savory3
+0113_chips.png,2,savory,high,A,setA_hed_savory3
+0140_ice cream bar.png,3,sweet,high,A,setA_hed_sweet4
+0145_lasagna.png,1,savory,high,B,setB_hed_savory4
+0150_popcorn.png,6,savory,high,C,setC_hed_savory4
+0163_chocolate brownie.png,8,sweet,high,D,setD_hed_sweet2
+0167_chocolate bar.png,7,sweet,high,C,setC_hed_sweet2
+0173_filled choc bar.png,8,sweet,high,D,setD_hed_sweet3
+0192 - Apple.jpg,5,sweet,low,B,setB_led_sweet1
+0194 - Kiwi.jpg,6,sweet,low,C,setC_led_sweet1
+0195 - Cucumber.jpg,1,savory,low,D,setD_led_savory1
+0196 - Salad.jpg,1,savory,low,D,setD_led_savory2
+0199 - Watermelon.jpg,7,sweet,low,A,setA_led_sweet1
+0200 - Oranges.jpg,8,sweet,low,D,setD_led_sweet1
+0202 - Blueberry.jpg,5,sweet,low,B,setB_led_sweet2
+0208 - Carrot.jpg,2,savory,low,A,setA_led_savory1
+0210 - Raspberry.jpg,6,sweet,low,C,setC_led_sweet2
+0211 - Strawberry.jpg,7,sweet,low,A,setA_led_sweet2
+0250 - Broccoli.jpg,1,savory,low,D,setD_led_savory3
+0255 - Pomegranate.jpg,8,sweet,low,D,setD_led_sweet2
+0281 - Grapes.jpg,5,sweet,low,B,setB_led_sweet3
+0282 - Banana.jpg,6,sweet,low,C,setC_led_sweet3
+0285 - Pineapple.jpg,7,sweet,low,A,setA_led_sweet3
+0287_choc bar.png,4,sweet,high,B,setB_hed_sweet1
+0289_choc cookies.png,7,sweet,high,C,setC_hed_sweet3
+0298_choc sandwich cookie.png,4,sweet,high,B,setB_hed_sweet2
+0301 - Roasted Chicken.jpg,2,savory,low,A,setA_led_savory2
+0302_cheese sticks.png,5,savory,high,D,setD_hed_savory4
+0311 - Beef.jpg,3,savory,low,C,setC_led_savory1
+0312 - Chicken Fillets.jpg,3,savory,low,C,setC_led_savory2
+0317 - Potato Wedges.jpg,2,savory,low,A,setA_led_savory3
+0325 - Fruit Salad.jpg,8,sweet,low,D,setD_led_sweet3
+0332 - mixed salad.jpg,2,savory,low,A,setA_led_savory4
+0335 - Snappeas.jpg,3,savory,low,C,setC_led_savory3
+0351_croissant.png,4,sweet,high,B,setB_hed_sweet3
+0353_strawberry tart.png,4,sweet,high,B,setB_hed_sweet4
+0359 - Asparagus.jpg,2,savory,low,A,setA_led_savory5
+0363_french fries.png,5,savory,high,D,setD_hed_savory5
+0364 - Green Beans.jpg,4,savory,low,B,setB_led_savory1
+0373_ice cream cone.png,7,sweet,high,C,setC_hed_sweet4
+0392 - Mandarines.jpg,5,sweet,low,B,setB_led_sweet4
+0407 - Blackberry.jpg,6,sweet,low,C,setC_led_sweet4
+0412 - Potatoes.jpg,1,savory,low,D,setD_led_savory4
+0415 - Lemon.jpg,7,sweet,low,A,setA_led_sweet4
+0424 - Peas.jpg,8,sweet,low,D,setD_led_sweet4
+0471_French toast.png,7,sweet,high,C,setC_hed_sweet5
+0488_waffle.png,8,sweet,high,D,setD_hed_sweet4
+0492_ice cream cones.png,4,sweet,high,B,setB_hed_sweet5
+0510_chocolate bar.png,3,sweet,high,A,setA_hed_sweet5
+0545 - Shrimp.jpg,4,savory,low,B,setB_led_savory2
+0547_hot dog.png,2,savory,high,A,setA_hed_savory4
+0550 - Brussel Sprouts.jpg,3,savory,low,C,setC_led_savory4
+0557 - Roast Pork.jpg,1,savory,low,D,setD_led_savory5
+0593_grilled cheese.png,2,savory,high,A,setA_hed_savory5
+0629 - Veggie Soup.jpg,4,savory,low,B,setB_led_savory3
+0639 - Oatmeal.jpg,3,savory,low,C,setC_led_savory5
+0654 - Rice.jpg,4,savory,low,B,setB_led_savory4
+0664_ice cream in waffle cone.png,8,sweet,high,D,setD_hed_sweet5
+0690_pasta and meatsauce.png,6,savory,high,C,setC_hed_savory5
+0694_pizza.png,1,savory,high,B,setB_hed_savory5
+0703_choc cupcake.png,8,sweet,high,D,setD_hed_sweet1
+0770 - corn.jpg,5,sweet,low,B,setB_led_sweet5
+0771 - Cherry.jpg,6,sweet,low,C,setC_led_sweet5
+0786 - Grilled Chicken.jpg,4,savory,low,B,setB_led_savory5
+0850 - Yogurt.jpg,7,sweet,low,A,setA_led_sweet5
+0862 - Corn.jpg,8,sweet,low,D,setD_led_sweet5
+0119_glazed donut.png,,,,practice,prac_hed1
+0093_cupcakes.png,,,,practice,prac_hed2
+0100_choc cake.png,,,,practice,prac_hed3
+0101_donut.png,,,,practice,prac_hed4
+0115_ice cream sunday.png,,,,practice,prac_hed5
+0247 - Green pepper.jpg,,,,practice,prac_led1
+0252 - Iceberg Lettuce.jpg,,,,practice,prac_led2
+0307 - Salmon.JPG,,,,practice,prac_led3
+0327 - Mashed Potato.jpg,,,,practice,prac_led4
+0536 - Cooked Ham.jpg,,,,practice,prac_led5

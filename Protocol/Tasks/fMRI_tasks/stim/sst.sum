@@ -1,0 +1,47 @@
+optseq2
+$Id: optseq2.c,v 2.22 2011/04/21 19:48:51 greve Exp $
+NoSearch  = 0
+nSearch  = 1000
+nKeep    = 2
+PctUpdate  = 10.000000
+nCB1Opt  = 0
+seed     = 286054
+Ntp  = 52
+TR   = 2
+TPreScan   = 0
+PSD Window   = 0 20 2
+nEvTypes = 1
+EvNo    Label Duration nRepsNom
+ 1        sst  1.500   36
+PctVarEvReps = 0
+VarEvRepsPerCond = 0
+PolyOrder = -1
+tNullMax = 8
+tNullMin = 0.5
+AR1 = 0
+No refractory penalty
+Cost = eff
+OutStem = sst
+Summary File = sst.sum
+
+
+
+
+Searched 1000 iterations for 0.000000 hours
+Rate: inf iterations per second
+Number of iterations since last substitution 767
+Cost Avg/Std: 1.0739688 0.1118259
+Max Eff Encountered:    1.3158
+Max VRFAvg Encountered: 13.1976
+Eff of Nominal Ideal XtX: 1.32632
+
+Rank     Cost   ZCost NthIter  Eff   CB1Err   VRFAvg VRFStd VRFMin VRFMax VRFRng IXtXErr  
+  1    1.3158   2.163    49   1.316 0.027778  13.20   0.75  11.90  14.14   2.24   333.00
+  2    1.3155   2.160   233   1.315 0.027778  13.20   0.77  11.85  13.76   1.91   414.00
+
+Ideal CB1 PMtx--------------------------
+ 1.00000;
+Schedule 1 CB1 PMtx--------------------------
+ 0.97222;
+Schedule 2 CB1 PMtx--------------------------
+ 0.97222;
