@@ -9,11 +9,15 @@
 ## (3) update 'user_id' (variable in beh_into_bids.R) with your Penn State User ID to get the correct rsync command 
 
 
-# load packages -----
+# load dataREACHr -----
 
-# load dataREACHr (load_all() from devtools package)
+# Option A: install dataREACHr from github and load library
+#install_github("bfuchs18/dataREACHr")
+#library(dataREACHr)
+
+# Option B: load dataREACHr from path, if downloaded or cloned from GitHub
 library(devtools)
-load_all("/Users/baf44/projects/dataREACHr")
+load_all("/Users/barifuchs/projects/dataREACHr")
 
 # user setup (modify variables here) -----
 
