@@ -14,3 +14,4 @@ ParticipantData/bids/derivatives/analyses*
 *tex
 *pdf
 Protocol/Tasks/fMRI_tasks/stim/food_viewing/orig_foodpics/*
+ParticipantData/bids/code/investigator_meetings/participant_summary_files*
